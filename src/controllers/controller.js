@@ -1,1 +1,3 @@
-let user = {};
+let user = {
+    database: []
+};
