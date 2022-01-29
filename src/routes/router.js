@@ -6,8 +6,6 @@ let bodyParser = require('body-parser');
 
 let controller = require('../controllers/controller');
 
-let user = [];
-
 router.post('/login', bodyParser.json(), (req, res) => {
     let { email } = req.body;
 
@@ -30,8 +28,4 @@ router.post('/register', bodyParser.json(), (req, res) => {
     controller.register(email, nome, idade, senha, function (result) {
         res.send(result);
     });
-
-    user.push({ email, nome, idade, senha });
-
-    res.send('Rota funcionando');
 });
