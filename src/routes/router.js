@@ -27,6 +27,10 @@ router.post('/register', bodyParser.json(), (req, res) => {
 
     let { senha } = req.body;
 
+    controller.register(email, nome, idade, senha, function (result) {
+        res.send(result);
+    });
+
     user.push({ email, nome, idade, senha });
 
     res.send('Rota funcionando');
