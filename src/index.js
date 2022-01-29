@@ -9,7 +9,13 @@ let app = express();
 let user = [];
 
 app.post('/login', bodyParser.json(), (req, res) => {
-    res.send('Rota funcionando');
+    let { email } = req.body;
+
+    let { senha } = req.body;
+
+    if (email === user[0].email && senha === user[0].senha) {
+        res.send('Rota funcionando');
+    }
 });
 
 app.post('/register', bodyParser.json(), (req, res) => {
@@ -21,7 +27,7 @@ app.post('/register', bodyParser.json(), (req, res) => {
 
     let { senha } = req.body;
 
-    user.push([email, nome, idade, senha]);
+    user.push({ email, nome, idade, senha });
 
     res.send('Rota funcionando');
 });
