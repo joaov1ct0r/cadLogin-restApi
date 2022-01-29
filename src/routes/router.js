@@ -29,3 +29,5 @@ router.post('/register', bodyParser.json(), (req, res) => {
         res.send(result);
     });
 });
+
+module.exports = router;
