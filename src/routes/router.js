@@ -15,3 +15,17 @@ router.post('/login', bodyParser.json(), (req, res) => {
         res.send('Rota funcionando');
     }
 });
+
+router.post('/register', bodyParser.json(), (req, res) => {
+    let { email } = req.body;
+
+    let { nome } = req.body;
+
+    let { idade } = req.body;
+
+    let { senha } = req.body;
+
+    user.push({ email, nome, idade, senha });
+
+    res.send('Rota funcionando');
+});
