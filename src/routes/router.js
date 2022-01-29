@@ -14,7 +14,7 @@ router.post('/login', bodyParser.json(), (req, res) => {
     let { senha } = req.body;
 
     controller.login(email, senha, function (result) {
-        console.log(result);
+        res.send(result);
     });
 });
 
