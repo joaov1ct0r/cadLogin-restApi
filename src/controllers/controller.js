@@ -7,5 +7,11 @@ let user = {
         } else {
             callback('Falha na autenticação');
         }
+    },
+
+    register: function (email, nome, idade, senha, callback) {
+        this.database.push({ email, nome, idade, senha });
+
+        callback('Cadastro realizado com sucesso');
     }
 };
