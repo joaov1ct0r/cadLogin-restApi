@@ -4,6 +4,8 @@ let router = express.Router();
 
 let bodyParser = require('body-parser');
 
+let controller = require('../controllers/controller');
+
 let user = [];
 
 router.post('/login', bodyParser.json(), (req, res) => {
@@ -11,9 +13,9 @@ router.post('/login', bodyParser.json(), (req, res) => {
 
     let { senha } = req.body;
 
-    if (email === user[0].email && senha === user[0].senha) {
-        res.send('Rota funcionando');
-    }
+    controller.login(email, senha, function (result) {
+        console.log(result);
+    });
 });
 
 router.post('/register', bodyParser.json(), (req, res) => {

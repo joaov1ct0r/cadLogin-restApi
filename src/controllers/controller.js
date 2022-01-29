@@ -15,3 +15,5 @@ let user = {
         callback('Cadastro realizado com sucesso');
     }
 };
+
+module.exports = user;
