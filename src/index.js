@@ -6,6 +6,8 @@ let bodyParser = require('body-parser');
 
 let app = express();
 
+let user = [];
+
 app.post('/login', bodyParser.json(), (req, res) => {
     res.send('Rota funcionando');
 });
