@@ -2,6 +2,8 @@ require('dotenv').config();
 
 let express = require('express');
 
+let mysql = require('mysql2');
+
 let router = require('./routes/router');
 
 let app = express();
