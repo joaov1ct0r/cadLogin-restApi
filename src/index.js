@@ -2,27 +2,13 @@ require('dotenv').config();
 
 let express = require('express');
 
-let mysql = require('mysql2');
+let mongoose = require('mongoose');
 
 let router = require('./routes/router');
 
 let app = express();
 
-mysql.createConnection(
-    {
-        host: process.env.NODE_ENV_DB_HOST,
-        user: process.env.NODE_ENV_DB_USER,
-        password: process.env.NODE_ENV_DB_PASSWORD,
-        database: process.env.NODE_ENV_DB_DB
-    },
-    error => {
-        if (error) {
-            throw error;
-        } else {
-            console.log('MySQL Conectado');
-        }
-    }
-);
+mongoose.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use('/api', router);
 
