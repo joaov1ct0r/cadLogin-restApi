@@ -14,10 +14,21 @@ let user = {
         }
     },
 
-    register: function (email, nome, idade, senha, callback) {
-        this.database.push({ email, nome, idade, senha });
+    register: async function (email, nome, idade, senha, callback) {
+        const user = new User({
+            email: email,
+            nome: nome,
+            idade: idade,
+            senha: senha
+        });
 
-        callback('Cadastro realizado com sucesso');
+        try {
+            const savedUser = await user.save();
+            callback(savedUser);
+        } catch (error) {
+            throw error;
+        }
+        this.database.push({ email, nome, idade, senha });
     }
 };
 
