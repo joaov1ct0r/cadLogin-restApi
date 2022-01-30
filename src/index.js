@@ -8,7 +8,20 @@ let router = require('./routes/router');
 
 let app = express();
 
-mongoose.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(
+    process.env.NODE_ENV_DB_HOST,
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    },
+    error => {
+        if (error) {
+            throw error;
+        } else {
+            console.log('Mongoose Conectado');
+        }
+    }
+);
 
 app.use('/api', router);
 
