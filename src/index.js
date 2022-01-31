@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const bodyParser = require('body-parser');
 let express = require('express');
 
 let mongoose = require('mongoose');
@@ -22,6 +23,8 @@ mongoose.connect(
         }
     }
 );
+
+app.use(bodyParser.json());
 
 app.use('/api', router);
 
