@@ -6,15 +6,7 @@ let bodyParser = require('body-parser');
 
 let controller = require('../controllers/controller');
 
-router.post('/login', bodyParser.json(), (req, res) => {
-    let { email } = req.body;
-
-    let { senha } = req.body;
-
-    controller.login(email, senha, function (result) {
-        res.send(result);
-    });
-});
+router.post('/login', controller.login);
 
 router.post('/register', bodyParser.json(), (req, res) => {
     let { email } = req.body;
