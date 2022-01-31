@@ -19,7 +19,7 @@ let user = {
             email: req.body.email,
             nome: req.body.nome,
             idade: req.body.idade,
-            senha: req.body.senha
+            senha: bcrypt.hashSync(req.body.senha)
         });
 
         try {
