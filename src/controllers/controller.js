@@ -1,5 +1,7 @@
 const User = require('../models/User');
 
+const bcrypt = require('bcryptjs');
+
 let user = {
     login: function (email, senha, callback) {
         if (
