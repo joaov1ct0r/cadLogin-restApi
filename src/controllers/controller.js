@@ -15,6 +15,9 @@ let user = {
     },
 
     register: async function (req, res) {
+        let selectedUser = await User.findOne({ email: req.body.email });
+
+        if (selectedUser) return res.status(400).send('Email ja cadastrado');
         const user = new User({
             email: req.body.email,
             nome: req.body.nome,
