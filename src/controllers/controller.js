@@ -14,19 +14,19 @@ let user = {
         }
     },
 
-    register: async function (email, nome, idade, senha, callback) {
+    register: async function (req, res) {
         const user = new User({
-            email: email,
-            nome: nome,
-            idade: idade,
-            senha: senha
+            email: req.body.email,
+            nome: req.body.nome,
+            idade: req.body.idade,
+            senha: req.body.senha
         });
 
         try {
             const savedUser = await user.save();
-            callback(savedUser);
+            res.send(savedUser);
         } catch (error) {
-            throw error;
+            res.status(400).send(error);
         }
         this.database.push({ email, nome, idade, senha });
     }
