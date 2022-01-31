@@ -8,18 +8,6 @@ let controller = require('../controllers/controller');
 
 router.post('/login', controller.login);
 
-router.post('/register', bodyParser.json(), (req, res) => {
-    let { email } = req.body;
-
-    let { nome } = req.body;
-
-    let { idade } = req.body;
-
-    let { senha } = req.body;
-
-    controller.register(email, nome, idade, senha, function (result) {
-        res.send(result);
-    });
-});
+router.post('/register', controller.register);
 
 module.exports = router;
