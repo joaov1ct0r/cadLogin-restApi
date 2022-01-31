@@ -1,8 +1,6 @@
 const User = require('../models/User');
 
 let user = {
-    database: [],
-
     login: function (email, senha, callback) {
         if (
             email === this.database[0].email &&
@@ -28,7 +26,6 @@ let user = {
         } catch (error) {
             res.status(400).send(error);
         }
-        this.database.push({ email, nome, idade, senha });
     }
 };
 
