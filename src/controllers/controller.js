@@ -3,10 +3,20 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 
 let user = {
-    login: function (req, res) {
+    login: async function (req, res) {
         let selectedUser = await User.findOne({ email: req.body.email });
 
         if (!selectedUser) return res.status(400).send('Falha na autenticação');
+
+        let passwordCompare = bcrypt.compareSync(
+            req.body.password,
+            selectedUser.password
+        );
+
+        if (!passwordCompare)
+            return res.status(400).send('Falha na autenticação');
+
+        return res.send('Login realizado com sucesso');
     },
 
     register: async function (req, res) {
