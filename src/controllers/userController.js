@@ -19,7 +19,7 @@ let user = {
             return res.status(400).send('Falha na autenticação');
 
         const token = jwt.sign(
-            { id: selectedUser.id },
+            { id: selectedUser.id, admin: selectedUser.admin },
             process.env.NODE_ENV_TOKEN_SECRET
         );
         res.header('auth-token', token);
