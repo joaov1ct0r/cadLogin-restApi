@@ -8,6 +8,8 @@ let mongoose = require('mongoose');
 
 let router = require('./routes/userRouter');
 
+let adminRouter = require('./routes/adminRouter');
+
 let app = express();
 
 mongoose.connect(
