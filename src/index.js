@@ -29,7 +29,7 @@ mongoose.connect(
 
 app.use(bodyParser.json());
 
-app.use('/api', router);
+app.use('/usuario', router);
 
 app.use('/admin', adminRouter);
 
