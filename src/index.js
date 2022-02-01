@@ -31,6 +31,8 @@ app.use(bodyParser.json());
 
 app.use('/api', router);
 
+app.use('/admin', adminRouter);
+
 app.listen(process.env.NODE_ENV_SERVER_PORT, () => {
     console.log(`Server running on port: ${process.env.NODE_ENV_SERVER_PORT}`);
 });
