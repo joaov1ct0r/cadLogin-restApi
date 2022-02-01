@@ -18,7 +18,13 @@ let user = {
         if (!passwordCompare)
             return res.status(400).send('Falha na autenticação');
 
-        return res.send('Login realizado com sucesso');
+        const token = jwt.sign(
+            { id: selectedUser.id },
+            process.env.NODE_ENV_TOKEN_SECRET
+        );
+        res.header('auth-token', token);
+
+        res.send('Login realizado com sucesso');
     },
 
     register: async function (req, res) {
