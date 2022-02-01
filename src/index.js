@@ -6,7 +6,7 @@ let express = require('express');
 
 let mongoose = require('mongoose');
 
-let router = require('./routes/router');
+let router = require('./routes/userRouter');
 
 let app = express();
 
