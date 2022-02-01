@@ -4,4 +4,4 @@ const router = express.Router();
 
 let adminController = require('../controllers/adminController');
 
-router.get('/', (req, res) => {});
+router.get('/', adminController);
