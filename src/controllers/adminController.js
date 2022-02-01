@@ -7,3 +7,5 @@ let admin = {
         }
     }
 };
+
+module.exports = admin;
