@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 let user = {
-    login: async function (req, res) {
+    async login(req, res) {
         let selectedUser = await User.findOne({ email: req.body.email });
 
         if (!selectedUser) return res.status(400).send('Falha na autenticação');
@@ -27,7 +27,7 @@ let user = {
         res.send('Login realizado com sucesso');
     },
 
-    register: async function (req, res) {
+    async register(req, res) {
         let selectedUser = await User.findOne({ email: req.body.email });
 
         if (selectedUser) return res.status(400).send('Email ja cadastrado');
