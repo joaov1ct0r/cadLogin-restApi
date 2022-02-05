@@ -1,5 +1,5 @@
 let admin = {
-    validateAdmin: function (req, res) {
+    validateAdmin(req, res) {
         if (req.user.admin) {
             res.send('Dados do admin');
         } else {
