@@ -4,10 +4,15 @@ const bcrypt = require('bcryptjs');
 
 const jwt = require('jsonwebtoken');
 
-const validate = require('./validateData');
+const { registerValidate, loginValidate } = require('./validateData');
 
 let user = {
     async login(req, res) {
+        const { error } = loginValidate(req.body);
+
+        if (error) {
+            return res.status(400).send('Falha na autenticação');
+        }
         let selectedUser = await User.findOne({ email: req.body.email });
 
         if (!selectedUser) return res.status(400).send('Falha na autenticação');
