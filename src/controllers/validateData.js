@@ -11,4 +11,6 @@ const registerValidate = data => {
     return schema.validate(data);
 };
 
-const loginValidate = data => {};
+const loginValidate = data => {
+    const schema = Joi.object({});
+};
