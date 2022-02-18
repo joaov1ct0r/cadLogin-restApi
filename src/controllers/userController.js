@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 
 const jwt = require('jsonwebtoken');
 
+const validate = require('./validateData');
+
 let user = {
     async login(req, res) {
         let selectedUser = await User.findOne({ email: req.body.email });
