@@ -7,4 +7,6 @@ const registerValidate = data => {
         idade: Joi.date().required(),
         senha: Joi.string().required().min(8).max(100)
     });
+
+    return schema.validate(data);
 };
