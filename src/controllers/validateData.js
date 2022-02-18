@@ -10,3 +10,5 @@ const registerValidate = data => {
 
     return schema.validate(data);
 };
+
+const loginValidate = data => {};
