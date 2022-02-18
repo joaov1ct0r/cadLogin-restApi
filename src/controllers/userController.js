@@ -35,6 +35,11 @@ let user = {
     },
 
     async register(req, res) {
+        let { error } = registerValidate(req.body);
+
+        if (error) {
+            return res.status(400).send('Falha no cadastramento');
+        }
         let selectedUser = await User.findOne({ email: req.body.email });
 
         if (selectedUser) return res.status(400).send('Email ja cadastrado');
