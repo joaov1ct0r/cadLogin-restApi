@@ -1,14 +1,18 @@
+import 'dotenv/config';
+
 import userRouter from './routes/userRouter.js';
 
 import adminRouter from './routes/adminRouter.js';
-
-import 'dotenv/config';
 
 import bodyParser from 'body-parser';
 
 import express from 'express';
 
+import dbConnection from './config/db.js';
+
 let app = express();
+
+dbConnection();
 
 app.use(bodyParser.json());
 
