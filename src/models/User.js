@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const userSchema = mongoose.Schema({
+const userSchema = new Schema({
     email: { type: String, required: true, minlength: 10, maxlength: 100 },
     nome: { type: String, required: true, minlength: 10, maxlength: 100 },
     idade: { type: Number, required: true, minlength: 1, maxlength: 2 },
@@ -8,4 +8,4 @@ const userSchema = mongoose.Schema({
     admin: { type: Boolean, default: false }
 });
 
-module.exports = mongoose.model('User', userSchema);
+export default model('User', userSchema);
