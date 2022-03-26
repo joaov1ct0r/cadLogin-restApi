@@ -1,7 +1,7 @@
+let validateAdmin = require('../controllers/adminController');
+
 const express = require('express');
 
 const router = express.Router();
 
-let adminController = require('../controllers/adminController');
-
-router.get('/', adminController.validateAdmin);
+router.get('/', validateAdmin);
