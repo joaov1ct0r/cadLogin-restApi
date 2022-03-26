@@ -1,10 +1,10 @@
-const User = require('../models/User');
+import User from '../models/User.js';
 
-const bcrypt = require('bcryptjs');
+import { registerValidate, loginValidate } from './validateData.js';
 
-const jwt = require('jsonwebtoken');
+import bcrypt from 'bcryptjs';
 
-const { registerValidate, loginValidate } = require('./validateData');
+import jwt from 'jsonwebtoken';
 
 const login = async (req, res) => {
     const { error } = loginValidate(req.body);
@@ -50,9 +50,12 @@ const register = async (req, res) => {
 
     try {
         const savedUser = await user.save();
+
+        if (!savedUser) return res.status(400).send('Falha no cadastramento');
+
         res.send(savedUser);
     } catch (error) {
-        res.status(400).send(error);
+        throw error;
     }
 };
 
