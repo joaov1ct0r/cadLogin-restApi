@@ -1,35 +1,18 @@
-require('dotenv').config();
+import userRouter from './routes/userRouter.js';
 
-const bodyParser = require('body-parser');
+import adminRouter from './routes/adminRouter.js';
 
-let express = require('express');
+import 'dotenv/config';
 
-let mongoose = require('mongoose');
+import bodyParser from 'body-parser';
 
-let router = require('./routes/userRouter');
-
-let adminRouter = require('./routes/adminRouter');
+import express from 'express';
 
 let app = express();
 
-mongoose.connect(
-    process.env.NODE_ENV_DB_HOST,
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    },
-    error => {
-        if (error) {
-            throw error;
-        } else {
-            console.log('Mongoose Conectado');
-        }
-    }
-);
-
 app.use(bodyParser.json());
 
-app.use('/usuario', router);
+app.use('/usuario', userRouter);
 
 app.use('/admin', adminRouter);
 
