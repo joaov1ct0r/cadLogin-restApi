@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 export default function (req, res, next) {
     const token = req.header('auth-token');
@@ -14,6 +14,6 @@ export default function (req, res, next) {
         if (!userVerified) return res.status(401).send('Acesso negado');
         next();
     } catch (error) {
-        res.status(401).send('Acesso negado');
+        throw error;
     }
 }
