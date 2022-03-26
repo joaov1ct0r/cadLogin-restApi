@@ -1,14 +1,16 @@
 {
   "name": "jwt-restapi",
+  "author": "github.com/joaov1ct0r",
   "version": "1.0.0",
-  "description": "",
+  "description": "API rest para cadastro e login de usuarios",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "jwt", "rest", "api", "express", "dotenv", "body-parser", "bcryptjs", "@hapi/joi", "jsonwebtoken", "mongoose"
+  ],
   "license": "ISC",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
