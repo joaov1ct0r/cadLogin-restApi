@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-module.exports = (req, res, next) => {
+export default function (req, res, next) {
     const token = req.header('auth-token');
 
     if (!token) return res.status(401).send('Acesso negado');
@@ -10,8 +10,10 @@ module.exports = (req, res, next) => {
             token,
             process.env.NODE_ENV_TOKEN_SECRET
         );
+
+        if (!userVerified) return res.status(401).send('Acesso negado');
         next();
     } catch (error) {
         res.status(401).send('Acesso negado');
     }
-};
+}
