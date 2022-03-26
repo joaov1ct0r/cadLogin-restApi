@@ -1,4 +1,4 @@
-let Joi = require('@hapi/joi');
+import Joi from '@hapi/joi';
 
 const registerValidate = data => {
     const schema = Joi.object({
