@@ -1,4 +1,4 @@
-import validateAdmin from '../controllers/adminController';
+import validateAdmin from '../controllers/adminController.js';
 
 import express from 'express';
 
