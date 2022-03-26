@@ -1,4 +1,4 @@
-let validateAdmin = require('../controllers/adminController');
+import validateAdmin from '../controllers/adminController';
 
 const express = require('express');
 
