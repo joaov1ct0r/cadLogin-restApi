@@ -2,6 +2,8 @@ import validateAdmin from '../controllers/adminController.js';
 
 import express from 'express';
 
-const router = express.Router();
+const adminRouter = express.Router();
 
-router.get('/', validateAdmin);
+adminRouter.get('/', validateAdmin);
+
+export default adminRouter;
