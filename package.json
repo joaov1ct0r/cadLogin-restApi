@@ -6,7 +6,7 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.js"
   },
   "keywords": [
     "jwt", "rest", "api", "express", "dotenv", "body-parser", "bcryptjs", "@hapi/joi", "jsonwebtoken", "mongoose"
