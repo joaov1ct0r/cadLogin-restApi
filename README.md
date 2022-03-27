@@ -38,16 +38,24 @@
 <h2>MODO DE USO</h2>
 
 <h3>GIT</h3>
+<hr>
 
 <p>FAÇA O DOWNLOADS DO REPOSITORIO OU USE:<br><code>git@github.com:joaov1ct0r/jwt-restApi.git</code></p>
 
+<h3>DEPENDENCIAS</h3>
+<hr>
+
+<p>INSTALE TODAS AS DEPENDENCIAS NECESSARIAS COM O COMANDO<code>npm install</code></p>
+
 <h3>Mongoose</h3>
+<hr>
 
 <p>FAÇA A CONEXÃO COM SEU MONGODB INSERINDO O LINK EM <code>NODE_ENV_TOKEN_SECRET</code> NO ARQUIVO .ENV</p>
 
 <h3>SERVER</h3>
+<hr>
 
-<p>APOS TER OS ARQUIVOS EM SUA MAQUINA INICIE O SERVIDOR WEB NO SEU TERMINAL COM O COMANDO:<br><code>node src/index.js</code></p>
+<p>APOS TER OS ARQUIVOS EM SUA MAQUINA INICIE O SERVIDOR WEB NO SEU TERMINAL COM O COMANDO:<br><code>npm start</code></p>
 
 <p>APOS ISSO AS ROTAS:<br><code>localhost:3000/usuario/login</code>
 <br><code>localhost:3000/usuario/register</code>
