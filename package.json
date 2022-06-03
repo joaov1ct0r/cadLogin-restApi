@@ -9,7 +9,16 @@
     "start": "node src/index.js"
   },
   "keywords": [
-    "jwt", "rest", "api", "express", "dotenv", "body-parser", "bcryptjs", "@hapi/joi", "jsonwebtoken", "mongoose"
+    "jwt",
+    "rest",
+    "api",
+    "express",
+    "dotenv",
+    "body-parser",
+    "bcryptjs",
+    "@hapi/joi",
+    "jsonwebtoken",
+    "mongoose"
   ],
   "license": "ISC",
   "dependencies": {
@@ -20,5 +29,8 @@
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.8"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.4"
   }
 }
