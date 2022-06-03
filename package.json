@@ -6,7 +6,9 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node ./build/index.js",
+    "dev": "ts-node-dev ./src/index.ts",
+    "build": "tsc"
   },
   "keywords": [
     "jwt",
