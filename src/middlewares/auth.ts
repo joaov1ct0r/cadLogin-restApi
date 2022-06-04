@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 
 import IJwt from "../types/jsonInterface";
 
+import IReq from "../types/requestInterface";
+
 export default function (req, res, next) {
   const token = req.cookies.authentication.split(" ")[1];
 
