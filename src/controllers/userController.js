@@ -1,4 +1,4 @@
-import User from '../database/models/User.js';
+import User from '../database/models/userModel.js';
 
 import { registerValidate, loginValidate } from './validateData.js';
 
