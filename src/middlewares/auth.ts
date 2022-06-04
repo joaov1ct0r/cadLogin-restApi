@@ -4,6 +4,8 @@ import IJwt from "../types/jsonInterface";
 
 import IReq from "../types/requestInterface";
 
+import { Response, NextFunction } from "express";
+
 export default function (req, res, next) {
   const token = req.cookies.authentication.split(" ")[1];
 
