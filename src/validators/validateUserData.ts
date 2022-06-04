@@ -31,8 +31,17 @@ const validateHandleUserEdit = (data: Object): Joi.ValidationResult => {
   return schema.validate(data);
 };
 
+const validateHandleOneUser = (data: Object): Joi.ValidationResult => {
+  const schema: Joi.ObjectSchema<Object> = Joi.object({
+    email: Joi.string().required().min(10).max(100),
+  });
+
+  return schema.validate(data);
+};
+
 export {
   validateHandleUserRegister,
   validateHandleUserLogin,
   validateHandleUserEdit,
+  validateHandleOneUser,
 };
