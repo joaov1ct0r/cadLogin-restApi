@@ -6,6 +6,8 @@ import adminRouter from "./routes/adminRouter.js";
 
 import express from "express";
 
+import cookieParser from "cookie-parser";
+
 const app: express.Express = express();
 
 app.use(express.json());
