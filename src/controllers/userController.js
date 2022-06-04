@@ -1,57 +1,57 @@
-import User from '../database/models/userModel.js';
+import User from "../database/models/userModel.js";
 
-import { registerValidate, loginValidate } from './validateData.js';
+import { registerValidate, loginValidate } from "../validators/validateData.js";
 
-import bcrypt from 'bcryptjs';
+import bcrypt from "bcryptjs";
 
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
 const login = async (req, res) => {
   const { error } = loginValidate(req.body);
 
   if (error) {
-    return res.status(400).send('Falha na autenticação');
+    return res.status(400).send("Falha na autenticação");
   }
-  let selectedUser = await User.findOne({ email: req.body.email });
+  const selectedUser = await User.findOne({ email: req.body.email });
 
-  if (!selectedUser) return res.status(400).send('Falha na autenticação');
+  if (!selectedUser) return res.status(400).send("Falha na autenticação");
 
-  let passwordCompare = bcrypt.compareSync(
+  const passwordCompare = bcrypt.compareSync(
     req.body.password,
     selectedUser.password
   );
 
-  if (!passwordCompare) return res.status(400).send('Falha na autenticação');
+  if (!passwordCompare) return res.status(400).send("Falha na autenticação");
 
   const token = jwt.sign(
     { id: selectedUser.id, admin: selectedUser.admin },
     process.env.NODE_ENV_TOKEN_SECRET
   );
-  res.header('auth-token', token);
+  res.header("auth-token", token);
 
-  res.send('Login realizado com sucesso');
+  res.send("Login realizado com sucesso");
 };
 
 const register = async (req, res) => {
-  let { error } = registerValidate(req.body);
+  const { error } = registerValidate(req.body);
 
   if (error) {
-    return res.status(400).send('Falha no cadastramento');
+    return res.status(400).send("Falha no cadastramento");
   }
-  let selectedUser = await User.findOne({ email: req.body.email });
+  const selectedUser = await User.findOne({ email: req.body.email });
 
-  if (selectedUser) return res.status(400).send('Email ja cadastrado');
+  if (selectedUser) return res.status(400).send("Email ja cadastrado");
   const user = new User({
     email: req.body.email,
     nome: req.body.nome,
     idade: req.body.idade,
-    senha: bcrypt.hashSync(req.body.senha)
+    senha: bcrypt.hashSync(req.body.senha),
   });
 
   try {
     const savedUser = await user.save();
 
-    if (!savedUser) return res.status(400).send('Falha no cadastramento');
+    if (!savedUser) return res.status(400).send("Falha no cadastramento");
 
     res.send(savedUser);
   } catch (error) {
