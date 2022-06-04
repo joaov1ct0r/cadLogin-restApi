@@ -6,9 +6,11 @@ import adminRouter from "./routes/adminRouter.js";
 
 import express from "express";
 
-const app: express.express = express();
+const app: express.Express = express();
 
 app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/usuario", userRouter);
 
