@@ -1,6 +1,9 @@
 import User from "../database/models/userModel.js";
 
-import { registerValidate, loginValidate } from "../validators/validateData.js";
+import {
+  registerValidate,
+  loginValidate,
+} from "../validators/validateUserData.js";
 
 import bcrypt from "bcryptjs";
 
