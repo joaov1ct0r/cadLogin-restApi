@@ -10,12 +10,16 @@ export default function (req, res, next) {
   }
 
   try {
-    const userVerified = jwt.verify(
+    const verifiedToken: IJwt = jwt.verify(
       token,
       process.env.JWT_TOKEN_SECRET as string
-    );
+    ) as IJwt;
 
-    if (!userVerified) return res.status(401).send("Acesso negado");
+    if (!verifiedToken) {
+      return res.status(401).json({ error: "Falha na autenticação!" });
+    }
+    req.userId = verifiedToken.id;
+
     next();
   } catch (err: unknown) {
     return res.status(500).json({ err });
