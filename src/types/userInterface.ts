@@ -1,10 +1,11 @@
 import { Model } from "sequelize";
 
 interface IUser extends Model {
+  id: string;
   email: string;
-  senha: string;
-  nome: string;
-  idade: string;
+  password: string;
+  name: string;
+  bornAt: string;
   admin: boolean;
 }
 
