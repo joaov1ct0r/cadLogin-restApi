@@ -1,6 +1,6 @@
 import validateAdmin from "../controllers/adminController.js";
 
-import authController from "../middlewares/authController.js";
+import authController from "../middlewares/auth.js";
 
 import express from "express";
 
