@@ -18,6 +18,7 @@ import { Model } from "sequelize";
 import bcrypt from "bcryptjs";
 
 import jwt from "jsonwebtoken";
+
 import IUser from "../types/userInterface";
 
 const handleUserRegister = async (
@@ -97,6 +98,44 @@ const handleUserLogin = async (req: Request, res: Response) => {
     res.cookie("authorization", `Bearer ${token}`, { httpOnly: true });
 
     return res.status(200).json({ message: "Login realizado com sucesso!" });
+  } catch (err: unknown) {
+    return res.status(500).json({ err });
+  }
+};
+
+const handleUserEdit = async (req: IReq, res: Response) => {
+  const { error } = validateHandleUserEdit(req.body);
+
+  if (error) {
+    return res.status(400).json({ error });
+  }
+
+  const email: string = req.body.email;
+
+  const password: string = req.body.password;
+
+  const name: string = req.body.name;
+
+  const bornAt: string = req.body.bornAt;
+
+  const id: string | undefined = req.userId;
+
+  try {
+    const editedUser: [affectedCount: number] = await User.update(
+      {
+        email,
+        password: bcrypt.hashSync(password),
+        name,
+        bornAt,
+      },
+      { where: { id } }
+    );
+
+    if (editedUser[0] === 0) {
+      return res.status(500).json({ error: "Falha ao atualizar usuario!" });
+    }
+
+    return res.status(204).send();
   } catch (err: unknown) {
     return res.status(500).json({ err });
   }
