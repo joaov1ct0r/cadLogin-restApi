@@ -102,4 +102,4 @@ const handleUserLogin = async (req: Request, res: Response) => {
   }
 };
 
-export { handleUserRegister };
+export { handleUserRegister, handleUserLogin };
