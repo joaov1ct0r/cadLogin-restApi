@@ -3,8 +3,10 @@ import User from "../database/models/userModel";
 import Post from "../database/models/postModel";
 
 import {
-  registerValidate,
-  loginValidate,
+  validateHandleUserRegister,
+  validateHandleUserLogin,
+  validateHandleUserEdit,
+  validateHandleOneUser,
 } from "../validators/validateUserData.js";
 
 import bcrypt from "bcryptjs";
