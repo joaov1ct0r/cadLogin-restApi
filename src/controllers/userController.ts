@@ -13,6 +13,8 @@ import IReq from "../types/requestInterface";
 
 import { Response, NextFunction } from "express";
 
+import { Model } from "sequelize";
+
 import bcrypt from "bcryptjs";
 
 import jwt from "jsonwebtoken";
