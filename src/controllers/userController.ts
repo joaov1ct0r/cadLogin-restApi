@@ -82,4 +82,4 @@ const login = async (req, res) => {
   res.send("Login realizado com sucesso");
 };
 
-export { login, register };
+export { handleUserRegister };
