@@ -164,4 +164,9 @@ const handleUserDelete = async (req: IReq, res: Response) => {
   }
 };
 
-export { handleUserRegister, handleUserLogin, handleUserEdit };
+export {
+  handleUserRegister,
+  handleUserLogin,
+  handleUserEdit,
+  handleUserDelete,
+};
