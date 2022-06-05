@@ -141,4 +141,27 @@ const handleUserEdit = async (req: IReq, res: Response) => {
   }
 };
 
+const handleUserDelete = async (req: IReq, res: Response) => {
+  const id: string | undefined = req.userId;
+
+  try {
+    const deletedUser: number = await User.destroy({
+      where: { id },
+    });
+
+    if (deletedUser === 0) {
+      return res.status(500).json({ error: "Falha ao deletar usuario!" });
+    }
+
+    // eslint-disable-next-line no-unused-vars
+    const deletedPost: number = await Post.destroy({
+      where: { userId: id },
+    });
+
+    return res.status(204).send();
+  } catch (err: unknown) {
+    return res.status(500).json({ err });
+  }
+};
+
 export { handleUserRegister, handleUserLogin, handleUserEdit };
