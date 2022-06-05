@@ -13,8 +13,6 @@ import IReq from "../types/requestInterface";
 
 import { Request, Response } from "express";
 
-import { Model } from "sequelize";
-
 import bcrypt from "bcryptjs";
 
 import jwt from "jsonwebtoken";
@@ -183,6 +181,30 @@ const handleAllUsers = async (
     });
 
     return res.status(200).json({ users });
+  } catch (err: unknown) {
+    return res.status(500).json({ err });
+  }
+};
+
+const handleOneUser = async (req: Request, res: Response) => {
+  const { error } = validateHandleOneUser(req.body);
+
+  if (error) {
+    return res.status(400).json({ error });
+  }
+
+  const email: string = req.body.email;
+
+  try {
+    const user: IUser | null = await User.findOne({
+      where: { email },
+    });
+
+    if (user === null) {
+      return res.status(404).json({ error: "Usuario não encontrado!" });
+    }
+
+    return res.status(200).json({ user });
   } catch (err: unknown) {
     return res.status(500).json({ err });
   }
