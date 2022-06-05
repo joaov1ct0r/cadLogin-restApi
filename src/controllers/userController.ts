@@ -9,6 +9,8 @@ import {
   validateHandleOneUser,
 } from "../validators/validateUserData.js";
 
+import IReq from "../types/requestInterface";
+
 import bcrypt from "bcryptjs";
 
 import jwt from "jsonwebtoken";
