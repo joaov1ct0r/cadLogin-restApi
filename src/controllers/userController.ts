@@ -141,4 +141,4 @@ const handleUserEdit = async (req: IReq, res: Response) => {
   }
 };
 
-export { handleUserRegister, handleUserLogin };
+export { handleUserRegister, handleUserLogin, handleUserEdit };
