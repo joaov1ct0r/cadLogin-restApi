@@ -60,7 +60,10 @@ const handleUserRegister = async (
   }
 };
 
-const handleUserLogin = async (req: Request, res: Response) => {
+const handleUserLogin = async (
+  req: Request,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
   const { error } = validateHandleUserLogin(req.body);
 
   if (error) {
@@ -103,7 +106,10 @@ const handleUserLogin = async (req: Request, res: Response) => {
   }
 };
 
-const handleUserEdit = async (req: IReq, res: Response) => {
+const handleUserEdit = async (
+  req: IReq,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
   const { error } = validateHandleUserEdit(req.body);
 
   if (error) {
@@ -141,7 +147,10 @@ const handleUserEdit = async (req: IReq, res: Response) => {
   }
 };
 
-const handleUserDelete = async (req: IReq, res: Response) => {
+const handleUserDelete = async (
+  req: IReq,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
   const id: string | undefined = req.userId;
 
   try {
@@ -159,6 +168,21 @@ const handleUserDelete = async (req: IReq, res: Response) => {
     });
 
     return res.status(204).send();
+  } catch (err: unknown) {
+    return res.status(500).json({ err });
+  }
+};
+
+const handleAllUsers = async (
+  req: Request,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
+  try {
+    const users: IUser[] = await User.findAll({
+      include: Post,
+    });
+
+    return res.status(200).json({ users });
   } catch (err: unknown) {
     return res.status(500).json({ err });
   }
