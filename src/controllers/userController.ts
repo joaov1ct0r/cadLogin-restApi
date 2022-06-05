@@ -20,7 +20,10 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import IUser from "../types/userInterface";
 
-const handleUserRegister = async (req: Request, res: Response) => {
+const handleUserRegister = async (
+  req: Request,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
   const { error } = validateHandleUserRegister(req.body);
 
   if (error) {
@@ -56,30 +59,47 @@ const handleUserRegister = async (req: Request, res: Response) => {
   }
 };
 
-const login = async (req, res) => {
-  const { error } = loginValidate(req.body);
+const handleUserLogin = async (req: Request, res: Response) => {
+  const { error } = validateHandleUserLogin(req.body);
 
   if (error) {
-    return res.status(400).send("Falha na autenticação");
+    return res.status(400).json({ error });
   }
-  const selectedUser = await User.findOne({ email: req.body.email });
 
-  if (!selectedUser) return res.status(400).send("Falha na autenticação");
+  const email: string = req.body.email;
 
-  const passwordCompare = bcrypt.compareSync(
-    req.body.password,
-    selectedUser.password
-  );
+  const password: string = req.body.password;
 
-  if (!passwordCompare) return res.status(400).send("Falha na autenticação");
+  try {
+    const isUserRegistered: IUser | null = await User.findOne({
+      where: { email },
+    });
 
-  const token = jwt.sign(
-    { id: selectedUser.id, admin: selectedUser.admin },
-    process.env.NODE_ENV_TOKEN_SECRET
-  );
-  res.header("auth-token", token);
+    if (isUserRegistered === null) {
+      return res.status(404).json({ error: "Usuario não encontrado!" });
+    }
 
-  res.send("Login realizado com sucesso");
+    const matchingPasswords: boolean = bcrypt.compareSync(
+      password,
+      isUserRegistered.password
+    );
+
+    if (matchingPasswords === false) {
+      return res.status(401).json({ error: "Falha na autenticação!" });
+    }
+
+    const token: string = jwt.sign(
+      { id: isUserRegistered.id, admin: isUserRegistered.admin },
+      process.env.NODE_ENV_TOKEN_SECRET as string,
+      { expiresIn: 300 }
+    );
+
+    res.cookie("authorization", `Bearer ${token}`, { httpOnly: true });
+
+    return res.status(200).json({ message: "Login realizado com sucesso!" });
+  } catch (err: unknown) {
+    return res.status(500).json({ err });
+  }
 };
 
 export { handleUserRegister };
