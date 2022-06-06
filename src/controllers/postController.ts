@@ -14,3 +14,5 @@ import {
 } from "../validators/validatePostData";
 
 import IUser from "../types/userInterface";
+
+import { Model } from "sequelize";
