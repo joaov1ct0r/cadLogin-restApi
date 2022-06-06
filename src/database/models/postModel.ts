@@ -19,7 +19,6 @@ const Post: ModelStatic<Model> = DB.define("posts", {
   },
   likes: {
     type: DataTypes.ARRAY(DataTypes.STRING(250)),
-    allowNull: false,
   },
   comments: {
     type: DataTypes.ARRAY(DataTypes.STRING(250)),
