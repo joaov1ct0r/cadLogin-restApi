@@ -4,6 +4,8 @@ import { Response, NextFunction } from "express";
 
 import IUser from "../types/userInterface";
 
+import User from "../database/models/userModel";
+
 export default function (req: IReq, res: Response, next: NextFunction) {
   const id: string | undefined = req.userId;
   try {
