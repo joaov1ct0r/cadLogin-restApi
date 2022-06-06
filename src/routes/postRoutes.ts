@@ -19,3 +19,5 @@ userRouter.put("/edit", auth, handleEditPost);
 userRouter.delete("/delete", auth, handleDeletePost);
 
 userRouter.get("/post", auth, handleOnePost);
+
+userRouter.get("/posts", auth, handleAllPosts);
