@@ -17,3 +17,5 @@ userRouter.post("/register", auth, handleNewPost);
 userRouter.put("/edit", auth, handleEditPost);
 
 userRouter.delete("/delete", auth, handleDeletePost);
+
+userRouter.get("/post", auth, handleOnePost);
