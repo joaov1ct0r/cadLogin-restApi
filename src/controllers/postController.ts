@@ -99,4 +99,46 @@ const handleEditPost = async (req: IReq, res: Response) => {
   }
 };
 
-export { handleNewPost, handleEditPost };
+const handleDeletePost = async (req: IReq, res: Response) => {
+  const { error } = validateHandleDeletePost(req.body);
+
+  if (error) {
+    return res.status(400).json({ error });
+  }
+
+  const id: string | undefined = req.userId;
+
+  const postId: string = req.body.postId;
+
+  try {
+    const isPostRegistered: IPost | null = await Post.findOne({
+      where: {
+        id: postId,
+      },
+    });
+
+    if (isPostRegistered === null) {
+      return res.status(404).json({ error: "Post não encontrado!" });
+    }
+
+    const isUserAuthor: boolean = isPostRegistered.userId === id;
+
+    if (isUserAuthor === false) {
+      return res.status(401).json({ error: "Não autorizado!" });
+    }
+
+    const deletedPost: number = await Post.destroy({
+      where: { id: postId },
+    });
+
+    if (deletedPost === 0) {
+      return res.status(500).json({ error: "Falha ao deletar Post!" });
+    }
+
+    return res.status(204).send();
+  } catch (err: unknown) {
+    return res.status(500).json({ err });
+  }
+};
+
+export { handleNewPost, handleEditPost, handleDeletePost };
