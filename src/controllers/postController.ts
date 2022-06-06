@@ -80,7 +80,7 @@ const handleEditPost = async (req: IReq, res: Response) => {
       return res.status(401).json({ error: "Não autorizado!" });
     }
 
-    const editedPost = await Post.update(
+    const editedPost: [affectedCount: number] = await Post.update(
       {
         content,
       },
@@ -88,9 +88,15 @@ const handleEditPost = async (req: IReq, res: Response) => {
         where: { id: postId },
       }
     );
+
+    if (editedPost[0] === 0) {
+      return res.status(500).json({ error: "Falha ao atualizar Post!" });
+    }
+
+    return res.status(204).send();
   } catch (err: unknown) {
     return res.status(500).json({ err });
   }
 };
 
-export { handleNewPost };
+export { handleNewPost, handleEditPost };
