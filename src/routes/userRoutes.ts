@@ -23,4 +23,6 @@ userRouter.delete("/delete", auth, handleUserDelete);
 
 userRouter.get("/user", auth, handleOneUser);
 
+userRouter.get("/users", auth, handleAllUsers);
+
 export default userRouter;
