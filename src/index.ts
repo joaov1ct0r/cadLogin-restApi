@@ -1,6 +1,8 @@
 import "dotenv/config";
 
-import userRouter from "./routes/userRoutes.js";
+import userRouter from "./routes/userRoutes";
+
+import postRouter from "./routes/postRoutes";
 
 import adminRouter from "./routes/adminRouter.js";
 
