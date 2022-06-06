@@ -1,4 +1,11 @@
-import { login, register } from "../controllers/userController.js";
+import {
+  handleAllUsers,
+  handleOneUser,
+  handleUserDelete,
+  handleUserEdit,
+  handleUserLogin,
+  handleUserRegister,
+} from "../controllers/userController";
 
 import express from "express";
 
