@@ -15,6 +15,8 @@ import {
 
 import IUser from "../types/userInterface";
 
+import IPost from "../types/postInterface";
+
 import { Model } from "sequelize";
 
 const handleNewPost = async (
