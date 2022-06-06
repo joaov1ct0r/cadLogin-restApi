@@ -11,3 +11,5 @@ import {
 } from "../controllers/postController";
 
 const userRouter: express.Router = express.Router();
+
+userRouter.post("/register", auth, handleNewPost);
