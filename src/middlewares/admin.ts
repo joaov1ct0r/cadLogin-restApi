@@ -2,22 +2,13 @@ import IReq from "../types/requestInterface";
 
 import { Response, NextFunction } from "express";
 
-import IUser from "../types/userInterface";
-
-import User from "../database/models/userModel";
-
-export default async function (req: IReq, res: Response, next: NextFunction) {
-  const id: string | undefined = req.userId;
-
+export default async function (
+  req: IReq,
+  res: Response,
+  next: NextFunction
+): Promise<Response<any, Record<string, any>> | undefined> {
   try {
-    const isUserRegistered: IUser | null = await User.findOne({
-      where: { id },
-    });
-
-    if (isUserRegistered === null) {
-      return res.status(404).json({ error: "Usuario não encontrado!" });
-    }
-    const isUserAdmin: boolean = isUserRegistered.admin === true;
+    const isUserAdmin: boolean | undefined = req.admin;
 
     if (isUserAdmin === false) {
       return res.status(401).json({ error: "Não autorizado!" });
