@@ -52,7 +52,10 @@ const handleNewPost = async (
   }
 };
 
-const handleEditPost = async (req: IReq, res: Response) => {
+const handleEditPost = async (
+  req: IReq,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
   const { error } = validateHandleEditPost(req.body);
 
   if (error) {
@@ -99,7 +102,10 @@ const handleEditPost = async (req: IReq, res: Response) => {
   }
 };
 
-const handleDeletePost = async (req: IReq, res: Response) => {
+const handleDeletePost = async (
+  req: IReq,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
   const { error } = validateHandleDeletePost(req.body);
 
   if (error) {
@@ -141,7 +147,10 @@ const handleDeletePost = async (req: IReq, res: Response) => {
   }
 };
 
-const handleAllPosts = async (req: Request, res: Response) => {
+const handleAllPosts = async (
+  req: Request,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
   try {
     const posts: IPost[] = await Post.findAll({});
 
@@ -151,4 +160,37 @@ const handleAllPosts = async (req: Request, res: Response) => {
   }
 };
 
-export { handleNewPost, handleEditPost, handleDeletePost, handleAllPosts };
+const handleOnePost = async (
+  req: Request,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
+  const { error } = validateHandleOnePost(req.body);
+
+  if (error) {
+    return res.status(400).json({ error });
+  }
+
+  const postId: string = req.body.postId;
+
+  try {
+    const post: IPost | null = await Post.findOne({
+      where: { id: postId },
+    });
+
+    if (post === null) {
+      return res.status(404).json({ error: "Post não encontrado!" });
+    }
+
+    return res.status(200).json({ post });
+  } catch (err: unknown) {
+    return res.status(500).json({ err });
+  }
+};
+
+export {
+  handleNewPost,
+  handleEditPost,
+  handleDeletePost,
+  handleAllPosts,
+  handleOnePost,
+};
