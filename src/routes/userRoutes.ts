@@ -19,4 +19,6 @@ userRouter.post("/login", auth, handleUserLogin);
 
 userRouter.put("/edit", auth, handleUserEdit);
 
+userRouter.delete("/delete", auth, handleUserDelete);
+
 export default userRouter;
