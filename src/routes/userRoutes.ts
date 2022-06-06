@@ -13,12 +13,14 @@ import {
 
 const userRouter: express.Router = express.Router();
 
-userRouter.post("/register", auth, handleUserRegister);
+userRouter.post("/register", handleUserRegister);
 
-userRouter.post("/login", auth, handleUserLogin);
+userRouter.post("/login", handleUserLogin);
 
 userRouter.put("/edit", auth, handleUserEdit);
 
 userRouter.delete("/delete", auth, handleUserDelete);
+
+userRouter.get("/user", auth, handleOneUser);
 
 export default userRouter;
