@@ -15,3 +15,5 @@ const userRouter: express.Router = express.Router();
 userRouter.post("/register", auth, handleNewPost);
 
 userRouter.put("/edit", auth, handleEditPost);
+
+userRouter.delete("/delete", auth, handleDeletePost);
