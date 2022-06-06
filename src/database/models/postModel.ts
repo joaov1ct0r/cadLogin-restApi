@@ -1,5 +1,7 @@
 import DB from "../config/database";
 
+import User from "./userModel";
+
 import { ModelStatic, Model, DataTypes } from "sequelize";
 
 const Post: ModelStatic<Model> = DB.define("posts", {
