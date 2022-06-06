@@ -17,4 +17,6 @@ userRouter.post("/register", auth, handleUserRegister);
 
 userRouter.post("/login", auth, handleUserLogin);
 
+userRouter.put("/edit", auth, handleUserEdit);
+
 export default userRouter;
