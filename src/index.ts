@@ -18,7 +18,9 @@ app.use(cookieParser());
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/usuario", userRouter);
+app.use("/users", userRouter);
+
+app.use("/posts", postRouter);
 
 app.use("/admin", adminRouter);
 
