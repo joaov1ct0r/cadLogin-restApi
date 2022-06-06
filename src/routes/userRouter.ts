@@ -1,3 +1,7 @@
+import auth from "../middlewares/auth";
+
+import express from "express";
+
 import {
   handleAllUsers,
   handleOneUser,
@@ -7,12 +11,10 @@ import {
   handleUserRegister,
 } from "../controllers/userController";
 
-import express from "express";
-
 const userRouter: express.Router = express.Router();
 
-userRouter.post("/login", login);
-
 userRouter.post("/register", register);
+
+userRouter.post("/login", login);
 
 export default userRouter;
