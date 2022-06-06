@@ -141,4 +141,14 @@ const handleDeletePost = async (req: IReq, res: Response) => {
   }
 };
 
-export { handleNewPost, handleEditPost, handleDeletePost };
+const handleAllPosts = async (req: Request, res: Response) => {
+  try {
+    const posts: IPost[] = await Post.findAll({});
+
+    return res.status(200).json({ posts });
+  } catch (err: unknown) {
+    return res.status(500).json({ err });
+  }
+};
+
+export { handleNewPost, handleEditPost, handleDeletePost, handleAllPosts };
