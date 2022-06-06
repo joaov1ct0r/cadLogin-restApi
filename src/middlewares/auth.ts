@@ -28,6 +28,8 @@ export default function (
     }
     req.userId = verifiedToken.id;
 
+    req.admin = verifiedToken.admin;
+
     next();
   } catch (err: unknown) {
     return res.status(500).json({ err });
