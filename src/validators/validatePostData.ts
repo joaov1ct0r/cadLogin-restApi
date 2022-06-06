@@ -17,4 +17,16 @@ const validateHandleEditPost = (data: Object): Joi.ValidationResult => {
   return schema.validate(data);
 };
 
-export { validateHandleNewPost, validateHandleEditPost };
+const validateHandleDeletePost = (data: Object): Joi.ValidationResult => {
+  const schema: Joi.ObjectSchema<Object> = Joi.object({
+    postId: Joi.string().required().min(1),
+  });
+
+  return schema.validate(data);
+};
+
+export {
+  validateHandleNewPost,
+  validateHandleEditPost,
+  validateHandleDeletePost,
+};
