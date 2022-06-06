@@ -4,6 +4,8 @@ import User from "./userModel";
 
 import { ModelStatic, Model, DataTypes } from "sequelize";
 
+import IPost from "../../types/postInterface";
+
 const Post: ModelStatic<Model> = DB.define("posts", {
   id: {
     type: DataTypes.INTEGER,

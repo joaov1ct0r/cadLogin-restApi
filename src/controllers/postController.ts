@@ -68,7 +68,7 @@ const handleEditPost = async (req: IReq, res: Response) => {
   const id: string | undefined = req.userId;
 
   try {
-    const isPostRegistered: Model | null = await Post.findOne({
+    const isPostRegistered: Model<IPost> | null = await Post.findOne({
       where: { id: postId },
     });
 
