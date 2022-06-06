@@ -10,6 +10,7 @@ const validateHandleNewPost = (data: Object): Joi.ValidationResult => {
 
 const validateHandleEditPost = (data: Object): Joi.ValidationResult => {
   const schema: Joi.ObjectSchema<Object> = Joi.object({
+    postId: Joi.string().required().min(1),
     content: Joi.string().required().min(1).max(250),
   });
 
