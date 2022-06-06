@@ -17,8 +17,6 @@ import IUser from "../types/userInterface";
 
 import IPost from "../types/postInterface";
 
-import { Model } from "sequelize";
-
 const handleNewPost = async (
   req: IReq,
   res: Response
@@ -42,7 +40,7 @@ const handleNewPost = async (
       return res.status(404).json({ error: "Usuario não encontrado!" });
     }
 
-    const newPost: Model = await Post.create({
+    const newPost: IPost = await Post.create({
       author: user.email,
       content,
       userId: user.id,
@@ -68,7 +66,7 @@ const handleEditPost = async (req: IReq, res: Response) => {
   const id: string | undefined = req.userId;
 
   try {
-    const isPostRegistered: Model<IPost> | null = await Post.findOne({
+    const isPostRegistered: IPost | null = await Post.findOne({
       where: { id: postId },
     });
 
@@ -76,7 +74,20 @@ const handleEditPost = async (req: IReq, res: Response) => {
       return res.status(404).json({ error: "Post não encontrado!" });
     }
 
-    const isUserAuthor: boolean = isPostRegistered.userId ===  id ? true
+    const isUserAuthor: boolean = isPostRegistered.userId === id;
+
+    if (isUserAuthor === false) {
+      return res.status(401).json({ error: "Não autorizado!" });
+    }
+
+    const editedPost = await Post.update(
+      {
+        content,
+      },
+      {
+        where: { id: postId },
+      }
+    );
   } catch (err: unknown) {
     return res.status(500).json({ err });
   }
