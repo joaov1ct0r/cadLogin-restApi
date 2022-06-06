@@ -23,12 +23,6 @@ const Post: ModelStatic<IPost> = DB.define(
       type: DataTypes.STRING(250),
       allowNull: false,
     },
-    likes: {
-      type: DataTypes.ARRAY(DataTypes.STRING(250)),
-    },
-    comments: {
-      type: DataTypes.ARRAY(DataTypes.STRING(250)),
-    },
   },
   {
     freezeTableName: true,
