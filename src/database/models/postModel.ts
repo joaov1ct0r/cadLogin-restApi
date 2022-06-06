@@ -27,6 +27,15 @@ const Post: ModelStatic<Model> = DB.define("posts", {
   },
 });
 
+Post.belongsTo(User, {
+  constraints: true,
+  foreignKey: "userId",
+});
+
+User.hasMany(Post, {
+  foreignKey: "userId",
+});
+
 Post.sync();
 
 export default Post;
