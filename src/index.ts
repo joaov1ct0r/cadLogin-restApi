@@ -18,11 +18,11 @@ app.use(cookieParser());
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/users", userRouter);
+app.use("/api/users", userRouter);
 
-app.use("/posts", postRouter);
+app.use("/api/posts", postRouter);
 
-app.use("/admin", adminRouter);
+app.use("/api/admin", adminRouter);
 
 app.listen(process.env.NODE_ENV_SERVER_PORT, (): void => {
   console.log("Server running");
