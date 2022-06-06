@@ -1,6 +1,6 @@
-import auth from "../middlewares/auth";
-
 import express from "express";
+
+import auth from "../middlewares/auth";
 
 import {
   handleAllUsers,
@@ -13,7 +13,7 @@ import {
 
 const userRouter: express.Router = express.Router();
 
-userRouter.post("/register", register);
+userRouter.post("/register", auth, handleUserRegister);
 
 userRouter.post("/login", login);
 
