@@ -2,7 +2,9 @@ import express from "express";
 
 import auth from "../middlewares/auth";
 
-const adminRouter = express.Router();
+import admin from "../middlewares/admin";
+
+const adminRouter: express.Router = express.Router();
 
 adminRouter.get("/", authController, validateAdmin);
 
