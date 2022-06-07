@@ -5,3 +5,5 @@ import Post from "../database/models/postModel";
 import IReq from "../types/requestInterface";
 
 import { Response } from "express";
+
+import IUser from "../types/userInterface";
