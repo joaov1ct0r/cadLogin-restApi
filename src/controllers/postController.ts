@@ -188,6 +188,47 @@ const handleOnePost = async (
   }
 };
 
+const handleAddPostLike = async (req: IReq, res: Response) => {
+  const { error } = validateHandleAddPostLike(req.body);
+
+  if (error) {
+    return res.status(400).json({ error });
+  }
+
+  const id: string | undefined = req.userId;
+
+  const postId: string = req.body.postId;
+
+  try {
+    const isPostRegistered: IPost | null = await Post.findOne({
+      where: { id: postId },
+    });
+
+    if (isPostRegistered === null) {
+      return res.status(404).json({ error: "Post não encontrado!" });
+    }
+
+    const user: IUser | null = await User.findOne({
+      where: { id },
+    });
+
+    const updatedLikes: [affectedCount: number] = await Post.update(
+      {
+        likes: user!.email,
+      },
+      { where: { id } }
+    );
+
+    if (updatedLikes[0] === 0) {
+      return res.status(500).json({ error: "Falha ao criar comentarios!" });
+    }
+
+    return res.status(201).send();
+  } catch (err: unknown) {
+    return res.status(500).json({ err });
+  }
+};
+
 export {
   handleNewPost,
   handleEditPost,

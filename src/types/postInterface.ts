@@ -5,6 +5,8 @@ interface IPost extends Model {
   author: string;
   content: string;
   userId: string;
+  likes: string[];
+  comments: string[];
 }
 
 export default IPost;
