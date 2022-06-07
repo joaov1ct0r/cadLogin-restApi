@@ -12,6 +12,6 @@ import {
 
 const adminRouter: express.Router = express.Router();
 
-adminRouter.get("/", authController, validateAdmin);
+adminRouter.put("/user/edit", auth, admin, handleAdminEditUser);
 
 export default adminRouter;
