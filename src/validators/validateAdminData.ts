@@ -2,10 +2,11 @@ import Joi from "@hapi/joi";
 
 const validateHandleAdminEditUser = (data: Object): Joi.ValidationResult => {
   const schema: Joi.ObjectSchema<Object> = Joi.object({
-    email: Joi.string().required().min(10).max(100),
-    name: Joi.string().required().min(10).max(100),
-    bornAt: Joi.date().required(),
-    password: Joi.string().required().min(8).max(100),
+    userEmail: Joi.string().required().min(10).max(100),
+    userNewEmail: Joi.string().required().min(10).max(100),
+    userNewName: Joi.string().required().min(10).max(100),
+    userNewBornAt: Joi.date().required(),
+    userNewPassword: Joi.string().required().min(8).max(100),
   });
 
   return schema.validate(data);
