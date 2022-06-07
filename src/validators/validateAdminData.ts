@@ -14,7 +14,7 @@ const validateHandleAdminEditUser = (data: Object): Joi.ValidationResult => {
 
 const validateHandleAdminDeleteUser = (data: Object): Joi.ValidationResult => {
   const schema: Joi.ObjectSchema<Object> = Joi.object({
-    email: Joi.string().required().min(10).max(100),
+    userEmail: Joi.string().required().min(10).max(100),
   });
 
   return schema.validate(data);
