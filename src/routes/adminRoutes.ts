@@ -16,4 +16,6 @@ adminRouter.put("/user/edit", auth, admin, handleAdminEditUser);
 
 adminRouter.delete("/user/delete", auth, admin, handleAdminDeleteUser);
 
+adminRouter.delete("/post/delete", auth, admin, handleAdminDeletePost);
+
 export default adminRouter;
