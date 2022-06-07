@@ -11,6 +11,7 @@ import {
   validateHandleEditPost,
   validateHandleNewPost,
   validateHandleOnePost,
+  validateHandleAddPostLike,
 } from "../validators/validatePostData";
 
 import IUser from "../types/userInterface";
