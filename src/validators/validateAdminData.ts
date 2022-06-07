@@ -10,3 +10,5 @@ const validateHandleAdminEditUser = (data: Object): Joi.ValidationResult => {
 
   return schema.validate(data);
 };
+
+export { validateHandleAdminEditUser };
