@@ -9,3 +9,5 @@ import { Response } from "express";
 import IUser from "../types/userInterface";
 
 import IPost from "../types/postInterface";
+
+import bcrypt from "bcryptjs";
