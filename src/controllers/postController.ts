@@ -12,6 +12,7 @@ import {
   validateHandleNewPost,
   validateHandleOnePost,
   validateHandleAddPostLike,
+  validateHandleAddPostComment,
 } from "../validators/validatePostData";
 
 import IUser from "../types/userInterface";
@@ -226,7 +227,53 @@ const handleAddPostLike = async (
       return res.status(500).json({ error: "Falha ao criar comentarios!" });
     }
 
-    return res.status(201).send();
+    return res.status(201).json({ message: "Post marcado como 'Gostei' " });
+  } catch (err: unknown) {
+    return res.status(500).json({ err });
+  }
+};
+
+const handleAddPostComment = async (
+  req: IReq,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
+  const { error } = validateHandleAddPostComment(req.body);
+
+  if (error) {
+    return res.status(400).json({ error });
+  }
+
+  const postId: string = req.body.postId;
+
+  const comment: string = req.body.comment;
+
+  const id: string | undefined = req.userId;
+
+  try {
+    const isPostRegistered: IPost | null = await Post.findOne({
+      where: { id: postId },
+    });
+
+    if (isPostRegistered === null) {
+      return res.status(404).json({ error: "Post não encontrado!" });
+    }
+
+    const user: IUser | null = await User.findOne({
+      where: { id },
+    });
+
+    const updatedComment: [affectedCount: number] = await Post.update(
+      {
+        comments: { author: user!.email, comment },
+      },
+      { where: { id: postId } }
+    );
+
+    if (updatedComment[0] === 0) {
+      return res.status(500).json({ error: "Falha ao adicionar comentario!" });
+    }
+
+    return res.status(201).json({ message: "Comentario adicionado!" });
   } catch (err: unknown) {
     return res.status(500).json({ err });
   }
