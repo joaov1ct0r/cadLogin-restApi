@@ -188,7 +188,10 @@ const handleOnePost = async (
   }
 };
 
-const handleAddPostLike = async (req: IReq, res: Response) => {
+const handleAddPostLike = async (
+  req: IReq,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
   const { error } = validateHandleAddPostLike(req.body);
 
   if (error) {
@@ -235,4 +238,5 @@ export {
   handleDeletePost,
   handleAllPosts,
   handleOnePost,
+  handleAddPostLike,
 };
