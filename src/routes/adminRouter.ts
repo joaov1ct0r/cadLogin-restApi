@@ -1,8 +1,5 @@
-import validateAdmin from "../controllers/adminController.js";
-
-import authController from "../middlewares/auth.js";
-
 import express from "express";
+import authController from "../middlewares/auth.js";
 
 const adminRouter = express.Router();
 
