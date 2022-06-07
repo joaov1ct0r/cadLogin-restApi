@@ -286,4 +286,5 @@ export {
   handleAllPosts,
   handleOnePost,
   handleAddPostLike,
+  handleAddPostComment,
 };
