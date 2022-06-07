@@ -19,4 +19,4 @@ const validateHandleAdminDeleteUser = (data: Object): Joi.ValidationResult => {
   return schema.validate(data);
 };
 
-export { validateHandleAdminEditUser };
+export { validateHandleAdminEditUser, validateHandleAdminDeleteUser };
