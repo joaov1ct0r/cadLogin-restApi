@@ -11,3 +11,9 @@ import IUser from "../types/userInterface";
 import IPost from "../types/postInterface";
 
 import bcrypt from "bcryptjs";
+
+import {
+  validateHandleAdminDeletePost,
+  validateHandleAdminDeleteUser,
+  validateHandleAdminEditUser,
+} from "../validators/validateAdminData";
