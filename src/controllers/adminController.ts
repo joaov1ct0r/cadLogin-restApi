@@ -109,7 +109,10 @@ const handleAdminDeleteUser = async (
   }
 };
 
-const handleAdminDeletePost = async (req: Request, res: Response) => {
+const handleAdminDeletePost = async (
+  req: Request,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
   const { error } = validateHandleAdminDeletePost(req.body);
 
   if (error) {
@@ -143,4 +146,4 @@ const handleAdminDeletePost = async (req: Request, res: Response) => {
   }
 };
 
-export { handleAdminEditUser, handleAdminDeleteUser };
+export { handleAdminEditUser, handleAdminDeleteUser, handleAdminDeletePost };
