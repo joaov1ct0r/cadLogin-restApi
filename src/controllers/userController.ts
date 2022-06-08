@@ -7,7 +7,7 @@ import {
   validateHandleUserLogin,
   validateHandleUserEdit,
   validateHandleOneUser,
-} from "../validators/validateUserData.js";
+} from "../validators/validateUserData";
 
 import IReq from "../types/requestInterface";
 
