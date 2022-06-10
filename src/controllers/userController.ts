@@ -41,7 +41,7 @@ const handleUserRegister = async (
       where: { email },
     });
 
-    if (isUserRegistered === null) {
+    if (isUserRegistered !== null) {
       return res.status(400).json({ error: "Usuario já cadastrado!" });
     }
 
