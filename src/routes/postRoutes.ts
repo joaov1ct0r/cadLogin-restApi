@@ -12,16 +12,18 @@ import {
   handleAddPostLike,
 } from "../controllers/postController";
 
-const userRouter: express.Router = express.Router();
+const postRouter: express.Router = express.Router();
 
-userRouter.post("/register", auth, handleNewPost);
+postRouter.post("/register", auth, handleNewPost);
 
-userRouter.put("/edit", auth, handleEditPost);
+postRouter.post("/like", auth, handleAddPostLike);
 
-userRouter.delete("/delete", auth, handleDeletePost);
+postRouter.put("/edit", auth, handleEditPost);
 
-userRouter.get("/post", auth, handleOnePost);
+postRouter.delete("/delete", auth, handleDeletePost);
 
-userRouter.get("/posts", auth, handleAllPosts);
+postRouter.get("/post", auth, handleOnePost);
 
-export default userRouter;
+postRouter.get("/posts", auth, handleAllPosts);
+
+export default postRouter;
