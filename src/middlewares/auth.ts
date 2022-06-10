@@ -11,7 +11,7 @@ export default function (
   res: Response,
   next: NextFunction
 ): Response<any, Record<string, any>> | undefined {
-  const token = req.cookies.authentication.split(" ")[1];
+  const token: string = req.cookies.authorization.split(" ")[1];
 
   if (token.length === 0) {
     return res.status(400).json({ error: "Token não encontrado!" });
