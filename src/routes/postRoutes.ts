@@ -8,6 +8,8 @@ import {
   handleEditPost,
   handleNewPost,
   handleOnePost,
+  handleAddPostComment,
+  handleAddPostLike,
 } from "../controllers/postController";
 
 const userRouter: express.Router = express.Router();
