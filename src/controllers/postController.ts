@@ -218,16 +218,16 @@ const handleAddPostLike = async (
 
     const updatedLikes: [affectedCount: number] = await Post.update(
       {
-        likes: user!.email,
+        likes: [...isPostRegistered.likes, user!.email],
       },
-      { where: { id } }
+      { where: { id: postId } }
     );
 
     if (updatedLikes[0] === 0) {
-      return res.status(500).json({ error: "Falha ao criar comentarios!" });
+      return res.status(500).json({ error: "Falha ao adicionar likes!" });
     }
 
-    return res.status(201).json({ message: "Post marcado como 'Gostei' " });
+    return res.status(201).json({ isPostRegistered });
   } catch (err: unknown) {
     return res.status(500).json({ err });
   }
