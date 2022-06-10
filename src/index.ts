@@ -28,6 +28,6 @@ app.use("/api/posts", postRouter);
 
 app.use("/api/admin", adminRouter);
 
-app.listen(process.env.NODE_ENV_SERVER_PORT, (): void => {
+app.listen(process.env.SERVER_PORT, (): void => {
   console.log("Server running");
 });
