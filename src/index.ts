@@ -1,14 +1,14 @@
 import "dotenv/config";
 
+import express from "express";
+
+import cookieParser from "cookie-parser";
+
 import userRouter from "./routes/userRoutes";
 
 import postRouter from "./routes/postRoutes";
 
 import adminRouter from "./routes/adminRoutes";
-
-import express from "express";
-
-import cookieParser from "cookie-parser";
 
 const app: express.Express = express();
 
