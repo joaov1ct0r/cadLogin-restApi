@@ -4,7 +4,7 @@ const validateHandleUserRegister = (data: Object): Joi.ValidationResult => {
   const schema: Joi.ObjectSchema<Object> = Joi.object({
     email: Joi.string().required().min(10).max(100),
     name: Joi.string().required().min(10).max(100),
-    bornAt: Joi.string().required().max(10),
+    bornAt: Joi.string().required().min(10).max(10),
     password: Joi.string().required().min(8).max(100),
   });
 
@@ -24,7 +24,7 @@ const validateHandleUserEdit = (data: Object): Joi.ValidationResult => {
   const schema: Joi.ObjectSchema<Object> = Joi.object({
     email: Joi.string().required().min(10).max(100),
     name: Joi.string().required().min(10).max(100),
-    bornAt: Joi.string().required().max(10),
+    bornAt: Joi.string().required().min(10).max(10),
     password: Joi.string().required().min(8).max(100),
   });
 
