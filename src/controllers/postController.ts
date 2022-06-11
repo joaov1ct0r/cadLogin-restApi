@@ -224,23 +224,14 @@ const handleAddPostLike = async (
       where: { id },
     });
 
-    const [instance, created] = await Post.upsert({
-      primaryKey: postId,
-      likes: [...isPostRegistered.likes, user!.email],
+    const addedLike: ILikes = await Likes.create({
+      postId,
+      likedBy: user!.email,
     });
 
-    // const updatedLikes: [affectedCount: number] = await Post.update(
-    //   {
-    //     likes: [...isPostRegistered.likes, user!.email],
-    //   },
-    //   { where: { id: postId } }
-    // );
-
-    // if (updatedLikes[0] === 0) {
-    //   return res.status(500).json({ error: "Falha ao adicionar likes!" });
-    // }
-
-    return res.status(201).json({ instance });
+    return res
+      .status(201)
+      .json({ message: "Like adicionado a post!", addedLike });
   } catch (err: unknown) {
     return res.status(500).json({ err });
   }
