@@ -8,6 +8,8 @@ import ILikes from "../types/likesInterface";
 
 import Comments from "../database/models/commentsModel";
 
+import IComments from "../types/commentsInterface";
+
 import { Request, Response } from "express";
 
 import IReq from "../types/requestInterface";
