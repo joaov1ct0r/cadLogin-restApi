@@ -162,7 +162,9 @@ const handleAllPosts = async (
   res: Response
 ): Promise<Response<any, Record<string, any>>> => {
   try {
-    const posts: IPost[] = await Post.findAll({});
+    const posts: IPost[] = await Post.findAll({
+      include: [Likes, Comments],
+    });
 
     return res.status(200).json({ posts });
   } catch (err: unknown) {
