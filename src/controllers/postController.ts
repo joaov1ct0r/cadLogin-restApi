@@ -163,7 +163,14 @@ const handleAllPosts = async (
 ): Promise<Response<any, Record<string, any>>> => {
   try {
     const posts: IPost[] = await Post.findAll({
-      include: [Likes, Comments],
+      include: [
+        {
+          model: Likes,
+        },
+        {
+          model: Comments,
+        },
+      ],
     });
 
     return res.status(200).json({ posts });
@@ -186,6 +193,16 @@ const handleOnePost = async (
 
   try {
     const post: IPost | null = await Post.findOne({
+      include: [
+        {
+          model: Likes,
+          where: { postId },
+        },
+        {
+          model: Comments,
+          where: { postId },
+        },
+      ],
       where: { id: postId },
     });
 
