@@ -4,6 +4,8 @@ import Post from "../database/models/postModel";
 
 import Likes from "../database/models/likesModel";
 
+import Comments from "../database/models/commentsModel";
+
 import { Request, Response } from "express";
 
 import IReq from "../types/requestInterface";
