@@ -256,14 +256,6 @@ const handleAddPostLike = async (
   }
 };
 
-const handleDeletePostLike = async (req: IReq, res: Response) => {
-  const { error } = validateHandleDeletePostLike(req.body);
-
-  if (error) {
-    return res.status(400).json({ error });
-  }
-};
-
 const handleAddPostComment = async (
   req: IReq,
   res: Response

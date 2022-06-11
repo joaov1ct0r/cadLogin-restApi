@@ -14,6 +14,10 @@ const Likes: ModelStatic<ILikes> = DB.define(
       allowNull: false,
       unique: true,
     },
+    userId: {
+      type: DataTypes.INTEGER,
+      unique: true,
+    },
     id: {
       type: DataTypes.INTEGER,
       unique: true,
