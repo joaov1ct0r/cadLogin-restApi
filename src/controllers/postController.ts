@@ -266,18 +266,13 @@ const handleAddPostComment = async (
       where: { id },
     });
 
-    const updatedComment: [affectedCount: number] = await Post.update(
-      {
-        comments: { author: user!.email, comment },
-      },
-      { where: { id: postId } }
-    );
+    const createdComment: IComments = await Comments.create({
+      author: user!.email,
+      comment,
+      postId,
+    });
 
-    if (updatedComment[0] === 0) {
-      return res.status(500).json({ error: "Falha ao adicionar comentario!" });
-    }
-
-    return res.status(201).json({ message: "Comentario adicionado!" });
+    return res.status(201).json({ createdComment });
   } catch (err: unknown) {
     return res.status(500).json({ err });
   }
