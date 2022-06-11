@@ -14,6 +14,12 @@ const Likes: ModelStatic<ILikes> = DB.define(
       allowNull: false,
       unique: true,
     },
+    id: {
+      type: DataTypes.INTEGER,
+      unique: true,
+      primaryKey: true,
+      autoIncrement: true,
+    },
   },
   {
     freezeTableName: true,
