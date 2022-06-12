@@ -27,7 +27,7 @@ const User: ModelStatic<IUser> = DB.define(
       allowNull: false,
     },
     bornAt: {
-      type: DataTypes.STRING(8),
+      type: DataTypes.STRING(10),
       allowNull: false,
     },
     admin: {
