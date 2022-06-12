@@ -19,7 +19,7 @@ const User: ModelStatic<IUser> = DB.define(
       allowNull: false,
     },
     password: {
-      type: DataTypes.STRING(250),
+      type: DataTypes.STRING(500),
       allowNull: false,
     },
     name: {
