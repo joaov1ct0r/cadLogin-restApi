@@ -13,6 +13,10 @@ const Comments: ModelStatic<IComments> = DB.define(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
+    userId: {
+      type: DataTypes.INTEGER,
+      unique: true,
+    },
     id: {
       type: DataTypes.INTEGER,
       unique: true,
