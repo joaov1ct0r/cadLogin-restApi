@@ -246,6 +246,7 @@ const handleAddPostLike = async (
     const addedLike: ILikes = await Likes.create({
       postId,
       likedBy: user!.email,
+      userId: user!.id,
     });
 
     return res
