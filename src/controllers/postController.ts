@@ -288,6 +288,7 @@ const handleAddPostComment = async (
 
     const createdComment: IComments = await Comments.create({
       author: user!.email,
+      userId: user!.id,
       comment,
       postId,
     });
