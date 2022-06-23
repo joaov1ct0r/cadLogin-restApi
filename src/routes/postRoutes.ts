@@ -25,6 +25,8 @@ postRouter.delete("/like/delete", auth, handleDeletePostLike);
 
 postRouter.post("/comment", auth, handleAddPostComment);
 
+postRouter.put("/comment/edit", auth, handleEditPostComment);
+
 postRouter.put("/edit", auth, handleEditPost);
 
 postRouter.delete("/delete", auth, handleDeletePost);
