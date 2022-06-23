@@ -23,6 +23,7 @@ import {
   validateHandleAddPostComment,
   validateHandleDeletePostLike,
   validateHandleEditPostComment,
+  validateHandleDeletePostComment,
 } from "../validators/validatePostData";
 
 import IUser from "../types/userInterface";
@@ -400,6 +401,48 @@ const handleEditPostComment = async (req: IReq, res: Response) => {
   }
 };
 
+const handleDeletePostComment = async (req: IReq, res: Response) => {
+  const { error } = validateHandleDeletePostComment(req.body);
+
+  if (error) {
+    return res.status(500).json({ error });
+  }
+
+  const postId: string = req.body.postId;
+
+  const userId: string | undefined = req.userId;
+
+  try {
+    const isPostRegistered: IPost | null = await Post.findOne({
+      where: { id: postId },
+    });
+
+    if (isPostRegistered === null) {
+      return res.status(404).json({ error: "Post não encontrado!" });
+    }
+
+    const isCommentRegistered: IComments | null = await Comments.findOne({
+      where: { postId, userId },
+    });
+
+    if (isCommentRegistered === null) {
+      return res.status(404).json({ error: "Comentario não encontrado!" });
+    }
+
+    const deletedComment: number = await Comments.destroy({
+      where: { postId, userId },
+    });
+
+    if (deletedComment === 0) {
+      return res.status(500).json({ error: "Falha ao deletar comentario!" });
+    }
+
+    return res.status(204).send();
+  } catch (err: unknown) {
+    return res.status(500).json({ err });
+  }
+};
+
 export {
   handleNewPost,
   handleEditPost,
@@ -410,4 +453,5 @@ export {
   handleAddPostComment,
   handleDeletePostLike,
   handleEditPostComment,
+  handleDeletePostComment,
 };
