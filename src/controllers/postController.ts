@@ -30,6 +30,8 @@ import IUser from "../types/userInterface";
 
 import IPost from "../types/postInterface";
 
+import { Op } from "sequelize";
+
 const handleNewPost = async (
   req: IReq,
   res: Response
@@ -83,7 +85,14 @@ const handleEditPost = async (
 
   try {
     const isPostRegistered: IPost | null = await Post.findOne({
-      where: { id: postId, userId: id },
+      where: {
+        [Op.and]: [
+          {
+            id: postId,
+            userId: id,
+          },
+        ],
+      },
     });
 
     if (isPostRegistered === null) {
@@ -95,7 +104,14 @@ const handleEditPost = async (
         content,
       },
       {
-        where: { id: postId, userId: id },
+        where: {
+          [Op.and]: [
+            {
+              id: postId,
+              userId: id,
+            },
+          ],
+        },
       }
     );
 
@@ -126,8 +142,12 @@ const handleDeletePost = async (
   try {
     const isPostRegistered: IPost | null = await Post.findOne({
       where: {
-        id: postId,
-        userId: id,
+        [Op.and]: [
+          {
+            id: postId,
+            userId: id,
+          },
+        ],
       },
     });
 
@@ -137,7 +157,14 @@ const handleDeletePost = async (
 
     // eslint-disable-next-line no-unused-vars
     const deletedPost: number = await Post.destroy({
-      where: { id: postId, userId: id },
+      where: {
+        [Op.and]: [
+          {
+            id: postId,
+            userId: id,
+          },
+        ],
+      },
     });
 
     if (deletedPost === 0) {
@@ -247,7 +274,14 @@ const handleAddPostLike = async (
     });
 
     const isLikeRegistered: ILikes | null = await Likes.findOne({
-      where: { postId, userId: id },
+      where: {
+        [Op.and]: [
+          {
+            postId,
+            userId: id,
+          },
+        ],
+      },
     });
 
     if (isLikeRegistered !== null) {
@@ -289,7 +323,14 @@ const handleDeletePostLike = async (req: IReq, res: Response) => {
     }
 
     const isLikeRegistered: ILikes | null = await Likes.findOne({
-      where: { postId, userId },
+      where: {
+        [Op.and]: [
+          {
+            postId,
+            userId,
+          },
+        ],
+      },
     });
 
     if (isLikeRegistered === null) {
@@ -297,7 +338,14 @@ const handleDeletePostLike = async (req: IReq, res: Response) => {
     }
 
     const deletedLike: number = await Likes.destroy({
-      where: { postId, userId },
+      where: {
+        [Op.and]: [
+          {
+            postId,
+            userId,
+          },
+        ],
+      },
     });
 
     if (deletedLike === 0) {
@@ -375,7 +423,14 @@ const handleEditPostComment = async (req: IReq, res: Response) => {
     }
 
     const isCommentRegistered: IComments | null = await Comments.findOne({
-      where: { postId, userId },
+      where: {
+        [Op.and]: [
+          {
+            postId,
+            userId,
+          },
+        ],
+      },
     });
 
     if (isCommentRegistered === null) {
@@ -387,7 +442,14 @@ const handleEditPostComment = async (req: IReq, res: Response) => {
         content,
       },
       {
-        where: { postId, userId },
+        where: {
+          [Op.and]: [
+            {
+              postId,
+              userId,
+            },
+          ],
+        },
       }
     );
 
@@ -422,7 +484,14 @@ const handleDeletePostComment = async (req: IReq, res: Response) => {
     }
 
     const isCommentRegistered: IComments | null = await Comments.findOne({
-      where: { postId, userId },
+      where: {
+        [Op.and]: [
+          {
+            postId,
+            userId,
+          },
+        ],
+      },
     });
 
     if (isCommentRegistered === null) {
@@ -430,7 +499,14 @@ const handleDeletePostComment = async (req: IReq, res: Response) => {
     }
 
     const deletedComment: number = await Comments.destroy({
-      where: { postId, userId },
+      where: {
+        [Op.and]: [
+          {
+            postId,
+            userId,
+          },
+        ],
+      },
     });
 
     if (deletedComment === 0) {
