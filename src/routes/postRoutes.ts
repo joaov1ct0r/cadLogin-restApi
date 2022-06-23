@@ -10,6 +10,9 @@ import {
   handleOnePost,
   handleAddPostComment,
   handleAddPostLike,
+  handleDeletePostComment,
+  handleDeletePostLike,
+  handleEditPostComment,
 } from "../controllers/postController";
 
 const postRouter: express.Router = express.Router();
