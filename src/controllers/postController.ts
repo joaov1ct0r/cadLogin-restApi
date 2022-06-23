@@ -81,17 +81,11 @@ const handleEditPost = async (
 
   try {
     const isPostRegistered: IPost | null = await Post.findOne({
-      where: { id: postId },
+      where: { id: postId, userId: id },
     });
 
     if (isPostRegistered === null) {
       return res.status(404).json({ error: "Post não encontrado!" });
-    }
-
-    const isUserAuthor: boolean = isPostRegistered.userId === id;
-
-    if (isUserAuthor === false) {
-      return res.status(401).json({ error: "Não autorizado!" });
     }
 
     const editedPost: [affectedCount: number] = await Post.update(
@@ -99,7 +93,7 @@ const handleEditPost = async (
         content,
       },
       {
-        where: { id: postId },
+        where: { id: postId, userId: id },
       }
     );
 
@@ -131,6 +125,7 @@ const handleDeletePost = async (
     const isPostRegistered: IPost | null = await Post.findOne({
       where: {
         id: postId,
+        userId: id,
       },
     });
 
@@ -138,15 +133,9 @@ const handleDeletePost = async (
       return res.status(404).json({ error: "Post não encontrado!" });
     }
 
-    const isUserAuthor: boolean = isPostRegistered.userId === id;
-
-    if (isUserAuthor === false) {
-      return res.status(401).json({ error: "Não autorizado!" });
-    }
-
     // eslint-disable-next-line no-unused-vars
     const deletedPost: number = await Post.destroy({
-      where: { id: postId },
+      where: { id: postId, userId: id },
     });
 
     if (deletedPost === 0) {
@@ -254,6 +243,14 @@ const handleAddPostLike = async (
     const user: IUser | null = await User.findOne({
       where: { id },
     });
+
+    const isLikeRegistered: ILikes | null = await Likes.findOne({
+      where: { postId, userId: id },
+    });
+
+    if (isLikeRegistered !== null) {
+      return res.status(401).json({ error: "Like já registrado!" });
+    }
 
     const addedLike: ILikes = await Likes.create({
       postId,
