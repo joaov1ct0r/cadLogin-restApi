@@ -22,6 +22,7 @@ import {
   validateHandleAddPostLike,
   validateHandleAddPostComment,
   validateHandleDeletePostLike,
+  validateHandleEditPostComment,
 } from "../validators/validatePostData";
 
 import IUser from "../types/userInterface";
@@ -350,6 +351,55 @@ const handleAddPostComment = async (
   }
 };
 
+const handleEditPostComment = async (req: IReq, res: Response) => {
+  const { error } = validateHandleEditPostComment(req.body);
+
+  if (error) {
+    return res.status(500).json({ error });
+  }
+
+  const postId: string = req.body.postId;
+
+  const content: string = req.body.content;
+
+  const userId: string | undefined = req.userId;
+
+  try {
+    const isPostRegistered: IPost | null = await Post.findOne({
+      where: { id: postId },
+    });
+
+    if (isPostRegistered === null) {
+      return res.status(404).json({ error: "Post não encontrado!" });
+    }
+
+    const isCommentRegistered: IComments | null = await Comments.findOne({
+      where: { postId, userId },
+    });
+
+    if (isCommentRegistered === null) {
+      return res.status(404).json({ error: "Comentario não encontrado!" });
+    }
+
+    const updatedComment: [affectedCount: number] = await Comments.update(
+      {
+        content,
+      },
+      {
+        where: { postId, userId },
+      }
+    );
+
+    if (updatedComment[0] === 0) {
+      return res.status(500).json({ error: "Falha ao atualizar comentario!" });
+    }
+
+    return res.status(204).send();
+  } catch (err: unknown) {
+    return res.status(500).json({ err });
+  }
+};
+
 export {
   handleNewPost,
   handleEditPost,
@@ -359,4 +409,5 @@ export {
   handleAddPostLike,
   handleAddPostComment,
   handleDeletePostLike,
+  handleEditPostComment,
 };
