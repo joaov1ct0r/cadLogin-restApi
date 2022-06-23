@@ -21,6 +21,7 @@ import {
   validateHandleOnePost,
   validateHandleAddPostLike,
   validateHandleAddPostComment,
+  validateHandleDeletePostLike,
 } from "../validators/validatePostData";
 
 import IUser from "../types/userInterface";
@@ -268,6 +269,48 @@ const handleAddPostLike = async (
   }
 };
 
+const handleDeletePostLike = async (req: IReq, res: Response) => {
+  const { error } = validateHandleDeletePostLike(req.body);
+
+  if (error) {
+    return res.status(400).json({ error });
+  }
+
+  const userId: string | undefined = req.userId;
+
+  const postId: string = req.body.postId;
+
+  try {
+    const isPostRegistered: IPost | null = await Post.findOne({
+      where: { postId },
+    });
+
+    if (isPostRegistered === null) {
+      return res.status(404).json({ error: "Post não encontrado!" });
+    }
+
+    const isLikeRegistered: ILikes | null = await Likes.findOne({
+      where: { postId, userId },
+    });
+
+    if (isLikeRegistered === null) {
+      return res.status(404).json({ error: "Like não encontrado!" });
+    }
+
+    const deletedLike: number = await Likes.destroy({
+      where: { postId, userId },
+    });
+
+    if (deletedLike === 0) {
+      return res.status(500).json({ error: "Falha ao deletar Like!" });
+    }
+
+    return res.status(204).send();
+  } catch (err: unknown) {
+    return res.status(500).json({ err });
+  }
+};
+
 const handleAddPostComment = async (
   req: IReq,
   res: Response
@@ -318,4 +361,5 @@ export {
   handleOnePost,
   handleAddPostLike,
   handleAddPostComment,
+  handleDeletePostLike,
 };
