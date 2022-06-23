@@ -143,6 +143,7 @@ const handleDeletePost = async (
       return res.status(401).json({ error: "Não autorizado!" });
     }
 
+    // eslint-disable-next-line no-unused-vars
     const deletedPost: number = await Post.destroy({
       where: { id: postId },
     });
@@ -150,6 +151,16 @@ const handleDeletePost = async (
     if (deletedPost === 0) {
       return res.status(500).json({ error: "Falha ao deletar Post!" });
     }
+
+    // eslint-disable-next-line no-unused-vars
+    const deletedLikes: number = await Likes.destroy({
+      where: { postId },
+    });
+
+    // eslint-disable-next-line no-unused-vars
+    const deletedComments: number = await Comments.destroy({
+      where: { postId },
+    });
 
     return res.status(204).send();
   } catch (err: unknown) {
