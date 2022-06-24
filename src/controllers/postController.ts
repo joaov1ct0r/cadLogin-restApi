@@ -437,9 +437,18 @@ const handleEditPostComment = async (req: IReq, res: Response) => {
       return res.status(404).json({ error: "Comentario não encontrado!" });
     }
 
+    const user: IUser | null = await User.findOne({
+      where: {
+        id: userId,
+      },
+    });
+
     const updatedComment: [affectedCount: number] = await Comments.update(
       {
-        content,
+        comment: content,
+        author: user!.email,
+        userId,
+        postId: isPostRegistered.id,
       },
       {
         where: {
