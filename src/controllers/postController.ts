@@ -315,7 +315,7 @@ const handleDeletePostLike = async (req: IReq, res: Response) => {
 
   try {
     const isPostRegistered: IPost | null = await Post.findOne({
-      where: { postId },
+      where: { id: postId },
     });
 
     if (isPostRegistered === null) {
