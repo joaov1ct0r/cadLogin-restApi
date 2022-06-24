@@ -409,6 +409,8 @@ const handleEditPostComment = async (req: IReq, res: Response) => {
 
   const postId: string = req.body.postId;
 
+  const commentId: string = req.body.commentId;
+
   const comment: string = req.body.content;
 
   const userId: string | undefined = req.userId;
@@ -428,6 +430,7 @@ const handleEditPostComment = async (req: IReq, res: Response) => {
           {
             postId,
             userId,
+            commentId,
           },
         ],
       },
@@ -456,6 +459,7 @@ const handleEditPostComment = async (req: IReq, res: Response) => {
             {
               postId,
               userId,
+              commentId,
             },
           ],
         },
