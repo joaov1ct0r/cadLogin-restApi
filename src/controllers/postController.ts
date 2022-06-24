@@ -411,7 +411,7 @@ const handleEditPostComment = async (req: IReq, res: Response) => {
 
   const commentId: string = req.body.commentId;
 
-  const comment: string = req.body.content;
+  const comment: string = req.body.comment;
 
   const userId: string | undefined = req.userId;
 
