@@ -61,6 +61,7 @@ const validateHandleAddPostComment = (data: Object): Joi.ValidationResult => {
 const validateHandleEditPostComment = (data: Object): Joi.ValidationResult => {
   const schema: Joi.ObjectSchema<Object> = Joi.object({
     postId: Joi.string().required().min(1),
+    commentId: Joi.string().required().min(1),
     comment: Joi.string().required().min(1).max(250),
   });
 
@@ -72,6 +73,7 @@ const validateHandleDeletePostComment = (
 ): Joi.ValidationResult => {
   const schema: Joi.ObjectSchema<Object> = Joi.object({
     postId: Joi.string().required().min(1),
+    commentId: Joi.string().required().min(1),
   });
 
   return schema.validate(data);
