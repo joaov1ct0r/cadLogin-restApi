@@ -485,6 +485,8 @@ const handleDeletePostComment = async (req: IReq, res: Response) => {
 
   const postId: string = req.body.postId;
 
+  const commentId: string = req.body.commentId;
+
   const userId: string | undefined = req.userId;
 
   try {
@@ -502,6 +504,7 @@ const handleDeletePostComment = async (req: IReq, res: Response) => {
           {
             postId,
             userId,
+            commentId,
           },
         ],
       },
@@ -517,6 +520,7 @@ const handleDeletePostComment = async (req: IReq, res: Response) => {
           {
             postId,
             userId,
+            commentId,
           },
         ],
       },
