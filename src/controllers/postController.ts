@@ -409,7 +409,7 @@ const handleEditPostComment = async (req: IReq, res: Response) => {
 
   const postId: string = req.body.postId;
 
-  const content: string = req.body.content;
+  const comment: string = req.body.content;
 
   const userId: string | undefined = req.userId;
 
@@ -445,7 +445,7 @@ const handleEditPostComment = async (req: IReq, res: Response) => {
 
     const updatedComment: [affectedCount: number] = await Comments.update(
       {
-        comment: content,
+        comment,
         author: user!.email,
         userId,
         postId: isPostRegistered.id,
