@@ -430,7 +430,7 @@ const handleEditPostComment = async (req: IReq, res: Response) => {
           {
             postId,
             userId,
-            commentId,
+            id: commentId,
           },
         ],
       },
@@ -459,7 +459,7 @@ const handleEditPostComment = async (req: IReq, res: Response) => {
             {
               postId,
               userId,
-              commentId,
+              id: commentId,
             },
           ],
         },
@@ -504,7 +504,7 @@ const handleDeletePostComment = async (req: IReq, res: Response) => {
           {
             postId,
             userId,
-            commentId,
+            id: commentId,
           },
         ],
       },
@@ -520,7 +520,7 @@ const handleDeletePostComment = async (req: IReq, res: Response) => {
           {
             postId,
             userId,
-            commentId,
+            id: commentId,
           },
         ],
       },
