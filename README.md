@@ -1,4 +1,4 @@
-# jwt-restApi
+# social-media-jwt-rest-api
 
 <h1>EM DESENVOLVIMENTO</h1>
 
@@ -6,25 +6,26 @@
 
 <ul>
   <li>NodeJS</li>
-  <p><code>sudo apt install nodejs</code></p>
   <br>
   <li>NPM</li>
-  <p><code>sudo apt install npm</code></p>
   <br>
   <li>Express</li>
-  <p><code>npm install express</code></p>
   <br>
-  <li>Mongoose</li>
-  <p><code>npm install mongoose</code></p>
+  <li>PostgreSQL</li>
   <br>
   <li>bcrypt</li>
-  <p><code>npm install bcryptjs</code></p>
   <br>
   <li>dotenv</li>
-  <p><code>npm install dotenv</code></p>
   <br>
   <li>JWT</li>
-  <p><code>npm install jsonwebtoken</code></p>
+  <br>
+  <li>@hapi/joi</li>
+  <br>
+  <li>cookie-parser</li>
+  <br>
+  <li>cors</li>
+  <br>
+  <li>Sequelize</li>
   <br>
 </ul>
 
@@ -50,21 +51,24 @@
 <p>ABRA O ARQUIVO .env E ALTERE AS VARIAVEIS DE AMBIENTE COM SEUS DADOS</p>
 
 <ul>
-  <li>NODE_ENV_SERVER_PORT = PORTA QUE VOCÊ QUEIRA RODAR O SERVIDOR</li>
-  <li>NODE_ENV_DB_HOST = ROTA PARA SEU BANCO DE DADOS MONGODB</li>
-  <li>NODE_ENV_TOKEN_SECRET = SEU JWT TOKEN SECRET</li>
+  <li>SERVER_PORT = PORTA QUE VOCÊ QUEIRA RODAR O SERVIDOR</li>
+  <li>DB_HOST = ROTA PARA SEU BANCO DE DADOS MONGODB</li>
+  <li>DB_USER = SEU USUARIO DO DB</li>
+  <li>DB_PASSWORD = SENHA DA SUA DB</li>
+  <li>DB_DATABASE = SUA DB</li>
+  <li>DB_PORT = PORTA DA DB</li>
+  <li>JWT_TOKEN_SECRET = SEU JWT TOKEN SECRET</li>
 </ul>
 
-<h3>Mongoose</h3>
+<h3>Sequelize</h3>
 <hr>
 
-<p>FAÇA A CONEXÃO COM SEU MONGODB INSERINDO O LINK EM <code>NODE_ENV_TOKEN_SECRET</code> NO ARQUIVO .ENV</p>
+<p>FAÇA A CONEXÃO COM SEU PostgreSQL SERVER INSERINDO DADOS NO ARQUIVO .ENV</p>
 
 <h3>SERVER</h3>
 <hr>
 
 <p>APOS TER OS ARQUIVOS EM SUA MAQUINA INICIE O SERVIDOR WEB NO SEU TERMINAL COM O COMANDO:<br><code>npm start</code></p>
 
-<p>APOS ISSO AS ROTAS:<br><code>localhost:3000/usuario/login</code>
-<br><code>localhost:3000/usuario/register</code>
-<br><code>localhost:3000/admin/</code> ESTARÃO DISPONIVEIS PARA FAZER AS REQUISIÇÕES</p>
+<p>APOS ISSO VA PARA A ROTA:<br><code>http://localhost:3000/api/routes</code>
+PARA VER AS ROTAS DISPONIVEIS PARA FAZER AS REQUISIÇÕES</p>
