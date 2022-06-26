@@ -17,9 +17,6 @@
   <li>Mongoose</li>
   <p><code>npm install mongoose</code></p>
   <br>
-  <li>body-parser</li>
-  <p><code>npm install body-parser</code></p>
-  <br>
   <li>bcrypt</li>
   <p><code>npm install bcryptjs</code></p>
   <br>
