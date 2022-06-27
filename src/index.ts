@@ -16,6 +16,8 @@ import swaggerUi from "swagger-ui-express";
 
 const app: express.Express = express();
 
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup());
+
 app.use(cors());
 
 app.use(express.json());
