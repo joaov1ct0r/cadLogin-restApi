@@ -12,6 +12,8 @@ import postRouter from "./routes/postRoutes";
 
 import adminRouter from "./routes/adminRoutes";
 
+import swaggerUi from "swagger-ui-express";
+
 const app: express.Express = express();
 
 app.use(cors());
