@@ -14,9 +14,11 @@ import adminRouter from "./routes/adminRoutes";
 
 import swaggerUi from "swagger-ui-express";
 
+import swaggerDocs from "./swagger.json";
+
 const app: express.Express = express();
 
-app.use("/api/docs", swaggerUi.serve, swaggerUi.setup());
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(cors());
 
