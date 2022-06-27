@@ -1,1 +1,11 @@
-{}
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Social Media JWT Rest Api",
+    "description": "API rest de media social para cadastro e login de usuarios, e criação de posts",
+    "contact": {
+      "linkedin": "https://www.linkedin.com/in/joaov1ct0r/"
+    },
+    "version": "1.0.0"
+  }
+}

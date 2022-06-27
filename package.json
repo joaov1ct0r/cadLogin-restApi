@@ -2,7 +2,7 @@
   "name": "jwt-restapi",
   "author": "github.com/joaov1ct0r",
   "version": "1.0.0",
-  "description": "API rest para cadastro e login de usuarios",
+  "description": "API rest de media social para cadastro e login de usuarios, e criação de posts",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
