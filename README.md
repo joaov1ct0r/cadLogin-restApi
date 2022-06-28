@@ -70,5 +70,5 @@
 
 <p>APOS TER OS ARQUIVOS EM SUA MAQUINA INICIE O SERVIDOR WEB NO SEU TERMINAL COM O COMANDO:<br><code>npm start</code></p>
 
-<p>APOS ISSO VA PARA A ROTA:<br><code>http://localhost:3000/api/routes</code>
+<p>APOS ISSO VA PARA A ROTA:<br><code>http://localhost:3000/api/docs</code>
 PARA VER AS ROTAS DISPONIVEIS PARA FAZER AS REQUISIÇÕES</p>
