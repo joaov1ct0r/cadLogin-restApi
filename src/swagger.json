@@ -33,6 +33,20 @@
             }
           }
         }
+      },
+      "responses": {
+        "500": {
+          "description": "Internal Server Error"
+        },
+        "400": {
+          "description": "Bad Request"
+        },
+        "401": {
+          "description": "Unathorized"
+        },
+        "201": {
+          "description": "Created"
+        }
       }
     }
   },
