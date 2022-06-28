@@ -45,7 +45,15 @@
           "description": "Unathorized"
         },
         "201": {
-          "description": "Created"
+          "description": "Created",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#components/schemas/User"
+              }
+            }
+          }
         }
       }
     }
