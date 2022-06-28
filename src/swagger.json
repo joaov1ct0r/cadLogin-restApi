@@ -7,5 +7,54 @@
       "linkedin": "https://www.linkedin.com/in/joaov1ct0r/"
     },
     "version": "1.0.0"
+  },
+  "paths": {
+    "/api/users/register": {
+      "post": {
+        "summary": "Cadastro de usuarios",
+        "description": "Rota para cadastro de novos usuarios",
+        "tags": ["User"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/User"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "email": "user@mail.com",
+                    "name": "user sobrenome",
+                    "bornAt": "28/06/2022",
+                    "password": "senha1234"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "bornAt": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      }
+    }
   }
 }
