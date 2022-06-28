@@ -14,6 +14,7 @@
         "summary": "Cadastro de usuarios",
         "description": "Rota para cadastro de novos usuarios",
         "tags": ["User"],
+        "security": [{ "bearerAuth": []}] ,
         "requestBody": {
           "content": {
             "application/json": {
