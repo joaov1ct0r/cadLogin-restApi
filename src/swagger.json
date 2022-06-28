@@ -96,6 +96,47 @@
           "description": "Ok"
         }
       }
+    },
+    "/api/users/edit": {
+      "put": {
+        "summary": "Edição de usuarios",
+        "description": "Rota para editar dados de usuarios cadastrados",
+        "tags": ["User"],
+        "security": [{ "bearerAuth": []}] ,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/User"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "email": "user@mail.com",
+                    "name": "user sobrenome",
+                    "bornAt": "28/06/2022",
+                    "password": "senha1234"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "500": {
+          "description": "Internal Server Error"
+        },
+        "401": {
+          "description": "Unathorized"
+        },
+        "400": {
+          "description": "Bad Request"
+        },
+        "204": {
+          "description": "No Content"
+        }
+      }
     }
   },
   "components": {
