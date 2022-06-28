@@ -42,9 +42,6 @@
         "400": {
           "description": "Bad Request"
         },
-        "401": {
-          "description": "Unathorized"
-        },
         "201": {
           "description": "Created",
           "content": {
@@ -55,6 +52,48 @@
               }
             }
           }
+        }
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "summary": "Login de usuarios",
+        "description": "Rota para Login de usuarios",
+        "tags": ["User"],
+        "security": [{ "bearerAuth": []}] ,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/User"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "email": "user@mail.com",
+                    "password": "senha1234"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "500": {
+          "description": "Internal Server Error"
+        },
+        "404": {
+          "description": "Not Found"
+        },
+        "401": {
+          "description": "Unathorized"
+        },
+        "400": {
+          "description": "Bad Request"
+        },
+        "200": {
+          "description": "Ok"
         }
       }
     }
