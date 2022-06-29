@@ -176,8 +176,8 @@
     },
     "/api/users/user": {
       "get": {
-        "summary": "Visualização de todos usuarios",
-        "description": "Rota para visualizar todos os usuarios cadastrados",
+        "summary": "Visualização de usuario",
+        "description": "Rota para visualizar usuario cadastrado",
         "tags": ["User"],
         "security": [{ "bearerAuth": []}] ,
         "requestBody": {
@@ -188,7 +188,9 @@
               },
               "examples": {
                 "user": {
-                  "value": {}
+                  "value": {
+                    "email": "user@mail.com"
+                  }
                 }
               }
             }
@@ -198,6 +200,9 @@
       "responses": {
         "500": {
           "description": "Internal Server Error"
+        },
+        "404": {
+          "description": "Not Found"
         },
         "401": {
           "description": "Unathorized"
