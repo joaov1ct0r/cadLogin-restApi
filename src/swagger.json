@@ -214,6 +214,42 @@
           "description": "Ok"
         }
       }
+    },
+    "/api/users/users": {
+      "get": {
+        "summary": "Visualização de usuarios",
+        "description": "Rota para visualizar todos os usuario cadastrado",
+        "tags": ["User"],
+        "security": [{ "bearerAuth": []}] ,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/User"
+              },
+              "examples": {
+                "user": {
+                  "value": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "500": {
+          "description": "Internal Server Error"
+        },
+        "401": {
+          "description": "Unathorized"
+        },
+        "400": {
+          "description": "Bad Request"
+        },
+        "200": {
+          "description": "Ok"
+        }
+      }
     }
   },
   "components": {
