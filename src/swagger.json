@@ -499,6 +499,49 @@
         }
       }
     },
+    "/api/posts/comment/edit": {
+      "put": {
+        "summary": "Edição de comentarios em Posts",
+        "description": "Rota para editar comentarios em posts",
+        "tags": ["Post"],
+        "security": [{ "bearerAuth": []}] ,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/Post"
+              },
+              "examples": {
+                "post": {
+                  "value": {
+                    "postId": "1",
+                    "commentId": "2",
+                    "comment": "novo comentario"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "500": {
+          "description": "Internal Server Error"
+        },
+        "404": {
+          "description": "Not Found"
+        },
+        "401": {
+          "description": "Unathorized"
+        },
+        "400": {
+          "description": "Bad Request"
+        },
+        "204": {
+          "description": "No Content"
+        }
+      }
+    },
     "/api/posts/posts": {
       "get": {
         "summary": "Visualização de Posts",
