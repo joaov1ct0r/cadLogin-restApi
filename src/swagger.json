@@ -415,6 +415,48 @@
           "description": "Created"
         }
       }
+    },
+    "/api/posts/comment": {
+      "post": {
+        "summary": "Comentar Posts",
+        "description": "Rota para comentar posts",
+        "tags": ["Post"],
+        "security": [{ "bearerAuth": []}] ,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/Post"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "postId": "1",
+                    "comment": "Comentario"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "500": {
+          "description": "Internal Server Error"
+        },
+        "404": {
+          "description": "Not Found"
+        },
+        "401": {
+          "description": "Unathorized"
+        },
+        "400": {
+          "description": "Bad Request"
+        },
+        "201": {
+          "description": "Created"
+        }
+      }
     }
   },
   "components": {
