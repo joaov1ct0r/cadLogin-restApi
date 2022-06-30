@@ -270,6 +270,32 @@
             "type": "string"
           }
         }
+      },
+      "Post": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "postId": {
+            "type": "string"
+          },
+          "comment": {
+            "type":  "string"
+          },
+          "commentId": {
+            "type": "string"
+          }
+        }
       }
     },
     "securitySchemes": {
