@@ -264,7 +264,7 @@
                 "$ref": "#components/schemas/Post"
               },
               "examples": {
-                "user": {
+                "post": {
                   "value": {
                     "content": "Comentario"
                   }
@@ -305,7 +305,7 @@
                 "$ref": "#components/schemas/Post"
               },
               "examples": {
-                "user": {
+                "post": {
                   "value": {
                     "postId": "1",
                     "content": "Comentario"
@@ -347,7 +347,7 @@
                 "$ref": "#components/schemas/Post"
               },
               "examples": {
-                "user": {
+                "post": {
                   "value": {
                     "postId": "1"
                   }
@@ -388,7 +388,7 @@
                 "$ref": "#components/schemas/Post"
               },
               "examples": {
-                "user": {
+                "post": {
                   "value": {
                     "postId": "1"
                   }
@@ -429,7 +429,7 @@
                 "$ref": "#components/schemas/Post"
               },
               "examples": {
-                "user": {
+                "post": {
                   "value": {
                     "postId": "1",
                     "comment": "Comentario"
@@ -446,6 +446,42 @@
         },
         "404": {
           "description": "Not Found"
+        },
+        "401": {
+          "description": "Unathorized"
+        },
+        "400": {
+          "description": "Bad Request"
+        },
+        "201": {
+          "description": "Created"
+        }
+      }
+    },
+    "/api/posts/posts": {
+      "get": {
+        "summary": "Visualização de Posts",
+        "description": "Rota para visualizar todos os posts",
+        "tags": ["Post"],
+        "security": [{ "bearerAuth": []}] ,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/Post"
+              },
+              "examples": {
+                "post": {
+                  "value": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "500": {
+          "description": "Internal Server Error"
         },
         "401": {
           "description": "Unathorized"
