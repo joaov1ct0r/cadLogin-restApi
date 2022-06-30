@@ -416,6 +416,47 @@
         }
       }
     },
+    "/api/posts/like/delete": {
+      "delete": {
+        "summary": "Excluir Like",
+        "description": "Rota para excluir likes de posts",
+        "tags": ["Post"],
+        "security": [{ "bearerAuth": []}] ,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/Post"
+              },
+              "examples": {
+                "post": {
+                  "value": {
+                    "postId": "1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "500": {
+          "description": "Internal Server Error"
+        },
+        "404": {
+          "description": "Not Found"
+        },
+        "401": {
+          "description": "Unathorized"
+        },
+        "400": {
+          "description": "Bad Request"
+        },
+        "204": {
+          "description": "Not Found"
+        }
+      }
+    },
     "/api/posts/comment": {
       "post": {
         "summary": "Comentar Posts",
