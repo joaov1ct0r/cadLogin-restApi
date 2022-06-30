@@ -480,7 +480,7 @@ const handleDeletePostComment = async (req: IReq, res: Response) => {
   const { error } = validateHandleDeletePostComment(req.body);
 
   if (error) {
-    return res.status(500).json({ error });
+    return res.status(400).json({ error });
   }
 
   const postId: string = req.body.postId;
