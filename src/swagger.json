@@ -489,8 +489,49 @@
         "400": {
           "description": "Bad Request"
         },
-        "201": {
-          "description": "Created"
+        "200": {
+          "description": "Ok"
+        }
+      }
+    },
+    "/api/posts/post": {
+      "get": {
+        "summary": "Visualização de Post",
+        "description": "Rota para visualizar post",
+        "tags": ["Post"],
+        "security": [{ "bearerAuth": []}] ,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/Post"
+              },
+              "examples": {
+                "post": {
+                  "value": {
+                    "postId": "1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "500": {
+          "description": "Internal Server Error"
+        },
+        "404": {
+          "description": "Not Found"
+        },
+        "401": {
+          "description": "Unathorized"
+        },
+        "400": {
+          "description": "Bad Request"
+        },
+        "200": {
+          "description": "Ok"
         }
       }
     }
