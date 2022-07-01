@@ -660,6 +660,30 @@
           "description": "Ok"
         }
       }
+    },
+    "/api/admin/user/edit": {
+      "put": {
+        "summary": "Visualização de Post",
+        "description": "Rota para visualizar post",
+        "tags": ["Post"],
+        "security": [{ "bearerAuth": []}] ,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/Post"
+              },
+              "examples": {
+                "post": {
+                  "value": {
+                    "postId": "1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -703,6 +727,29 @@
             "type":  "string"
           },
           "commentId": {
+            "type": "string"
+          }
+        }
+      },
+      "Admin": {
+        "type": "object",
+        "properties": {
+          "userEmail": {
+            "type": "string"
+          },
+          "userNewEmail": {
+            "type": "string"
+          },
+          "userNewName": {
+            "type": "string"
+          },
+          "userNewBornAt": {
+            "type": "string"
+          },
+          "UserNewPassword": {
+            "type": "string"
+          },
+          "postId": {
             "type": "string"
           }
         }
