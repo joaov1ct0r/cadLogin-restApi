@@ -746,6 +746,47 @@
           "description": "No Content"
         }
       }
+    },
+    "/api/admin/post/delete": {
+      "delete": {
+        "summary": "Excluir Post",
+        "description": "Rota para admin excluir posts de usuarios",
+        "tags": ["Admin"],
+        "security": [{ "bearerAuth": []}] ,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/Admin"
+              },
+              "examples": {
+                "post": {
+                  "value": {
+                    "postId": "1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "500": {
+          "description": "Internal Server Error"
+        },
+        "404": {
+          "description": "Not Found"
+        },
+        "401": {
+          "description": "Unathorized"
+        },
+        "400": {
+          "description": "Bad Request"
+        },
+        "204": {
+          "description": "No Content"
+        }
+      }
     }
   },
   "components": {
