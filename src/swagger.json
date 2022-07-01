@@ -663,25 +663,46 @@
     },
     "/api/admin/user/edit": {
       "put": {
-        "summary": "Visualização de Post",
-        "description": "Rota para visualizar post",
-        "tags": ["Post"],
+        "summary": "Edição de dados do usuario",
+        "description": "Rota para admin editar dados do usuario",
+        "tags": ["Admin"],
         "security": [{ "bearerAuth": []}] ,
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#components/schemas/Post"
+                "$ref": "#components/schemas/Admin"
               },
               "examples": {
                 "post": {
                   "value": {
-                    "postId": "1"
+                    "userEmail": "user@mail.com",
+                    "userNewEmail": "user51@mail.com.br",
+                    "userNewName": "User da Silva Atualizado",
+                    "userNewBornAt": "02/01/1990",
+                    "userNewPassword": "password123456"
                   }
                 }
               }
             }
           }
+        }
+      },
+      "responses": {
+        "500": {
+          "description": "Internal Server Error"
+        },
+        "404": {
+          "description": "Not Found"
+        },
+        "401": {
+          "description": "Unathorized"
+        },
+        "400": {
+          "description": "Bad Request"
+        },
+        "204": {
+          "description": "No Content"
         }
       }
     }
