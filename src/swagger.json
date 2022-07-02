@@ -741,6 +741,14 @@
         "summary": "Excluir usuarios",
         "description": "Rota para admin excluir usuarios",
         "tags": ["Admin"],
+        "parameters": [
+          {
+            "userEmail": "user@mail.com",
+            "description": "Email do usuario a ser excluido",
+            "in": "body",
+            "required": true
+          }
+        ],
         "security": [{ "bearerAuth": []}] ,
         "requestBody": {
           "content": {
@@ -782,6 +790,14 @@
         "summary": "Excluir Post",
         "description": "Rota para admin excluir posts de usuarios",
         "tags": ["Admin"],
+        "parameters": [
+          {
+            "postId": "1",
+            "in": "body",
+            "description": "Id do Post a ser excluido",
+            "required": true
+          }
+        ],
         "security": [{ "bearerAuth": []}] ,
         "requestBody": {
           "content": {
