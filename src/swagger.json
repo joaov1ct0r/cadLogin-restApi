@@ -666,6 +666,38 @@
         "summary": "Edição de dados do usuario",
         "description": "Rota para admin editar dados do usuario",
         "tags": ["Admin"],
+        "parameters": [
+          {
+            "userEmail": "user@mail.com",
+            "in": "body",
+            "description": "Email do usuario a ser alterado",
+            "required": true
+          },
+          {
+            "userNewEmail": "user51@mail.com.br",
+            "in": "body",
+            "description": "Novo email do usuario",
+            "required": true
+          },
+          {
+            "userNewName": "User da Silva Atualizado",
+            "in": "body",
+            "description": "Novo nome do usuario",
+            "required": true
+          },
+          {
+            "userNewBornAt": "02/01/1990",
+            "in": "body",
+            "description": "Novo data de nascimento do usuario",
+            "required": true
+          },
+          {
+            "userNewPassword": "password123456",
+            "in": "body",
+            "description": "Nova senha do usuario",
+            "required": true
+          }
+        ],
         "security": [{ "bearerAuth": []}] ,
         "requestBody": {
           "content": {
