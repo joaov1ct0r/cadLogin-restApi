@@ -14,7 +14,6 @@
         "summary": "Cadastro de usuarios",
         "description": "Rota para cadastro de novos usuarios",
         "tags": ["User"],
-        "security": [{ "bearerAuth": []}] ,
         "requestBody": {
           "content": {
             "application/json": {
@@ -60,7 +59,6 @@
         "summary": "Login de usuarios",
         "description": "Rota para Login de usuarios",
         "tags": ["User"],
-        "security": [{ "bearerAuth": []}] ,
         "requestBody": {
           "content": {
             "application/json": {
