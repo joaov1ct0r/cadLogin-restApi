@@ -328,6 +328,14 @@
         "summary": "Criação de novos Posts",
         "description": "Rota para criar novos posts",
         "tags": ["Post"],
+        "parameters": [
+          {
+            "content": "Conteudo",
+            "description": "Conteudo do Post a ser criado",
+            "in": "body",
+            "required": true
+          }
+        ],
         "security": [{ "bearerAuth": []}] ,
         "requestBody": {
           "content": {
