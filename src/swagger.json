@@ -580,6 +580,20 @@
         "summary": "Comentar Posts",
         "description": "Rota para comentar posts",
         "tags": ["Post"],
+        "parameters": [
+          {
+            "postId": "1",
+            "description": "ID do post a ser adicionado o comentario",
+            "in": "body",
+            "required": true
+          },
+          {
+            "comment": "Comentario",
+            "description": "Comentario a ser criado no post",
+            "in": "body",
+            "required": true
+          }
+        ],
         "security": [{ "bearerAuth": []}] ,
         "requestBody": {
           "content": {
