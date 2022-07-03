@@ -85,6 +85,20 @@
         "summary": "Login de usuarios",
         "description": "Rota para Login de usuarios",
         "tags": ["User"],
+        "parameters": [
+          {
+            "email": "user@mail.com",
+            "description": "Email do usuario a ser realizar login",
+            "in": "body",
+            "required": true
+          },
+          {
+            "password": "senha1234",
+            "description": "Senha do usuario a relizar login",
+            "in": "body",
+            "required": true
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
