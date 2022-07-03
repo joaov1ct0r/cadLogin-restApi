@@ -699,6 +699,20 @@
         "summary": "Remoção de comentarios em Posts",
         "description": "Rota para remover comentarios em posts",
         "tags": ["Post"],
+        "parameters": [
+          {
+            "postId": "1",
+            "description": "ID do post do comentario a ser excluido",
+            "in": "body",
+            "required": true
+          },
+          {
+            "commentId": "2",
+            "description": "ID do comentario a ser excluido",
+            "in": "body",
+            "required": true
+          }
+        ],
         "security": [{ "bearerAuth": []}] ,
         "requestBody": {
           "content": {
