@@ -531,6 +531,14 @@
         "summary": "Excluir Like",
         "description": "Rota para excluir likes de posts",
         "tags": ["Post"],
+        "parameters": [
+          {
+            "postId": "1",
+            "description": "ID do post em que o like sera excluido",
+            "in": "body",
+            "required": true
+          }
+        ],
         "security": [{ "bearerAuth": []}] ,
         "requestBody": {
           "content": {
