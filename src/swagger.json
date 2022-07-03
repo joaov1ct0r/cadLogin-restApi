@@ -377,6 +377,20 @@
         "summary": "Edição de Posts",
         "description": "Rota para editar posts",
         "tags": ["Post"],
+        "parameters": [
+          {
+            "content": "Conteudo",
+            "description": "Novo conteudo do post a ser alterado",
+            "in": "body",
+            "required": true
+          },
+          {
+            "postId": "1",
+            "description": "ID do Post a ser alterado",
+            "in": "body",
+            "required": true
+          }
+        ],
         "security": [{ "bearerAuth": []}] ,
         "requestBody": {
           "content": {
