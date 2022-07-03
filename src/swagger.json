@@ -433,6 +433,14 @@
         "summary": "Deletar Posts",
         "description": "Rota para deletar posts",
         "tags": ["Post"],
+        "parameters": [
+          {
+            "postId": "1",
+            "description": "ID do post a ser excluido",
+            "in": "body",
+            "required": true
+          }
+        ],
         "security": [{ "bearerAuth": []}] ,
         "requestBody": {
           "content": {
