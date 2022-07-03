@@ -14,6 +14,32 @@
         "summary": "Cadastro de usuarios",
         "description": "Rota para cadastro de novos usuarios",
         "tags": ["User"],
+        "parameters": [
+          {
+            "email": "user@mail.com",
+            "description": "Email do usuario a cadastrado",
+            "in": "body",
+            "required": true
+          },
+          {
+            "name": "User da Silva",
+            "description": "Nome do usuario a ser cadastrado",
+            "in": "body",
+            "required": true
+          },
+          {
+            "bornAt": "28/06/2022",
+            "description": "Data de nascimento do usuario a ser cadastrado",
+            "in": "body",
+            "required": true
+          },
+          {
+            "password": "senha1234",
+            "description": "Senha do usuario a ser cadastrado",
+            "in": "body",
+            "required": true
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
