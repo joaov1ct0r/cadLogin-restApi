@@ -735,6 +735,14 @@
         "summary": "Visualização de Post",
         "description": "Rota para visualizar post",
         "tags": ["Post"],
+        "parameters": [
+          {
+            "postId": "1",
+            "description": "ID do post a ser buscado",
+            "in": "body",
+            "required": true
+          }
+        ],
         "security": [{ "bearerAuth": []}] ,
         "requestBody": {
           "content": {
