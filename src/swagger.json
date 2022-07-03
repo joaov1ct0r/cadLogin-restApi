@@ -243,6 +243,14 @@
         "summary": "Visualização de usuario",
         "description": "Rota para visualizar usuario cadastrado",
         "tags": ["User"],
+        "parameters": [
+          {
+            "email": "user@mail.com",
+            "description": "Email do usuario a ser buscado",
+            "in": "body",
+            "required": true
+          }
+        ],
         "security": [{ "bearerAuth": []}] ,
         "requestBody": {
           "content": {
