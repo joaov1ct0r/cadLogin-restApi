@@ -482,6 +482,14 @@
         "summary": "Likar Posts",
         "description": "Rota para Likar posts",
         "tags": ["Post"],
+        "parameters": [
+          {
+            "postId": "1",
+            "description": "ID do post a adicionar like",
+            "in": "body",
+            "required": true
+          }
+        ],
         "security": [{ "bearerAuth": []}] ,
         "requestBody": {
           "content": {
