@@ -636,6 +636,26 @@
         "summary": "Edição de comentarios em Posts",
         "description": "Rota para editar comentarios em posts",
         "tags": ["Post"],
+        "parameters": [
+          {
+            "postId": "1",
+            "description": "ID do post em que o comentario sera alterado",
+            "in": "body",
+            "required": true
+          },
+          {
+            "commentId": "2",
+            "description": "ID do comentario a ser alterado",
+            "in": "body",
+            "required": true
+          },
+          {
+            "comment": "Comentario",
+            "description": "Novo comentario do comentario a ser alterado",
+            "in": "body",
+            "required": true
+          }
+        ],
         "security": [{ "bearerAuth": []}] ,
         "requestBody": {
           "content": {
