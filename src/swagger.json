@@ -140,6 +140,32 @@
         "summary": "Edição de usuarios",
         "description": "Rota para editar dados de usuarios cadastrados",
         "tags": ["User"],
+        "parameters": [
+          {
+            "email": "user@mail.com",
+            "description": "Novo email do usuario a ser alterado",
+            "in": "body",
+            "required": true
+          },
+          {
+            "name": "User da Silva",
+            "description": "Novo nome do usuario a ser alterado",
+            "in": "body",
+            "required": true
+          },
+          {
+            "bornAt": "28/06/2022",
+            "description": "Nova data de nascimento do usuario a ser alterado",
+            "in": "body",
+            "required": true
+          },
+          {
+            "password": "senha1234",
+            "description": "Nova senha do usuario a ser alterado",
+            "in": "body",
+            "required": true
+          }
+        ],
         "security": [{ "bearerAuth": []}] ,
         "requestBody": {
           "content": {
