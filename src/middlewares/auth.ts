@@ -10,7 +10,7 @@ export default function (
   req: IReq,
   res: Response,
   next: NextFunction
-): Response<any, Record<string, any>> | undefined {
+): Response | undefined {
   const token: string = req.cookies.authorization.split(" ")[1];
 
   if (token.length === 0) {
