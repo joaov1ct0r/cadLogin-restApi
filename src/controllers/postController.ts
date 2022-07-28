@@ -32,78 +32,54 @@ import IPost from "../types/postInterface";
 
 import { Op } from "sequelize";
 
-const handleNewPost = async (
-  req: IReq,
-  res: Response
-): Promise<Response<any, Record<string, any>>> => {
-  const { error } = validateHandleNewPost(req.body);
+export default class PostController {
+  async handleNewPost(req: IReq, res: Response): Promise<Response> {
+    const { error } = validateHandleNewPost(req.body);
 
-  if (error) {
-    return res.status(400).json({ error });
-  }
-
-  const id: string | undefined = req.userId;
-
-  const content: string = req.body.content;
-
-  try {
-    const user: IUser | null = await User.findOne({
-      where: { id },
-    });
-
-    if (user === null) {
-      return res.status(404).json({ error: "Usuario não encontrado!" });
+    if (error) {
+      return res.status(400).json({ error });
     }
 
-    const newPost: IPost = await Post.create({
-      author: user.email,
-      content,
-      userId: user.id,
-    });
+    const id: string | undefined = req.userId;
 
-    return res.status(201).json({ newPost });
-  } catch (err: unknown) {
-    return res.status(500).json({ err });
-  }
-};
+    const content: string = req.body.content;
 
-const handleEditPost = async (
-  req: IReq,
-  res: Response
-): Promise<Response<any, Record<string, any>>> => {
-  const { error } = validateHandleEditPost(req.body);
+    try {
+      const user: IUser | null = await User.findOne({
+        where: { id },
+      });
 
-  if (error) {
-    return res.status(400).json({ error });
-  }
+      if (user === null) {
+        return res.status(404).json({ error: "Usuario não encontrado!" });
+      }
 
-  const postId: string = req.body.postId;
-
-  const content: string = req.body.content;
-
-  const id: string | undefined = req.userId;
-
-  try {
-    const isPostRegistered: IPost | null = await Post.findOne({
-      where: {
-        [Op.and]: [
-          {
-            id: postId,
-            userId: id,
-          },
-        ],
-      },
-    });
-
-    if (isPostRegistered === null) {
-      return res.status(404).json({ error: "Post não encontrado!" });
-    }
-
-    const editedPost: [affectedCount: number] = await Post.update(
-      {
+      const newPost: IPost = await Post.create({
+        author: user.email,
         content,
-      },
-      {
+        userId: user.id,
+      });
+
+      return res.status(201).json({ newPost });
+    } catch (err: unknown) {
+      return res.status(500).json({ err });
+    }
+  }
+
+  async handleEditPost(req: IReq, res: Response): Promise<Response> {
+    const { error } = validateHandleEditPost(req.body);
+
+    if (error) {
+      return res.status(400).json({ error });
+    }
+
+    const postId: string = req.body.postId;
+
+    const content: string = req.body.content;
+
+    const id: string | undefined = req.userId;
+
+    try {
+      const isPostRegistered: IPost | null = await Post.findOne({
         where: {
           [Op.and]: [
             {
@@ -112,348 +88,322 @@ const handleEditPost = async (
             },
           ],
         },
+      });
+
+      if (isPostRegistered === null) {
+        return res.status(404).json({ error: "Post não encontrado!" });
       }
-    );
 
-    if (editedPost[0] === 0) {
-      return res.status(500).json({ error: "Falha ao atualizar Post!" });
-    }
-
-    return res.status(204).send();
-  } catch (err: unknown) {
-    return res.status(500).json({ err });
-  }
-};
-
-const handleDeletePost = async (
-  req: IReq,
-  res: Response
-): Promise<Response<any, Record<string, any>>> => {
-  const { error } = validateHandleDeletePost(req.body);
-
-  if (error) {
-    return res.status(400).json({ error });
-  }
-
-  const id: string | undefined = req.userId;
-
-  const postId: string = req.body.postId;
-
-  try {
-    const isPostRegistered: IPost | null = await Post.findOne({
-      where: {
-        [Op.and]: [
-          {
-            id: postId,
-            userId: id,
-          },
-        ],
-      },
-    });
-
-    if (isPostRegistered === null) {
-      return res.status(404).json({ error: "Post não encontrado!" });
-    }
-
-    // eslint-disable-next-line no-unused-vars
-    const deletedPost: number = await Post.destroy({
-      where: {
-        [Op.and]: [
-          {
-            id: postId,
-            userId: id,
-          },
-        ],
-      },
-    });
-
-    if (deletedPost === 0) {
-      return res.status(500).json({ error: "Falha ao deletar Post!" });
-    }
-
-    // eslint-disable-next-line no-unused-vars
-    const deletedLikes: number = await Likes.destroy({
-      where: { postId },
-    });
-
-    // eslint-disable-next-line no-unused-vars
-    const deletedComments: number = await Comments.destroy({
-      where: { postId },
-    });
-
-    return res.status(204).send();
-  } catch (err: unknown) {
-    return res.status(500).json({ err });
-  }
-};
-
-const handleAllPosts = async (
-  req: Request,
-  res: Response
-): Promise<Response<any, Record<string, any>>> => {
-  try {
-    const posts: IPost[] = await Post.findAll({
-      include: [
+      const editedPost: [affectedCount: number] = await Post.update(
         {
-          model: Likes,
+          content,
         },
         {
-          model: Comments,
+          where: {
+            [Op.and]: [
+              {
+                id: postId,
+                userId: id,
+              },
+            ],
+          },
+        }
+      );
+
+      if (editedPost[0] === 0) {
+        return res.status(500).json({ error: "Falha ao atualizar Post!" });
+      }
+
+      return res.status(204).send();
+    } catch (err: unknown) {
+      return res.status(500).json({ err });
+    }
+  }
+
+  async handleDeletePost(req: IReq, res: Response): Promise<Response> {
+    const { error } = validateHandleDeletePost(req.body);
+
+    if (error) {
+      return res.status(400).json({ error });
+    }
+
+    const id: string | undefined = req.userId;
+
+    const postId: string = req.body.postId;
+
+    try {
+      const isPostRegistered: IPost | null = await Post.findOne({
+        where: {
+          [Op.and]: [
+            {
+              id: postId,
+              userId: id,
+            },
+          ],
         },
-      ],
-    });
+      });
 
-    return res.status(200).json({ posts });
-  } catch (err: unknown) {
-    return res.status(500).json({ err });
-  }
-};
+      if (isPostRegistered === null) {
+        return res.status(404).json({ error: "Post não encontrado!" });
+      }
 
-const handleOnePost = async (
-  req: Request,
-  res: Response
-): Promise<Response<any, Record<string, any>>> => {
-  const { error } = validateHandleOnePost(req.body);
-
-  if (error) {
-    return res.status(400).json({ error });
-  }
-
-  const postId: string = req.body.postId;
-
-  try {
-    const post: IPost | null = await Post.findOne({
-      include: [
-        {
-          model: Likes,
-          where: { postId },
+      // eslint-disable-next-line no-unused-vars
+      const deletedPost: number = await Post.destroy({
+        where: {
+          [Op.and]: [
+            {
+              id: postId,
+              userId: id,
+            },
+          ],
         },
-        {
-          model: Comments,
-          where: { postId },
+      });
+
+      if (deletedPost === 0) {
+        return res.status(500).json({ error: "Falha ao deletar Post!" });
+      }
+
+      // eslint-disable-next-line no-unused-vars
+      const deletedLikes: number = await Likes.destroy({
+        where: { postId },
+      });
+
+      // eslint-disable-next-line no-unused-vars
+      const deletedComments: number = await Comments.destroy({
+        where: { postId },
+      });
+
+      return res.status(204).send();
+    } catch (err: unknown) {
+      return res.status(500).json({ err });
+    }
+  }
+
+  async handleAllPosts(req: Request, res: Response): Promise<Response> {
+    try {
+      const posts: IPost[] = await Post.findAll({
+        include: [
+          {
+            model: Likes,
+          },
+          {
+            model: Comments,
+          },
+        ],
+      });
+
+      return res.status(200).json({ posts });
+    } catch (err: unknown) {
+      return res.status(500).json({ err });
+    }
+  }
+
+  async handleOnePost(req: Request, res: Response): Promise<Response> {
+    const { error } = validateHandleOnePost(req.body);
+
+    if (error) {
+      return res.status(400).json({ error });
+    }
+
+    const postId: string = req.body.postId;
+
+    try {
+      const post: IPost | null = await Post.findOne({
+        include: [
+          {
+            model: Likes,
+            where: { postId },
+          },
+          {
+            model: Comments,
+            where: { postId },
+          },
+        ],
+        where: { id: postId },
+      });
+
+      if (post === null) {
+        return res.status(404).json({ error: "Post não encontrado!" });
+      }
+
+      return res.status(200).json({ post });
+    } catch (err: unknown) {
+      return res.status(500).json({ err });
+    }
+  }
+
+  async handleAddPostLike(req: IReq, res: Response): Promise<Response> {
+    const { error } = validateHandleAddPostLike(req.body);
+
+    if (error) {
+      return res.status(400).json({ error });
+    }
+
+    const id: string | undefined = req.userId;
+
+    const postId: string = req.body.postId;
+
+    try {
+      const isPostRegistered: IPost | null = await Post.findOne({
+        where: { id: postId },
+      });
+
+      if (isPostRegistered === null) {
+        return res.status(404).json({ error: "Post não encontrado!" });
+      }
+
+      const user: IUser | null = await User.findOne({
+        where: { id },
+      });
+
+      const isLikeRegistered: ILikes | null = await Likes.findOne({
+        where: {
+          [Op.and]: [
+            {
+              postId,
+              userId: id,
+            },
+          ],
         },
-      ],
-      where: { id: postId },
-    });
+      });
 
-    if (post === null) {
-      return res.status(404).json({ error: "Post não encontrado!" });
+      if (isLikeRegistered !== null) {
+        return res.status(401).json({ error: "Like já registrado!" });
+      }
+
+      // eslint-disable-next-line no-unused-vars
+      const addedLike: ILikes = await Likes.create({
+        postId,
+        likedBy: user!.email,
+        userId: user!.id,
+      });
+
+      return res.status(201).json({ message: "Like adicionado a post!" });
+    } catch (err: unknown) {
+      return res.status(500).json({ err });
     }
-
-    return res.status(200).json({ post });
-  } catch (err: unknown) {
-    return res.status(500).json({ err });
-  }
-};
-
-const handleAddPostLike = async (
-  req: IReq,
-  res: Response
-): Promise<Response<any, Record<string, any>>> => {
-  const { error } = validateHandleAddPostLike(req.body);
-
-  if (error) {
-    return res.status(400).json({ error });
   }
 
-  const id: string | undefined = req.userId;
+  async handleDeletePostLike(req: IReq, res: Response): Promise<Response> {
+    const { error } = validateHandleDeletePostLike(req.body);
 
-  const postId: string = req.body.postId;
-
-  try {
-    const isPostRegistered: IPost | null = await Post.findOne({
-      where: { id: postId },
-    });
-
-    if (isPostRegistered === null) {
-      return res.status(404).json({ error: "Post não encontrado!" });
+    if (error) {
+      return res.status(400).json({ error });
     }
 
-    const user: IUser | null = await User.findOne({
-      where: { id },
-    });
+    const userId: string | undefined = req.userId;
 
-    const isLikeRegistered: ILikes | null = await Likes.findOne({
-      where: {
-        [Op.and]: [
-          {
-            postId,
-            userId: id,
-          },
-        ],
-      },
-    });
+    const postId: string = req.body.postId;
 
-    if (isLikeRegistered !== null) {
-      return res.status(401).json({ error: "Like já registrado!" });
+    try {
+      const isPostRegistered: IPost | null = await Post.findOne({
+        where: { id: postId },
+      });
+
+      if (isPostRegistered === null) {
+        return res.status(404).json({ error: "Post não encontrado!" });
+      }
+
+      const isLikeRegistered: ILikes | null = await Likes.findOne({
+        where: {
+          [Op.and]: [
+            {
+              postId,
+              userId,
+            },
+          ],
+        },
+      });
+
+      if (isLikeRegistered === null) {
+        return res.status(404).json({ error: "Like não encontrado!" });
+      }
+
+      const deletedLike: number = await Likes.destroy({
+        where: {
+          [Op.and]: [
+            {
+              postId,
+              userId,
+            },
+          ],
+        },
+      });
+
+      if (deletedLike === 0) {
+        return res.status(500).json({ error: "Falha ao deletar Like!" });
+      }
+
+      return res.status(204).send();
+    } catch (err: unknown) {
+      return res.status(500).json({ err });
     }
-
-    const addedLike: ILikes = await Likes.create({
-      postId,
-      likedBy: user!.email,
-      userId: user!.id,
-    });
-
-    return res
-      .status(201)
-      .json({ message: "Like adicionado a post!", addedLike });
-  } catch (err: unknown) {
-    return res.status(500).json({ err });
-  }
-};
-
-const handleDeletePostLike = async (req: IReq, res: Response) => {
-  const { error } = validateHandleDeletePostLike(req.body);
-
-  if (error) {
-    return res.status(400).json({ error });
-  }
-
-  const userId: string | undefined = req.userId;
-
-  const postId: string = req.body.postId;
-
-  try {
-    const isPostRegistered: IPost | null = await Post.findOne({
-      where: { id: postId },
-    });
-
-    if (isPostRegistered === null) {
-      return res.status(404).json({ error: "Post não encontrado!" });
-    }
-
-    const isLikeRegistered: ILikes | null = await Likes.findOne({
-      where: {
-        [Op.and]: [
-          {
-            postId,
-            userId,
-          },
-        ],
-      },
-    });
-
-    if (isLikeRegistered === null) {
-      return res.status(404).json({ error: "Like não encontrado!" });
-    }
-
-    const deletedLike: number = await Likes.destroy({
-      where: {
-        [Op.and]: [
-          {
-            postId,
-            userId,
-          },
-        ],
-      },
-    });
-
-    if (deletedLike === 0) {
-      return res.status(500).json({ error: "Falha ao deletar Like!" });
-    }
-
-    return res.status(204).send();
-  } catch (err: unknown) {
-    return res.status(500).json({ err });
-  }
-};
-
-const handleAddPostComment = async (
-  req: IReq,
-  res: Response
-): Promise<Response<any, Record<string, any>>> => {
-  const { error } = validateHandleAddPostComment(req.body);
-
-  if (error) {
-    return res.status(400).json({ error });
   }
 
-  const postId: string = req.body.postId;
+  async handleAddPostComment(req: IReq, res: Response): Promise<Response> {
+    const { error } = validateHandleAddPostComment(req.body);
 
-  const comment: string = req.body.comment;
-
-  const id: string | undefined = req.userId;
-
-  try {
-    const isPostRegistered: IPost | null = await Post.findOne({
-      where: { id: postId },
-    });
-
-    if (isPostRegistered === null) {
-      return res.status(404).json({ error: "Post não encontrado!" });
+    if (error) {
+      return res.status(400).json({ error });
     }
 
-    const user: IUser | null = await User.findOne({
-      where: { id },
-    });
+    const postId: string = req.body.postId;
 
-    const createdComment: IComments = await Comments.create({
-      author: user!.email,
-      userId: user!.id,
-      comment,
-      postId,
-    });
+    const comment: string = req.body.comment;
 
-    return res.status(201).json({ createdComment });
-  } catch (err: unknown) {
-    return res.status(500).json({ err });
-  }
-};
+    const id: string | undefined = req.userId;
 
-const handleEditPostComment = async (req: IReq, res: Response) => {
-  const { error } = validateHandleEditPostComment(req.body);
+    try {
+      const isPostRegistered: IPost | null = await Post.findOne({
+        where: { id: postId },
+      });
 
-  if (error) {
-    return res.status(400).json({ error });
-  }
+      if (isPostRegistered === null) {
+        return res.status(404).json({ error: "Post não encontrado!" });
+      }
 
-  const postId: string = req.body.postId;
+      const user: IUser | null = await User.findOne({
+        where: { id },
+      });
 
-  const commentId: string = req.body.commentId;
-
-  const comment: string = req.body.comment;
-
-  const userId: string | undefined = req.userId;
-
-  try {
-    const isPostRegistered: IPost | null = await Post.findOne({
-      where: { id: postId },
-    });
-
-    if (isPostRegistered === null) {
-      return res.status(404).json({ error: "Post não encontrado!" });
-    }
-
-    const isCommentRegistered: IComments | null = await Comments.findOne({
-      where: {
-        [Op.and]: [
-          {
-            postId,
-            userId,
-            id: commentId,
-          },
-        ],
-      },
-    });
-
-    if (isCommentRegistered === null) {
-      return res.status(404).json({ error: "Comentario não encontrado!" });
-    }
-
-    const user: IUser | null = await User.findOne({
-      where: {
-        id: userId,
-      },
-    });
-
-    const updatedComment: [affectedCount: number] = await Comments.update(
-      {
-        comment,
+      const createdComment: IComments = await Comments.create({
         author: user!.email,
-        userId,
-        postId: isPostRegistered.id,
-      },
-      {
+        userId: user!.id,
+        comment,
+        postId,
+      });
+
+      return res.status(201).json({ createdComment });
+    } catch (err: unknown) {
+      return res.status(500).json({ err });
+    }
+  }
+
+  async handleEditPostComment(req: IReq, res: Response): Promise<Response> {
+    const { error } = validateHandleEditPostComment(req.body);
+
+    if (error) {
+      return res.status(400).json({ error });
+    }
+
+    const postId: string = req.body.postId;
+
+    const commentId: string = req.body.commentId;
+
+    const comment: string = req.body.comment;
+
+    const userId: string | undefined = req.userId;
+
+    try {
+      const isPostRegistered: IPost | null = await Post.findOne({
+        where: { id: postId },
+      });
+
+      if (isPostRegistered === null) {
+        return res.status(404).json({ error: "Post não encontrado!" });
+      }
+
+      const isCommentRegistered: IComments | null = await Comments.findOne({
         where: {
           [Op.and]: [
             {
@@ -463,88 +413,107 @@ const handleEditPostComment = async (req: IReq, res: Response) => {
             },
           ],
         },
+      });
+
+      if (isCommentRegistered === null) {
+        return res.status(404).json({ error: "Comentario não encontrado!" });
       }
-    );
 
-    if (updatedComment[0] === 0) {
-      return res.status(500).json({ error: "Falha ao atualizar comentario!" });
-    }
+      const user: IUser | null = await User.findOne({
+        where: {
+          id: userId,
+        },
+      });
 
-    return res.status(204).send();
-  } catch (err: unknown) {
-    return res.status(500).json({ err });
-  }
-};
-
-const handleDeletePostComment = async (req: IReq, res: Response) => {
-  const { error } = validateHandleDeletePostComment(req.body);
-
-  if (error) {
-    return res.status(400).json({ error });
-  }
-
-  const postId: string = req.body.postId;
-
-  const commentId: string = req.body.commentId;
-
-  const userId: string | undefined = req.userId;
-
-  try {
-    const isPostRegistered: IPost | null = await Post.findOne({
-      where: { id: postId },
-    });
-
-    if (isPostRegistered === null) {
-      return res.status(404).json({ error: "Post não encontrado!" });
-    }
-
-    const isCommentRegistered: IComments | null = await Comments.findOne({
-      where: {
-        [Op.and]: [
-          {
-            postId,
-            userId,
-            id: commentId,
+      const updatedComment: [affectedCount: number] = await Comments.update(
+        {
+          comment,
+          author: user!.email,
+          userId,
+          postId: isPostRegistered.id,
+        },
+        {
+          where: {
+            [Op.and]: [
+              {
+                postId,
+                userId,
+                id: commentId,
+              },
+            ],
           },
-        ],
-      },
-    });
+        }
+      );
 
-    if (isCommentRegistered === null) {
-      return res.status(404).json({ error: "Comentario não encontrado!" });
+      if (updatedComment[0] === 0) {
+        return res
+          .status(500)
+          .json({ error: "Falha ao atualizar comentario!" });
+      }
+
+      return res.status(204).send();
+    } catch (err: unknown) {
+      return res.status(500).json({ err });
     }
-
-    const deletedComment: number = await Comments.destroy({
-      where: {
-        [Op.and]: [
-          {
-            postId,
-            userId,
-            id: commentId,
-          },
-        ],
-      },
-    });
-
-    if (deletedComment === 0) {
-      return res.status(500).json({ error: "Falha ao deletar comentario!" });
-    }
-
-    return res.status(204).send();
-  } catch (err: unknown) {
-    return res.status(500).json({ err });
   }
-};
 
-export {
-  handleNewPost,
-  handleEditPost,
-  handleDeletePost,
-  handleAllPosts,
-  handleOnePost,
-  handleAddPostLike,
-  handleAddPostComment,
-  handleDeletePostLike,
-  handleEditPostComment,
-  handleDeletePostComment,
-};
+  async handleDeletePostComment(req: IReq, res: Response): Promise<Response> {
+    const { error } = validateHandleDeletePostComment(req.body);
+
+    if (error) {
+      return res.status(400).json({ error });
+    }
+
+    const postId: string = req.body.postId;
+
+    const commentId: string = req.body.commentId;
+
+    const userId: string | undefined = req.userId;
+
+    try {
+      const isPostRegistered: IPost | null = await Post.findOne({
+        where: { id: postId },
+      });
+
+      if (isPostRegistered === null) {
+        return res.status(404).json({ error: "Post não encontrado!" });
+      }
+
+      const isCommentRegistered: IComments | null = await Comments.findOne({
+        where: {
+          [Op.and]: [
+            {
+              postId,
+              userId,
+              id: commentId,
+            },
+          ],
+        },
+      });
+
+      if (isCommentRegistered === null) {
+        return res.status(404).json({ error: "Comentario não encontrado!" });
+      }
+
+      const deletedComment: number = await Comments.destroy({
+        where: {
+          [Op.and]: [
+            {
+              postId,
+              userId,
+              id: commentId,
+            },
+          ],
+        },
+      });
+
+      if (deletedComment === 0) {
+        return res.status(500).json({ error: "Falha ao deletar comentario!" });
+      }
+
+      return res.status(204).send();
+    } catch (err: unknown) {
+      return res.status(500).json({ err });
+    }
+  }
+}
