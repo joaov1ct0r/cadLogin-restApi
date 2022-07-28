@@ -2,39 +2,36 @@ import express from "express";
 
 import auth from "../middlewares/auth";
 
-import {
-  handleAllPosts,
-  handleDeletePost,
-  handleEditPost,
-  handleNewPost,
-  handleOnePost,
-  handleAddPostComment,
-  handleAddPostLike,
-  handleDeletePostComment,
-  handleDeletePostLike,
-  handleEditPostComment,
-} from "../controllers/postController";
+import PostController from "../controllers/postController";
+
+import IPostController from "../types/postControllerInterface";
 
 const postRouter: express.Router = express.Router();
 
-postRouter.post("/register", auth, handleNewPost);
+const postController: IPostController = new PostController();
 
-postRouter.post("/like", auth, handleAddPostLike);
+postRouter.post("/register", auth, postController.handleNewPost);
 
-postRouter.delete("/like/delete", auth, handleDeletePostLike);
+postRouter.post("/like", auth, postController.handleAddPostLike);
 
-postRouter.post("/comment", auth, handleAddPostComment);
+postRouter.delete("/like/delete", auth, postController.handleDeletePostLike);
 
-postRouter.put("/comment/edit", auth, handleEditPostComment);
+postRouter.post("/comment", auth, postController.handleAddPostComment);
 
-postRouter.delete("/comment/delete", auth, handleDeletePostComment);
+postRouter.put("/comment/edit", auth, postController.handleEditPostComment);
 
-postRouter.put("/edit", auth, handleEditPost);
+postRouter.delete(
+  "/comment/delete",
+  auth,
+  postController.handleDeletePostComment
+);
 
-postRouter.delete("/delete", auth, handleDeletePost);
+postRouter.put("/edit", auth, postController.handleEditPost);
 
-postRouter.get("/post", auth, handleOnePost);
+postRouter.delete("/delete", auth, postController.handleDeletePost);
 
-postRouter.get("/posts", auth, handleAllPosts);
+postRouter.get("/post", auth, postController.handleOnePost);
+
+postRouter.get("/posts", auth, postController.handleAllPosts);
 
 export default postRouter;
