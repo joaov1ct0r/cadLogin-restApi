@@ -6,7 +6,7 @@ export default async function (
   req: IReq,
   res: Response,
   next: NextFunction
-): Promise<Response<any, Record<string, any>> | undefined> {
+): Promise<Response | undefined> {
   try {
     const isUserAdmin: boolean | undefined = req.admin;
 
