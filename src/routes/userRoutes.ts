@@ -2,10 +2,6 @@ import express from "express";
 
 import auth from "../middlewares/auth";
 
-import IUserController from "../interfaces/userControllerInterface";
-
-import UserController from "../controllers/userController";
-
 import CreateUserController from "../controllers/CreateUserController";
 
 import ICreateUserController from "../interfaces/ICreateUserController";
@@ -26,9 +22,11 @@ import ListAllUsersController from "../controllers/ListAllUsersController";
 
 import IListAllUsersController from "../interfaces/IListAllUsersController";
 
-const userRouter: express.Router = express.Router();
+import ListUserController from "../controllers/ListUserController";
 
-const userController: IUserController = new UserController();
+import IListUserController from "../interfaces/IListUserController";
+
+const userRouter: express.Router = express.Router();
 
 const createUserController: ICreateUserController = new CreateUserController();
 
@@ -42,6 +40,8 @@ const deleteUserController: IDeleteUserController = new DeleteUserController();
 const listAllUsersController: IListAllUsersController =
   new ListAllUsersController();
 
+const listUserController: IListUserController = new ListUserController();
+
 userRouter.post("/register", createUserController.handle);
 
 userRouter.post("/login", authenticateUserController.handle);
@@ -50,7 +50,7 @@ userRouter.put("/edit", auth, editUserController.handle);
 
 userRouter.delete("/delete", auth, deleteUserController.handle);
 
-userRouter.get("/user", auth, userController.handleOneUser);
+userRouter.get("/user", auth, listUserController.handle);
 
 userRouter.get("/users", auth, listAllUsersController.handle);
 
