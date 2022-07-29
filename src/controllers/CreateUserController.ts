@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import CreateUserService from "../services/CreateUserService";
 
-import ICreateUserService from "../types/CreateUserServiceInterface";
+import ICreateUserService from "../types/ICreateUserService";
 
 import { validateHandleUserRegister } from "../validations/validateUserData";
 

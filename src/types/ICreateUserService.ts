@@ -1,4 +1,4 @@
-import ICreateUserRequest from "./CreateUserRequestInterface";
+import ICreateUserRequest from "./ICreateUserRequest";
 
 import IUser from "./userInterface";
 

@@ -4,7 +4,7 @@ import IUser from "../types/userInterface";
 
 import bcrypt from "bcryptjs";
 
-import ICreateUserRequest from "../types/CreateUserRequestInterface";
+import ICreateUserRequest from "../types/ICreateUserRequest";
 
 export default class CreateUserService {
   async execute({
