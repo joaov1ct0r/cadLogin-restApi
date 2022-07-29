@@ -14,6 +14,10 @@ import AuthenticateUserController from "../controllers/AuthenticateUserControlle
 
 import IAuthenticateUserController from "../interfaces/IAuthenticateUserController";
 
+import EditUserController from "../controllers/EditUserController";
+
+import IEditUserController from "../interfaces/IEditUserController";
+
 const userRouter: express.Router = express.Router();
 
 const userController: IUserController = new UserController();
@@ -23,11 +27,13 @@ const createUserController: ICreateUserController = new CreateUserController();
 const authenticateUserController: IAuthenticateUserController =
   new AuthenticateUserController();
 
+const editUserController: IEditUserController = new EditUserController();
+
 userRouter.post("/register", createUserController.handle);
 
 userRouter.post("/login", authenticateUserController.handle);
 
-userRouter.put("/edit", auth, userController.handleUserEdit);
+userRouter.put("/edit", auth, editUserController.handle);
 
 userRouter.delete("/delete", auth, userController.handleUserDelete);
 
