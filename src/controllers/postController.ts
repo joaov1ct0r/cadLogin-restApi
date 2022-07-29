@@ -24,7 +24,7 @@ import {
   validateHandleDeletePostLike,
   validateHandleEditPostComment,
   validateHandleDeletePostComment,
-} from "../validators/validatePostData";
+} from "../validations/validatePostData";
 
 import IUser from "../types/userInterface";
 

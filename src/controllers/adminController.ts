@@ -14,7 +14,7 @@ import {
   validateHandleAdminDeletePost,
   validateHandleAdminDeleteUser,
   validateHandleAdminEditUser,
-} from "../validators/validateAdminData";
+} from "../validations/validateAdminData";
 
 const handleAdminEditUser = async (
   req: Request,

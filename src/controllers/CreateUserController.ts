@@ -4,10 +4,18 @@ import CreateUserService from "../services/CreateUserService";
 
 import ICreateUserService from "../types/CreateUserServiceInterface";
 
+import { validateHandleUserRegister } from "../validations/validateUserData";
+
 import IUser from "../types/userInterface";
 
 export default class CreateUserController {
   async handle(req: Request, res: Response): Promise<Response> {
+    const { error } = validateHandleUserRegister(req.body);
+
+    if (error) {
+      return res.status(400).json({ error });
+    }
+
     const email: string = req.body.email;
 
     const password: string = req.body.password;

@@ -1,62 +1,18 @@
-import User from "../database/models/userModel";
-
 import Post from "../database/models/postModel";
 
 import {
-  validateHandleUserRegister,
   validateHandleUserLogin,
   validateHandleUserEdit,
   validateHandleOneUser,
-} from "../validators/validateUserData";
+} from "../validations/validateUserData";
 
 import IReq from "../types/requestInterface";
 
 import { Request, Response } from "express";
 
-import bcrypt from "bcryptjs";
-
 import jwt from "jsonwebtoken";
 
-import IUser from "../types/userInterface";
-
 export default class UserController {
-  async handleUserRegister(req: Request, res: Response): Promise<Response> {
-    const { error } = validateHandleUserRegister(req.body);
-
-    if (error) {
-      return res.status(400).json({ error });
-    }
-
-    const email: string = req.body.email;
-
-    const password: string = req.body.password;
-
-    const name: string = req.body.name;
-
-    const bornAt: string = req.body.bornAt;
-
-    try {
-      const isUserRegistered: IUser | null = await User.findOne({
-        where: { email },
-      });
-
-      if (isUserRegistered !== null) {
-        return res.status(400).json({ error: "Usuario já cadastrado!" });
-      }
-
-      const newUser: IUser = await User.create({
-        email,
-        password: bcrypt.hashSync(password),
-        name,
-        bornAt,
-      });
-
-      return res.status(201).json({ newUser });
-    } catch (err: unknown) {
-      return res.status(500).json({ err });
-    }
-  }
-
   async handleUserLogin(req: Request, res: Response): Promise<Response> {
     const { error } = validateHandleUserLogin(req.body);
 

@@ -1,5 +1,3 @@
-import { validateHandleUserRegister } from "../validators/validateUserData";
-
 import User from "../database/models/userModel";
 
 import IUser from "../types/userInterface";
@@ -15,17 +13,6 @@ export default class CreateUserService {
     name,
     bornAt,
   }: ICreateUserRequest): Promise<IUser> {
-    const { error } = validateHandleUserRegister({
-      email,
-      password,
-      name,
-      bornAt,
-    });
-
-    if (error) {
-      throw new Error("Dados invalidos!");
-    }
-
     try {
       const isUserRegistered: IUser | null = await User.findOne({
         where: { email },
