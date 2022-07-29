@@ -2,11 +2,11 @@ import { Request, Response } from "express";
 
 import CreateUserService from "../services/CreateUserService";
 
-import ICreateUserService from "../types/ICreateUserService";
+import ICreateUserService from "../interfaces/ICreateUserService";
 
 import { validateHandleUserRegister } from "../validations/validateUserData";
 
-import IUser from "../types/userInterface";
+import IUser from "../interfaces/userInterface";
 
 export default class CreateUserController {
   async handle(req: Request, res: Response): Promise<Response> {

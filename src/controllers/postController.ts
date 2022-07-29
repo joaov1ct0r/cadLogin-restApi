@@ -4,15 +4,15 @@ import Post from "../database/models/postModel";
 
 import Likes from "../database/models/likesModel";
 
-import ILikes from "../types/likesInterface";
+import ILikes from "../interfaces/likesInterface";
 
 import Comments from "../database/models/commentsModel";
 
-import IComments from "../types/commentsInterface";
+import IComments from "../interfaces/commentsInterface";
 
 import { Request, Response } from "express";
 
-import IReq from "../types/requestInterface";
+import IReq from "../interfaces/requestInterface";
 
 import {
   validateHandleDeletePost,
@@ -26,9 +26,9 @@ import {
   validateHandleDeletePostComment,
 } from "../validations/validatePostData";
 
-import IUser from "../types/userInterface";
+import IUser from "../interfaces/userInterface";
 
-import IPost from "../types/postInterface";
+import IPost from "../interfaces/postInterface";
 
 import { Op } from "sequelize";
 

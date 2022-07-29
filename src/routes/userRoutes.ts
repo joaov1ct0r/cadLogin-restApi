@@ -2,7 +2,7 @@ import express from "express";
 
 import auth from "../middlewares/auth";
 
-import IUserController from "../types/userControllerInterface";
+import IUserController from "../interfaces/userControllerInterface";
 
 import UserController from "../controllers/userController";
 

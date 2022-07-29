@@ -4,7 +4,7 @@ import auth from "../middlewares/auth";
 
 import PostController from "../controllers/postController";
 
-import IPostController from "../types/postControllerInterface";
+import IPostController from "../interfaces/postControllerInterface";
 
 const postRouter: express.Router = express.Router();
 

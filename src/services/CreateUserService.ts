@@ -1,10 +1,10 @@
 import User from "../database/models/userModel";
 
-import IUser from "../types/userInterface";
+import IUser from "../interfaces/userInterface";
 
 import bcrypt from "bcryptjs";
 
-import ICreateUserRequest from "../types/ICreateUserRequest";
+import ICreateUserRequest from "../interfaces/ICreateUserRequest";
 
 export default class CreateUserService {
   async execute({

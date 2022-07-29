@@ -4,9 +4,9 @@ import Post from "../database/models/postModel";
 
 import { Request, Response } from "express";
 
-import IUser from "../types/userInterface";
+import IUser from "../interfaces/userInterface";
 
-import IPost from "../types/postInterface";
+import IPost from "../interfaces/postInterface";
 
 import bcrypt from "bcryptjs";
 

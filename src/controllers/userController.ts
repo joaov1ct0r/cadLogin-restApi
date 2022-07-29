@@ -6,7 +6,7 @@ import {
   validateHandleOneUser,
 } from "../validations/validateUserData";
 
-import IReq from "../types/requestInterface";
+import IReq from "../interfaces/requestInterface";
 
 import { Request, Response } from "express";
 

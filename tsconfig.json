@@ -16,7 +16,7 @@
     "removeComments": true,
     "typeRoots": [
       "./node_modules/@types",
-      "./src/types"
+      "src/interfaces"
     ]
   },
   "include": [
