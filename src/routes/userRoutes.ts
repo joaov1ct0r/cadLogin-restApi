@@ -18,6 +18,10 @@ import EditUserController from "../controllers/EditUserController";
 
 import IEditUserController from "../interfaces/IEditUserController";
 
+import DeleteUserController from "../controllers/DeleteUserController";
+
+import IDeleteUserController from "../interfaces/IDeleteUserController";
+
 const userRouter: express.Router = express.Router();
 
 const userController: IUserController = new UserController();
@@ -29,13 +33,15 @@ const authenticateUserController: IAuthenticateUserController =
 
 const editUserController: IEditUserController = new EditUserController();
 
+const deleteUserController: IDeleteUserController = new DeleteUserController();
+
 userRouter.post("/register", createUserController.handle);
 
 userRouter.post("/login", authenticateUserController.handle);
 
 userRouter.put("/edit", auth, editUserController.handle);
 
-userRouter.delete("/delete", auth, userController.handleUserDelete);
+userRouter.delete("/delete", auth, deleteUserController.handle);
 
 userRouter.get("/user", auth, userController.handleOneUser);
 
