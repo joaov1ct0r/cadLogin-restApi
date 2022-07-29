@@ -34,7 +34,7 @@ export default class CreateUserController {
         bornAt,
       });
 
-      return res.json({ user });
+      return res.status(201).json({ user });
     } catch (err: unknown) {
       return res.status(500).json({ err });
     }
