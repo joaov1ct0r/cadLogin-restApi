@@ -6,8 +6,15 @@ import IUser from "../types/userInterface";
 
 import bcrypt from "bcryptjs";
 
+import ICreateUserRequest from "../types/CreateUserRequestInterface";
+
 export default class CreateUserService {
-  async execute(email: string, password: string, name: string, bornAt: string) {
+  async execute({
+    email,
+    password,
+    name,
+    bornAt,
+  }: ICreateUserRequest): Promise<IUser> {
     const { error } = validateHandleUserRegister({
       email,
       password,

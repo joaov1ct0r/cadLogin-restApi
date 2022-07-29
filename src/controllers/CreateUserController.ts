@@ -2,10 +2,12 @@ import { Request, Response } from "express";
 
 import CreateUserService from "../services/CreateUserService";
 
-import ICreateUserService from "../types/createUserServiceInterface";
+import ICreateUserService from "../types/CreateUserServiceInterface";
+
+import IUser from "../types/userInterface";
 
 export default class CreateUserController {
-  async execute(req: Request, res: Response): Promise<Response> {
+  async handle(req: Request, res: Response): Promise<Response> {
     const email: string = req.body.email;
 
     const password: string = req.body.password;
@@ -14,8 +16,15 @@ export default class CreateUserController {
 
     const bornAt: string = req.body.bornAt;
 
-    const createUserService: ICreateUserService = new CreateUserController();
+    const createUserService: ICreateUserService = new CreateUserService();
 
-    const user = await createUserService.execute(email, password, name, bornAt);
+    const user: IUser = await createUserService.execute({
+      email,
+      password,
+      name,
+      bornAt,
+    });
+
+    return res.json({ user });
   }
 }
