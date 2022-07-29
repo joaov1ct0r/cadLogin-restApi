@@ -37,10 +37,10 @@ export default class EditUserController {
         id,
       });
 
-      if (Number(isUserEdited) > 0) {
-        return res.status(204).send();
-      } else
+      if (Number(isUserEdited) <= 0) {
         return res.status(500).json({ error: "Falha ao atualizar usuario!" });
+      }
+      return res.status(204).send();
     } catch (err: unknown) {
       return res.status(500).json({ err });
     }
