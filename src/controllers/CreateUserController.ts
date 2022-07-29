@@ -26,13 +26,17 @@ export default class CreateUserController {
 
     const createUserService: ICreateUserService = new CreateUserService();
 
-    const user: IUser = await createUserService.execute({
-      email,
-      password,
-      name,
-      bornAt,
-    });
+    try {
+      const user: IUser = await createUserService.execute({
+        email,
+        password,
+        name,
+        bornAt,
+      });
 
-    return res.json({ user });
+      return res.json({ user });
+    } catch (err: unknown) {
+      return res.status(500).json({ err });
+    }
   }
 }
