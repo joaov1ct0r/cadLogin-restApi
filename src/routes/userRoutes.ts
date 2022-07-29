@@ -6,11 +6,17 @@ import IUserController from "../interfaces/userControllerInterface";
 
 import UserController from "../controllers/userController";
 
+import CreateUserController from "../controllers/CreateUserController";
+
+import ICreateUserController from "../interfaces/ICreateUserController";
+
 const userRouter: express.Router = express.Router();
 
 const userController: IUserController = new UserController();
 
-userRouter.post("/register", userController.handleUserRegister);
+const createUserController: ICreateUserController = new CreateUserController();
+
+userRouter.post("/register", createUserController.handle);
 
 userRouter.post("/login", userController.handleUserLogin);
 
