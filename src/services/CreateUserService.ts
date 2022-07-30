@@ -6,6 +6,8 @@ import bcrypt from "bcryptjs";
 
 import ICreateUserRequest from "../interfaces/ICreateUserRequest";
 
+import InternalError from "../errors/InternalError";
+
 export default class CreateUserService {
   async execute({
     email,
@@ -31,7 +33,7 @@ export default class CreateUserService {
 
       return newUser;
     } catch (err: unknown) {
-      throw new Error("Erro Interno!");
+      throw new InternalError("Erro Interno", 500);
     }
   }
 }
