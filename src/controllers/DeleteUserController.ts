@@ -13,15 +13,12 @@ export default class DeleteUserController {
     const deleteUserService: IDeleteUserService = new DeleteUserService();
 
     try {
+      // eslint-disable-next-line no-unused-vars
       const deletedUser = await deleteUserService.execute(id);
 
-      if (deletedUser <= 0) {
-        return res.status(500).json({ error: "Falha ao deletar usuario!" });
-      }
-
       return res.status(204).send();
-    } catch (err: unknown) {
-      return res.status(500).json({ err });
+    } catch (err: any) {
+      return res.status(err.statusCode).json(err.message);
     }
   }
 }
