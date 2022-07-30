@@ -23,7 +23,7 @@ export default class CreateUserService {
       });
 
       if (isUserRegistered !== null) {
-        throw new BadRequestError("Usuario já cadastrado!", 400);
+        throw new BadRequestError("Usuario já cadastrado!");
       }
 
       const newUser: IUser = await User.create({
@@ -35,7 +35,7 @@ export default class CreateUserService {
 
       return newUser;
     } catch (err: unknown) {
-      throw new InternalError("Erro Interno", 500);
+      throw new InternalError("Erro Interno");
     }
   }
 }
