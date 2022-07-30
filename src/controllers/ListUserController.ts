@@ -21,15 +21,11 @@ export default class ListUserController {
     const listUserService: IListUserService = new ListUserService();
 
     try {
-      const user: IUser | null = await listUserService.execute(email);
-
-      if (user === null) {
-        return res.status(404).json({ error: "Usuario não encontrado!" });
-      }
+      const user: IUser = await listUserService.execute(email);
 
       return res.status(200).json({ user });
-    } catch (err: unknown) {
-      return res.status(500).json({ err });
+    } catch (err: any) {
+      return res.status(err.statusCode).json(err.message);
     }
   }
 }
