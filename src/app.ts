@@ -36,11 +36,11 @@ export default class App {
   }
 
   private userRoutes() {
-    this.server.use("/api/user", userRouter);
+    this.server.use("/api/users", userRouter);
   }
 
   private postRoutes() {
-    this.server.use("/api/post", postRouter);
+    this.server.use("/api/posts", postRouter);
   }
 
   private adminRoutes() {
