@@ -30,8 +30,8 @@ export default class AuthenticateUserController {
       res.cookie("authorization", `Bearer ${token}`, { httpOnly: true });
 
       return res.status(200).json({ message: "Login realizado com sucesso!" });
-    } catch (err: unknown) {
-      return res.status(500).json({ err });
+    } catch (err: any) {
+      return res.status(err.statusCode).json(err.message);
     }
   }
 }
