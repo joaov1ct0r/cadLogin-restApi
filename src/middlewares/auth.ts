@@ -6,10 +6,6 @@ import IReq from "../interfaces/requestInterface";
 
 import { Response, NextFunction } from "express";
 
-import BadRequestError from "../errors/BadRequestError";
-
-import UnathorizedError from "../errors/UnathorizedError";
-
 export default function (
   req: IReq,
   res: Response,
@@ -17,25 +13,25 @@ export default function (
 ): Response | undefined {
   const token: string = req.cookies.authorization.split(" ")[1];
 
-  try {
-    if (token.length === 0) {
-      throw new BadRequestError("Token não encontrado!");
-    }
+  if (token.length === 0) {
+    return res.status(400).json({ error: "Token não encontrado!" });
+  }
 
+  try {
     const verifiedToken: IJwt = jwt.verify(
       token,
       process.env.JWT_TOKEN_SECRET as string
     ) as IJwt;
 
     if (!verifiedToken) {
-      throw new UnathorizedError("Não autorizado!");
+      return res.status(401).json({ error: "Falha na autenticação!" });
     }
     req.userId = verifiedToken.id;
 
     req.admin = verifiedToken.admin;
 
     next();
-  } catch (err: any) {
-    return res.status(err.statusCode).json(err.message);
+  } catch (err: unknown) {
+    return res.status(500).json({ err });
   }
 }
