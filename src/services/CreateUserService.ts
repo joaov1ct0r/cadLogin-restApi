@@ -8,6 +8,8 @@ import ICreateUserRequest from "../interfaces/ICreateUserRequest";
 
 import InternalError from "../errors/InternalError";
 
+import BadRequestError from "../errors/BadRequestError";
+
 export default class CreateUserService {
   async execute({
     email,
@@ -21,7 +23,7 @@ export default class CreateUserService {
       });
 
       if (isUserRegistered !== null) {
-        throw new Error("Usuario já cadastrado!");
+        throw new BadRequestError("Usuario já cadastrado!", 400);
       }
 
       const newUser: IUser = await User.create({
