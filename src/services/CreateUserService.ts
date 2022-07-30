@@ -6,8 +6,6 @@ import bcrypt from "bcryptjs";
 
 import ICreateUserRequest from "../interfaces/ICreateUserRequest";
 
-import InternalError from "../errors/InternalError";
-
 import BadRequestError from "../errors/BadRequestError";
 
 export default class CreateUserService {
@@ -17,25 +15,21 @@ export default class CreateUserService {
     name,
     bornAt,
   }: ICreateUserRequest): Promise<IUser> {
-    try {
-      const isUserRegistered: IUser | null = await User.findOne({
-        where: { email },
-      });
+    const isUserRegistered: IUser | null = await User.findOne({
+      where: { email },
+    });
 
-      if (isUserRegistered !== null) {
-        throw new BadRequestError("Usuario já cadastrado!");
-      }
-
-      const newUser: IUser = await User.create({
-        email,
-        password: bcrypt.hashSync(password),
-        name,
-        bornAt,
-      });
-
-      return newUser;
-    } catch (err: unknown) {
-      throw new InternalError("Erro Interno");
+    if (isUserRegistered !== null) {
+      throw new BadRequestError("Usuario já cadastrado!");
     }
+
+    const newUser: IUser = await User.create({
+      email,
+      password: bcrypt.hashSync(password),
+      name,
+      bornAt,
+    });
+
+    return newUser;
   }
 }
