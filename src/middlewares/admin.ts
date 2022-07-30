@@ -2,6 +2,8 @@ import IReq from "../interfaces/requestInterface";
 
 import { Response, NextFunction } from "express";
 
+import UnathorizedError from "../errors/UnathorizedError";
+
 export default async function (
   req: IReq,
   res: Response,
@@ -11,11 +13,11 @@ export default async function (
     const isUserAdmin: boolean | undefined = req.admin;
 
     if (isUserAdmin === false) {
-      return res.status(401).json({ error: "Não autorizado!" });
+      throw new UnathorizedError("Não autorizado!");
     }
 
     next();
-  } catch (err: unknown) {
-    return res.status(500).json({ err });
+  } catch (err: any) {
+    return res.status(err.statusCode).json(err.message);
   }
 }
