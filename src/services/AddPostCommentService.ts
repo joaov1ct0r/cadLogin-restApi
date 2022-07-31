@@ -4,7 +4,7 @@ import IComments from "../interfaces/IComments";
 
 import Post from "../database/models/postModel";
 
-import IPost from "../interfaces/postInterface";
+import IPost from "../interfaces/IPost";
 
 import User from "../database/models/userModel";
 

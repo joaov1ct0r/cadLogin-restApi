@@ -6,7 +6,7 @@ import ListPostService from "../services/ListPostService";
 
 import IListPostService from "../interfaces/IListPostService";
 
-import IPost from "../interfaces/postInterface";
+import IPost from "../interfaces/IPost";
 
 export default class ListPostController {
   public async handle(req: Request, res: Response): Promise<Response> {

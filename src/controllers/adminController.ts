@@ -6,7 +6,7 @@ import { Request, Response } from "express";
 
 import IUser from "../interfaces/IUser";
 
-import IPost from "../interfaces/postInterface";
+import IPost from "../interfaces/IPost";
 
 import bcrypt from "bcryptjs";
 

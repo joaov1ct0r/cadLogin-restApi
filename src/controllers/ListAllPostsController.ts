@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import IPost from "../interfaces/postInterface";
+import IPost from "../interfaces/IPost";
 
 import ListAllPostsService from "../services/ListAllPostsService";
 

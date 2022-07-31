@@ -2,7 +2,7 @@ import ILikes from "../interfaces/ILikes";
 
 import Post from "../database/models/postModel";
 
-import IPost from "../interfaces/postInterface";
+import IPost from "../interfaces/IPost";
 
 import Likes from "../database/models/likesModel";
 

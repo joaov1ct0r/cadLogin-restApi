@@ -1,6 +1,6 @@
 import Post from "../database/models/postModel";
 
-import IPost from "../interfaces/postInterface";
+import IPost from "../interfaces/IPost";
 
 import BadRequestError from "../errors/BadRequestError";
 
