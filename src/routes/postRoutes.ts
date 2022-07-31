@@ -38,6 +38,10 @@ import AddPostCommentController from "../controllers/AddPostCommentController";
 
 import IAddPostCommentController from "../interfaces/IAddPostCommentController";
 
+import EditPostCommentController from "../controllers/EditPostCommentController";
+
+import IEditPostCommentController from "../interfaces/IEditPostCommentController";
+
 const postRouter: express.Router = express.Router();
 
 const postController: IPostController = new PostController();
@@ -63,6 +67,9 @@ const deletePostLikeController: IDeletePostLikeController =
 const addPostCommentController: IAddPostCommentController =
   new AddPostCommentController();
 
+const editPostCommentController: IEditPostCommentController =
+  new EditPostCommentController();
+
 postRouter.post("/register", auth, createNewPostController.handle);
 
 postRouter.post("/like", auth, addPostLikeController.handle);
@@ -71,7 +78,7 @@ postRouter.delete("/like/delete", auth, deletePostLikeController.handle);
 
 postRouter.post("/comment", auth, addPostCommentController.handle);
 
-postRouter.put("/comment/edit", auth, postController.handleEditPostComment);
+postRouter.put("/comment/edit", auth, editPostCommentController.handle);
 
 postRouter.delete(
   "/comment/delete",
