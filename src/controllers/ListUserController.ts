@@ -25,7 +25,7 @@ export default class ListUserController {
 
       return res.status(200).json({ user });
     } catch (err: any) {
-      return res.status(err.statusCode).json(err.message);
+      return res.status(err.statusCode).json({ error: err.message });
     }
   }
 }
