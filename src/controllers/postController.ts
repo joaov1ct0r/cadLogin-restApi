@@ -33,65 +33,6 @@ import IPost from "../interfaces/postInterface";
 import { Op } from "sequelize";
 
 export default class PostController {
-  async handleDeletePost(req: IReq, res: Response): Promise<Response> {
-    const { error } = validateHandleDeletePost(req.body);
-
-    if (error) {
-      return res.status(400).json({ error });
-    }
-
-    const id: string | undefined = req.userId;
-
-    const postId: string = req.body.postId;
-
-    try {
-      const isPostRegistered: IPost | null = await Post.findOne({
-        where: {
-          [Op.and]: [
-            {
-              id: postId,
-              userId: id,
-            },
-          ],
-        },
-      });
-
-      if (isPostRegistered === null) {
-        return res.status(404).json({ error: "Post não encontrado!" });
-      }
-
-      // eslint-disable-next-line no-unused-vars
-      const deletedPost: number = await Post.destroy({
-        where: {
-          [Op.and]: [
-            {
-              id: postId,
-              userId: id,
-            },
-          ],
-        },
-      });
-
-      if (deletedPost === 0) {
-        return res.status(500).json({ error: "Falha ao deletar Post!" });
-      }
-
-      // eslint-disable-next-line no-unused-vars
-      const deletedLikes: number = await Likes.destroy({
-        where: { postId },
-      });
-
-      // eslint-disable-next-line no-unused-vars
-      const deletedComments: number = await Comments.destroy({
-        where: { postId },
-      });
-
-      return res.status(204).send();
-    } catch (err: unknown) {
-      return res.status(500).json({ err });
-    }
-  }
-
   async handleAllPosts(req: Request, res: Response): Promise<Response> {
     try {
       const posts: IPost[] = await Post.findAll({
