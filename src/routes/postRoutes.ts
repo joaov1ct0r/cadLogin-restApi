@@ -10,12 +10,18 @@ import CreateNewPostController from "../controllers/CreateNewPostController";
 
 import ICreateNewPostController from "../interfaces/ICreateNewPostController";
 
+import EditPostController from "../controllers/EditPostController";
+
+import IEditPostController from "../interfaces/IEditPostController";
+
 const postRouter: express.Router = express.Router();
 
 const postController: IPostController = new PostController();
 
 const createNewPostController: ICreateNewPostController =
   new CreateNewPostController();
+
+const editPostController: IEditPostController = new EditPostController();
 
 postRouter.post("/register", auth, createNewPostController.handle);
 
@@ -33,7 +39,7 @@ postRouter.delete(
   postController.handleDeletePostComment
 );
 
-postRouter.put("/edit", auth, postController.handleEditPost);
+postRouter.put("/edit", auth, editPostController.handle);
 
 postRouter.delete("/delete", auth, postController.handleDeletePost);
 

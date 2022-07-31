@@ -33,61 +33,6 @@ import IPost from "../interfaces/postInterface";
 import { Op } from "sequelize";
 
 export default class PostController {
-  async handleEditPost(req: IReq, res: Response): Promise<Response> {
-    const { error } = validateHandleEditPost(req.body);
-
-    if (error) {
-      return res.status(400).json({ error });
-    }
-
-    const postId: string = req.body.postId;
-
-    const content: string = req.body.content;
-
-    const id: string | undefined = req.userId;
-
-    try {
-      const isPostRegistered: IPost | null = await Post.findOne({
-        where: {
-          [Op.and]: [
-            {
-              id: postId,
-              userId: id,
-            },
-          ],
-        },
-      });
-
-      if (isPostRegistered === null) {
-        return res.status(404).json({ error: "Post não encontrado!" });
-      }
-
-      const editedPost: [affectedCount: number] = await Post.update(
-        {
-          content,
-        },
-        {
-          where: {
-            [Op.and]: [
-              {
-                id: postId,
-                userId: id,
-              },
-            ],
-          },
-        }
-      );
-
-      if (editedPost[0] === 0) {
-        return res.status(500).json({ error: "Falha ao atualizar Post!" });
-      }
-
-      return res.status(204).send();
-    } catch (err: unknown) {
-      return res.status(500).json({ err });
-    }
-  }
-
   async handleDeletePost(req: IReq, res: Response): Promise<Response> {
     const { error } = validateHandleDeletePost(req.body);
 
