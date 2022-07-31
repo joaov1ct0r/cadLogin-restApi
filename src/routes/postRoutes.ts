@@ -18,6 +18,10 @@ import DeletePostController from "../controllers/DeletePostController";
 
 import IDeletePostController from "../interfaces/IDeletePostController";
 
+import ListAllPostsController from "../controllers/ListAllPostsController";
+
+import IListAllPostsController from "../interfaces/IListAllPostsController";
+
 const postRouter: express.Router = express.Router();
 
 const postController: IPostController = new PostController();
@@ -28,6 +32,9 @@ const createNewPostController: ICreateNewPostController =
 const editPostController: IEditPostController = new EditPostController();
 
 const deletePostController: IDeletePostController = new DeletePostController();
+
+const listAllPostsController: IListAllPostsController =
+  new ListAllPostsController();
 
 postRouter.post("/register", auth, createNewPostController.handle);
 
@@ -51,6 +58,6 @@ postRouter.delete("/delete", auth, deletePostController.handle);
 
 postRouter.get("/post", auth, postController.handleOnePost);
 
-postRouter.get("/posts", auth, postController.handleAllPosts);
+postRouter.get("/posts", auth, listAllPostsController.handle);
 
 export default postRouter;

@@ -33,25 +33,6 @@ import IPost from "../interfaces/postInterface";
 import { Op } from "sequelize";
 
 export default class PostController {
-  async handleAllPosts(req: Request, res: Response): Promise<Response> {
-    try {
-      const posts: IPost[] = await Post.findAll({
-        include: [
-          {
-            model: Likes,
-          },
-          {
-            model: Comments,
-          },
-        ],
-      });
-
-      return res.status(200).json({ posts });
-    } catch (err: unknown) {
-      return res.status(500).json({ err });
-    }
-  }
-
   async handleOnePost(req: Request, res: Response): Promise<Response> {
     const { error } = validateHandleOnePost(req.body);
 
