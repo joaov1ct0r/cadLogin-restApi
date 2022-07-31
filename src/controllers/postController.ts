@@ -33,62 +33,6 @@ import IPost from "../interfaces/postInterface";
 import { Op } from "sequelize";
 
 export default class PostController {
-  async handleDeletePostLike(req: IReq, res: Response): Promise<Response> {
-    const { error } = validateHandleDeletePostLike(req.body);
-
-    if (error) {
-      return res.status(400).json({ error });
-    }
-
-    const userId: string | undefined = req.userId;
-
-    const postId: string = req.body.postId;
-
-    try {
-      const isPostRegistered: IPost | null = await Post.findOne({
-        where: { id: postId },
-      });
-
-      if (isPostRegistered === null) {
-        return res.status(404).json({ error: "Post não encontrado!" });
-      }
-
-      const isLikeRegistered: ILikes | null = await Likes.findOne({
-        where: {
-          [Op.and]: [
-            {
-              postId,
-              userId,
-            },
-          ],
-        },
-      });
-
-      if (isLikeRegistered === null) {
-        return res.status(404).json({ error: "Like não encontrado!" });
-      }
-
-      const deletedLike: number = await Likes.destroy({
-        where: {
-          [Op.and]: [
-            {
-              postId,
-              userId,
-            },
-          ],
-        },
-      });
-
-      if (deletedLike === 0) {
-        return res.status(500).json({ error: "Falha ao deletar Like!" });
-      }
-
-      return res.status(204).send();
-    } catch (err: unknown) {
-      return res.status(500).json({ err });
-    }
-  }
-
   async handleAddPostComment(req: IReq, res: Response): Promise<Response> {
     const { error } = validateHandleAddPostComment(req.body);
 

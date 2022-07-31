@@ -2,7 +2,7 @@ import DB from "../config/database";
 
 import { ModelStatic, DataTypes } from "sequelize";
 
-import IComments from "../../interfaces/commentsInterface";
+import IComments from "../../interfaces/IComments";
 
 import Post from "./postModel";
 
