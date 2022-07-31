@@ -6,11 +6,18 @@ import PostController from "../controllers/postController";
 
 import IPostController from "../interfaces/postControllerInterface";
 
+import CreateNewPostController from "../controllers/CreateNewPostController";
+
+import ICreateNewPostController from "../interfaces/ICreateNewPostController";
+
 const postRouter: express.Router = express.Router();
 
 const postController: IPostController = new PostController();
 
-postRouter.post("/register", auth, postController.handleNewPost);
+const createNewPostController: ICreateNewPostController =
+  new CreateNewPostController();
+
+postRouter.post("/register", auth, createNewPostController.handle);
 
 postRouter.post("/like", auth, postController.handleAddPostLike);
 

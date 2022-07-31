@@ -33,38 +33,6 @@ import IPost from "../interfaces/postInterface";
 import { Op } from "sequelize";
 
 export default class PostController {
-  async handleNewPost(req: IReq, res: Response): Promise<Response> {
-    const { error } = validateHandleNewPost(req.body);
-
-    if (error) {
-      return res.status(400).json({ error });
-    }
-
-    const id: string | undefined = req.userId;
-
-    const content: string = req.body.content;
-
-    try {
-      const user: IUser | null = await User.findOne({
-        where: { id },
-      });
-
-      if (user === null) {
-        return res.status(404).json({ error: "Usuario não encontrado!" });
-      }
-
-      const newPost: IPost = await Post.create({
-        author: user.email,
-        content,
-        userId: user.id,
-      });
-
-      return res.status(201).json({ newPost });
-    } catch (err: unknown) {
-      return res.status(500).json({ err });
-    }
-  }
-
   async handleEditPost(req: IReq, res: Response): Promise<Response> {
     const { error } = validateHandleEditPost(req.body);
 
