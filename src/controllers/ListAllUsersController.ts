@@ -15,7 +15,7 @@ export default class ListAllUsersController {
 
       return res.status(200).json({ users });
     } catch (err: unknown) {
-      return res.status(500).json({ err });
+      return res.status(500).json({ error: err });
     }
   }
 }
