@@ -64,6 +64,9 @@
         "500": {
           "description": "Internal Server Error"
         },
+        "401": {
+          "description": "Unathorized"
+        },
         "400": {
           "description": "Bad Request"
         },
@@ -120,9 +123,6 @@
       "responses": {
         "500": {
           "description": "Internal Server Error"
-        },
-        "404": {
-          "description": "Not Found"
         },
         "401": {
           "description": "Unathorized"
@@ -272,9 +272,6 @@
       "responses": {
         "500": {
           "description": "Internal Server Error"
-        },
-        "404": {
-          "description": "Not Found"
         },
         "401": {
           "description": "Unathorized"
