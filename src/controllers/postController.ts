@@ -33,40 +33,6 @@ import IPost from "../interfaces/postInterface";
 import { Op } from "sequelize";
 
 export default class PostController {
-  async handleOnePost(req: Request, res: Response): Promise<Response> {
-    const { error } = validateHandleOnePost(req.body);
-
-    if (error) {
-      return res.status(400).json({ error });
-    }
-
-    const postId: string = req.body.postId;
-
-    try {
-      const post: IPost | null = await Post.findOne({
-        include: [
-          {
-            model: Likes,
-            where: { postId },
-          },
-          {
-            model: Comments,
-            where: { postId },
-          },
-        ],
-        where: { id: postId },
-      });
-
-      if (post === null) {
-        return res.status(404).json({ error: "Post não encontrado!" });
-      }
-
-      return res.status(200).json({ post });
-    } catch (err: unknown) {
-      return res.status(500).json({ err });
-    }
-  }
-
   async handleAddPostLike(req: IReq, res: Response): Promise<Response> {
     const { error } = validateHandleAddPostLike(req.body);
 

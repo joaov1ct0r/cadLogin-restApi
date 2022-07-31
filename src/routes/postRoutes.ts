@@ -22,6 +22,10 @@ import ListAllPostsController from "../controllers/ListAllPostsController";
 
 import IListAllPostsController from "../interfaces/IListAllPostsController";
 
+import ListPostController from "../controllers/ListPostController";
+
+import IListPostController from "../interfaces/IListPostController";
+
 const postRouter: express.Router = express.Router();
 
 const postController: IPostController = new PostController();
@@ -35,6 +39,8 @@ const deletePostController: IDeletePostController = new DeletePostController();
 
 const listAllPostsController: IListAllPostsController =
   new ListAllPostsController();
+
+const listPostController: IListPostController = new ListPostController();
 
 postRouter.post("/register", auth, createNewPostController.handle);
 
@@ -56,7 +62,7 @@ postRouter.put("/edit", auth, editPostController.handle);
 
 postRouter.delete("/delete", auth, deletePostController.handle);
 
-postRouter.get("/post", auth, postController.handleOnePost);
+postRouter.get("/post", auth, listPostController.handle);
 
 postRouter.get("/posts", auth, listAllPostsController.handle);
 
