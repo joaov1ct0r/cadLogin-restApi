@@ -40,7 +40,7 @@ export default class EditUserController {
 
       return res.status(204).send();
     } catch (err: any) {
-      return res.status(err.statusCode).json(err.message);
+      return res.status(err.statusCode).json({ error: err.message });
     }
   }
 }
