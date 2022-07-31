@@ -26,6 +26,10 @@ import ListPostController from "../controllers/ListPostController";
 
 import IListPostController from "../interfaces/IListPostController";
 
+import AddPostLikeController from "../controllers/AddPostLikeController";
+
+import IAddPostLikeController from "../interfaces/IAddPostLikeController";
+
 const postRouter: express.Router = express.Router();
 
 const postController: IPostController = new PostController();
@@ -42,9 +46,12 @@ const listAllPostsController: IListAllPostsController =
 
 const listPostController: IListPostController = new ListPostController();
 
+const addPostLikeController: IAddPostLikeController =
+  new AddPostLikeController();
+
 postRouter.post("/register", auth, createNewPostController.handle);
 
-postRouter.post("/like", auth, postController.handleAddPostLike);
+postRouter.post("/like", auth, addPostLikeController.handle);
 
 postRouter.delete("/like/delete", auth, postController.handleDeletePostLike);
 

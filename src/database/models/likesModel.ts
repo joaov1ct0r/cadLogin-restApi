@@ -2,7 +2,7 @@ import DB from "../config/database";
 
 import { ModelStatic, DataTypes } from "sequelize";
 
-import ILikes from "../../interfaces/likesInterface";
+import ILikes from "../../interfaces/ILikes";
 
 import Post from "./postModel";
 

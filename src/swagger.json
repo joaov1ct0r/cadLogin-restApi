@@ -500,9 +500,6 @@
         "500": {
           "description": "Internal Server Error"
         },
-        "404": {
-          "description": "Not Found"
-        },
         "401": {
           "description": "Unathorized"
         },

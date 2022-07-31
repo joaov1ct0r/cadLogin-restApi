@@ -4,7 +4,7 @@ import Post from "../database/models/postModel";
 
 import Likes from "../database/models/likesModel";
 
-import ILikes from "../interfaces/likesInterface";
+import ILikes from "../interfaces/ILikes";
 
 import Comments from "../database/models/commentsModel";
 
@@ -33,58 +33,6 @@ import IPost from "../interfaces/postInterface";
 import { Op } from "sequelize";
 
 export default class PostController {
-  async handleAddPostLike(req: IReq, res: Response): Promise<Response> {
-    const { error } = validateHandleAddPostLike(req.body);
-
-    if (error) {
-      return res.status(400).json({ error });
-    }
-
-    const id: string | undefined = req.userId;
-
-    const postId: string = req.body.postId;
-
-    try {
-      const isPostRegistered: IPost | null = await Post.findOne({
-        where: { id: postId },
-      });
-
-      if (isPostRegistered === null) {
-        return res.status(404).json({ error: "Post não encontrado!" });
-      }
-
-      const user: IUser | null = await User.findOne({
-        where: { id },
-      });
-
-      const isLikeRegistered: ILikes | null = await Likes.findOne({
-        where: {
-          [Op.and]: [
-            {
-              postId,
-              userId: id,
-            },
-          ],
-        },
-      });
-
-      if (isLikeRegistered !== null) {
-        return res.status(401).json({ error: "Like já registrado!" });
-      }
-
-      // eslint-disable-next-line no-unused-vars
-      const addedLike: ILikes = await Likes.create({
-        postId,
-        likedBy: user!.email,
-        userId: user!.id,
-      });
-
-      return res.status(201).json({ message: "Like adicionado a post!" });
-    } catch (err: unknown) {
-      return res.status(500).json({ err });
-    }
-  }
-
   async handleDeletePostLike(req: IReq, res: Response): Promise<Response> {
     const { error } = validateHandleDeletePostLike(req.body);
 
