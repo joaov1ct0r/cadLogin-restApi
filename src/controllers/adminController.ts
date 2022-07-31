@@ -4,7 +4,7 @@ import Post from "../database/models/postModel";
 
 import { Request, Response } from "express";
 
-import IUser from "../interfaces/userInterface";
+import IUser from "../interfaces/IUser";
 
 import IPost from "../interfaces/postInterface";
 

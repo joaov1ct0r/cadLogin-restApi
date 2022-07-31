@@ -1,4 +1,4 @@
-import IUser from "./userInterface";
+import IUser from "./IUser";
 
 export default interface IListAllUsersService {
   execute(): Promise<IUser[]>;

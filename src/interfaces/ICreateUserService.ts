@@ -1,6 +1,6 @@
 import ICreateUserRequest from "./ICreateUserRequest";
 
-import IUser from "./userInterface";
+import IUser from "./IUser";
 
 export default interface ICreateUserService {
   execute({

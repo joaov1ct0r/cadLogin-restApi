@@ -6,7 +6,7 @@ import ListUserService from "../services/ListUserService";
 
 import IListUserService from "../interfaces/IListUserService";
 
-import IUser from "../interfaces/userInterface";
+import IUser from "../interfaces/IUser";
 
 export default class ListUserController {
   async handle(req: Request, res: Response): Promise<Response> {

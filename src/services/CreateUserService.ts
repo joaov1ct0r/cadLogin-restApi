@@ -1,6 +1,6 @@
 import User from "../database/models/userModel";
 
-import IUser from "../interfaces/userInterface";
+import IUser from "../interfaces/IUser";
 
 import bcrypt from "bcryptjs";
 
