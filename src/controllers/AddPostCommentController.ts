@@ -1,4 +1,4 @@
-import IReq from "../interfaces/requestInterface";
+import IReq from "../interfaces/IRequest";
 
 import { Response } from "express";
 

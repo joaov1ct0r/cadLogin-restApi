@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 
 import IJwt from "../interfaces/jsonInterface";
 
-import IReq from "../interfaces/requestInterface";
+import IReq from "../interfaces/IRequest";
 
 import { Response, NextFunction } from "express";
 

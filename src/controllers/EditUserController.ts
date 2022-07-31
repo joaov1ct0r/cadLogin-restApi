@@ -1,6 +1,6 @@
 import { Response } from "express";
 
-import IReq from "../interfaces/requestInterface";
+import IReq from "../interfaces/IRequest";
 
 import { validateHandleUserEdit } from "../validations/validateUserData";
 
