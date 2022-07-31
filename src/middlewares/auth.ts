@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-import IJwt from "../interfaces/jsonInterface";
+import IJwt from "../interfaces/IJson";
 
 import IReq from "../interfaces/IRequest";
 
