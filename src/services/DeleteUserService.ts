@@ -5,7 +5,7 @@ import Post from "../database/models/postModel";
 import InternalError from "../errors/InternalError";
 
 export default class DeleteUserService {
-  async execute(id: string | undefined): Promise<number> {
+  public async execute(id: string | undefined): Promise<number> {
     const deletedUser: number = await User.destroy({
       where: { id },
     });

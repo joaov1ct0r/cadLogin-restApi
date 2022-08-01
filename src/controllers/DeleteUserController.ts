@@ -7,7 +7,7 @@ import DeleteUserService from "../services/DeleteUserService";
 import IDeleteUserService from "../interfaces/IDeleteUserService";
 
 export default class DeleteUserController {
-  async handle(req: IReq, res: Response): Promise<Response> {
+  public async handle(req: IReq, res: Response): Promise<Response> {
     const id: string | undefined = req.userId;
 
     const deleteUserService: IDeleteUserService = new DeleteUserService();
