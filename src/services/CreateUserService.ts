@@ -9,7 +9,7 @@ import ICreateUserRequest from "../interfaces/ICreateUserRequest";
 import BadRequestError from "../errors/BadRequestError";
 
 export default class CreateUserService {
-  async execute({
+  public async execute({
     email,
     password,
     name,
