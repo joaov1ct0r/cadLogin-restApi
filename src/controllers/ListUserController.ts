@@ -9,7 +9,7 @@ import IListUserService from "../interfaces/IListUserService";
 import IUser from "../interfaces/IUser";
 
 export default class ListUserController {
-  async handle(req: Request, res: Response): Promise<Response> {
+  public async handle(req: Request, res: Response): Promise<Response> {
     const { error } = validateHandleOneUser(req.body);
 
     if (error) {

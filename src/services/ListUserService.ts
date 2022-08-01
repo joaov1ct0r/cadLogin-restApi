@@ -5,7 +5,7 @@ import IUser from "../interfaces/IUser";
 import BadRequestError from "../errors/BadRequestError";
 
 export default class ListUserService {
-  async execute(email: string): Promise<IUser> {
+  public async execute(email: string): Promise<IUser> {
     const user: IUser | null = await User.findOne({
       where: { email },
     });
