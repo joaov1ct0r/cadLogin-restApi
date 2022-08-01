@@ -11,7 +11,7 @@ import BadRequestError from "../errors/BadRequestError";
 import UnathorizedError from "../errors/UnathorizedError";
 
 export default class AuthenticateUserService {
-  async execute(email: string, password: string) {
+  public async execute(email: string, password: string) {
     const isUserRegistered: IUser | null = await User.findOne({
       where: { email },
     });
