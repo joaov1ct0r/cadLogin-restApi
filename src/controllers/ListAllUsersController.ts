@@ -7,7 +7,7 @@ import IListAllUsersService from "../interfaces/IListAllUsersService";
 import IUser from "../interfaces/IUser";
 
 export default class ListAllUsersController {
-  async handle(req: Request, res: Response): Promise<Response> {
+  public async handle(req: Request, res: Response): Promise<Response> {
     const listAllUsersService: IListAllUsersService = new ListAllUsersService();
 
     try {
