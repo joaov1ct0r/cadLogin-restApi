@@ -9,7 +9,7 @@ import IEditUserService from "../interfaces/IEditUserService";
 import EditUserService from "../services/EditUserService";
 
 export default class EditUserController {
-  async handle(req: IReq, res: Response): Promise<Response> {
+  public async handle(req: IReq, res: Response): Promise<Response> {
     const { error } = validateHandleUserEdit(req.body);
 
     if (error) {

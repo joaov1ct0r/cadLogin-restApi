@@ -7,7 +7,7 @@ import InternalError from "../errors/InternalError";
 import bcrypt from "bcryptjs";
 
 export default class EditUserService {
-  async execute({
+  public async execute({
     email,
     password,
     name,
