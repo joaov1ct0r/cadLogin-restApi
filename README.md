@@ -31,14 +31,14 @@
 
 <h2>Sobre</h2>
 
-<p>Rest API de cadastro e login do usuario</p>
+<p>Rest API de Social Media com cadastro e login do usuario, criação e interação com posts.</p>
 
 <h2>MODO DE USO</h2>
 
 <h3>GIT</h3>
 <hr>
 
-<p>FAÇA O DOWNLOADS DO REPOSITORIO OU USE:<br><code>git@github.com:joaov1ct0r/jwt-restApi.git</code></p>
+<p>FAÇA O DOWNLOAD DOS ARQUIVOS OU USE SSH:<br><code>git pull git@github.com:joaov1ct0r/social-media-jwt-rest-api.git</code></p>
 
 <h3>DEPENDENCIAS</h3>
 <hr>
@@ -52,23 +52,34 @@
 
 <ul>
   <li>SERVER_PORT = PORTA QUE VOCÊ QUEIRA RODAR O SERVIDOR</li>
-  <li>DB_HOST = ROTA PARA SEU BANCO DE DADOS MONGODB</li>
-  <li>DB_USER = SEU USUARIO DO DB</li>
-  <li>DB_PASSWORD = SENHA DA SUA DB</li>
-  <li>DB_DATABASE = SUA DB</li>
-  <li>DB_PORT = PORTA DA DB</li>
+  <li>DB_HOST = ROTA PARA SEU BANCO DE DADOS</li>
+  <li>DB_USER = SEU USUARIO DO BANCO DE DADOS</li>
+  <li>DB_PASSWORD = SENHA DO SEU BANCO DE DADOS</li>
+  <li>DB_DATABASE = NOME DO SEU BANCO DE DADOS</li>
+  <li>DB_PORT = PORTA DO SEU BANCO DE DADOS</li>
+  <li>DB_DIALECT = DIALETO DO SEU BANCO DE DADOS</li>
   <li>JWT_TOKEN_SECRET = SEU JWT TOKEN SECRET</li>
+  <li>NODE_ENV = AMBIENTE DO SEU NODE</li>
 </ul>
 
 <h3>Sequelize</h3>
 <hr>
 
-<p>FAÇA A CONEXÃO COM SEU PostgreSQL SERVER INSERINDO DADOS NO ARQUIVO .ENV</p>
+<p>APOS INSERIR OS DADOS NO ARQUIVO .env DIGITE EM SEU TERMINAL: 
+  <br><code>npx sequelize-cli db:create</code>
+  <br><code>npx sequelize-cli db:migrate</code>
+</p>
 
 <h3>SERVER</h3>
 <hr>
 
-<p>APOS TER OS ARQUIVOS EM SUA MAQUINA INICIE O SERVIDOR WEB NO SEU TERMINAL COM O COMANDO:<br><code>npm start</code></p>
+<p>APOS TER OS ARQUIVOS EM SUA MAQUINA ESCOLHA O MODO EM QUE QUER RODAR O PROJETO:
+  <br>PRODUÇÃO: <code>npm run build</code>
+  <code>npm run start</code>
 
-<p>APOS ISSO VA PARA A ROTA:<br><code>http://localhost:3000/api/docs</code>
+<br>DESENVOLVIMENTO: <code>npm run dev</code>
+
+</p>
+
+<p>APOS INICIAR O PROJETO EM SEU MODO PREFERIDO VA PARA A ROTA:<br><code>http://localhost:3000/api/docs</code>
 PARA VER AS ROTAS DISPONIVEIS PARA FAZER AS REQUISIÇÕES</p>
