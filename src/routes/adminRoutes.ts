@@ -12,11 +12,9 @@ import AdminDeleteUserController from "../controllers/AdminDeleteUserController"
 
 import IAdminDeleteUserController from "../interfaces/IAdminDeleteUserController";
 
-import {
-  handleAdminDeletePost,
-  handleAdminDeleteUser,
-  handleAdminEditUser,
-} from "../controllers/adminController";
+import AdminDeletePostController from "../controllers/AdminDeletePostController";
+
+import IAdminDeletePostController from "../interfaces/IAdminDeletePostController";
 
 const adminRouter: express.Router = express.Router();
 
@@ -25,6 +23,9 @@ const adminEditUserController: IAdminEditUserController =
 
 const adminDeleteUserController: IAdminDeleteUserController =
   new AdminDeleteUserController();
+
+const adminDeletePostController: IAdminDeletePostController =
+  new AdminDeletePostController();
 
 adminRouter.put("/user/edit", auth, admin, adminEditUserController.handle);
 
@@ -35,6 +36,11 @@ adminRouter.delete(
   adminDeleteUserController.handle
 );
 
-adminRouter.delete("/post/delete", auth, admin, handleAdminDeletePost);
+adminRouter.delete(
+  "/post/delete",
+  auth,
+  admin,
+  adminDeletePostController.handle
+);
 
 export default adminRouter;
