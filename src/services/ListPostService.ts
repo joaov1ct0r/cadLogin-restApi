@@ -14,11 +14,9 @@ export default class ListPostService {
       include: [
         {
           model: Likes,
-          where: { postId },
         },
         {
           model: Comments,
-          where: { postId },
         },
       ],
       where: { id: postId },
