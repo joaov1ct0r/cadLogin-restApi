@@ -4,6 +4,10 @@ import auth from "../middlewares/auth";
 
 import admin from "../middlewares/admin";
 
+import AdminEditUserController from "../controllers/AdminEditUserController";
+
+import IAdminEditUserController from "../interfaces/IAdminEditUserController";
+
 import {
   handleAdminDeletePost,
   handleAdminDeleteUser,
@@ -12,7 +16,10 @@ import {
 
 const adminRouter: express.Router = express.Router();
 
-adminRouter.put("/user/edit", auth, admin, handleAdminEditUser);
+const adminEditUserController: IAdminEditUserController =
+  new AdminEditUserController();
+
+adminRouter.put("/user/edit", auth, admin, adminEditUserController.handle);
 
 adminRouter.delete("/user/delete", auth, admin, handleAdminDeleteUser);
 
