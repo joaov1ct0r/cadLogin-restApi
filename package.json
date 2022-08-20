@@ -8,7 +8,8 @@
   "scripts": {
     "start": "node ./build/index.js",
     "dev": "ts-node-dev ./src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "jest"
   },
   "keywords": [
     "jwt",
@@ -56,6 +57,7 @@
     "eslint-plugin-promise": "^6.0.0",
     "jest": "^28.1.3",
     "prettier": "^2.6.2",
+    "ts-jest": "^28.0.8",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.5.4"
   }
