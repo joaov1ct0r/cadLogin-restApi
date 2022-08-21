@@ -4,7 +4,9 @@ import IUser from "../interfaces/IUser";
 
 import BadRequestError from "../errors/BadRequestError";
 
-export default class ListUserService {
+import IListUserService from "../interfaces/IListUserService";
+
+export default class ListUserService implements IListUserService {
   public async execute(email: string): Promise<IUser> {
     const user: IUser | null = await User.findOne({
       where: { email },

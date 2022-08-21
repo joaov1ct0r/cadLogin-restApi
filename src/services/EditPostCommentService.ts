@@ -16,7 +16,9 @@ import IUser from "../interfaces/IUser";
 
 import InternalError from "../errors/InternalError";
 
-export default class EditPostCommentService {
+import IEditPostCommentService from "../interfaces/IEditPostCommentService";
+
+export default class EditPostCommentService implements IEditPostCommentService {
   public async execute(
     userId: string | undefined,
     postId: string,

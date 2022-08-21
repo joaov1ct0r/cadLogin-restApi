@@ -8,7 +8,9 @@ import ICreateUserRequest from "../interfaces/ICreateUserRequest";
 
 import BadRequestError from "../errors/BadRequestError";
 
-export default class CreateUserService {
+import ICreateUserService from "../interfaces/ICreateUserService";
+
+export default class CreateUserService implements ICreateUserService {
   public async execute({
     email,
     password,

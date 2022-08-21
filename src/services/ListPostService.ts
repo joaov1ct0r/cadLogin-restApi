@@ -8,7 +8,9 @@ import Comments from "../database/models/commentsModel";
 
 import BadRequestError from "../errors/BadRequestError";
 
-export default class ListPostService {
+import IListPostService from "../interfaces/IListPostService";
+
+export default class ListPostService implements IListPostService {
   public async execute(postId: string): Promise<IPost> {
     const post: IPost | null = await Post.findOne({
       include: [

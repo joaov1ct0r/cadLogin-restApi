@@ -12,7 +12,9 @@ import BadRequestError from "../errors/BadRequestError";
 
 import InternalError from "../errors/InternalError";
 
-export default class DeletePostService {
+import IDeletePostService from "../interfaces/IDeletePostService";
+
+export default class DeletePostService implements IDeletePostService {
   public async execute(
     id: string | undefined,
     postId: string

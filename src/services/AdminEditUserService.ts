@@ -8,7 +8,9 @@ import InternalError from "../errors/InternalError";
 
 import BadRequestError from "../errors/BadRequestError";
 
-export default class AdminEditUserService {
+import IAdminEditUserService from "../interfaces/IAdminEditUserService";
+
+export default class AdminEditUserService implements IAdminEditUserService {
   public async execute(
     userEmail: string,
     userNewEmail: string,

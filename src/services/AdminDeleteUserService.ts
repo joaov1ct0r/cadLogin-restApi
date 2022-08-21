@@ -8,7 +8,9 @@ import InternalError from "../errors/InternalError";
 
 import Post from "../database/models/postModel";
 
-export default class AdminDeleteUserService {
+import IAdminDeleteUserService from "../interfaces/IAdminDeleteUserService";
+
+export default class AdminDeleteUserService implements IAdminDeleteUserService {
   public async execute(userEmail: string): Promise<number> {
     const isUserRegistered: IUser | null = await User.findOne({
       where: { email: userEmail },

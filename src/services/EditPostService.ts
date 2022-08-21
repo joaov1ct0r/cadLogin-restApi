@@ -8,7 +8,9 @@ import BadRequestError from "../errors/BadRequestError";
 
 import InternalError from "../errors/InternalError";
 
-export default class EditPostService {
+import IEditPostService from "../interfaces/IEditPostService";
+
+export default class EditPostService implements IEditPostService {
   public async execute(
     id: string | undefined,
     postId: string,

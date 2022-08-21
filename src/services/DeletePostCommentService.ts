@@ -12,7 +12,11 @@ import InternalError from "../errors/InternalError";
 
 import { Op } from "sequelize";
 
-export default class DeletePostCommentService {
+import IDeletePostCommentService from "../interfaces/IDeletePostCommentService";
+
+export default class DeletePostCommentService
+  implements IDeletePostCommentService
+{
   public async execute(
     userId: string | undefined,
     postId: string,

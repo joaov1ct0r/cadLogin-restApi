@@ -10,7 +10,11 @@ import BadRequestError from "../errors/BadRequestError";
 
 import UnathorizedError from "../errors/UnathorizedError";
 
-export default class AuthenticateUserService {
+import IAuthenticateUserService from "../interfaces/IAuthenticateUserService";
+
+export default class AuthenticateUserService
+  implements IAuthenticateUserService
+{
   public async execute(email: string, password: string) {
     const isUserRegistered: IUser | null = await User.findOne({
       where: { email },

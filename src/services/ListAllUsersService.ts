@@ -4,7 +4,9 @@ import IUser from "../interfaces/IUser";
 
 import Post from "../database/models/postModel";
 
-export default class ListAllUsersService {
+import IListAllUsersService from "../interfaces/IListAllUsersService";
+
+export default class ListAllUsersService implements IListAllUsersService {
   public async execute(): Promise<IUser[]> {
     const users: IUser[] = await User.findAll({
       include: Post,

@@ -6,7 +6,9 @@ import BadRequestError from "../errors/BadRequestError";
 
 import InternalError from "../errors/InternalError";
 
-export default class AdminDeletePostService {
+import IAdminDeletePostService from "../interfaces/IAdminDeletePostService";
+
+export default class AdminDeletePostService implements IAdminDeletePostService {
   public async execute(postId: string): Promise<number> {
     const isPostRegistered: IPost | null = await Post.findOne({
       where: {

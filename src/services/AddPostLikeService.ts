@@ -14,7 +14,9 @@ import BadRequestError from "../errors/BadRequestError";
 
 import { Op } from "sequelize";
 
-export default class AddPostLikeService {
+import IAddPostLikeService from "../interfaces/IAddPostLikeService";
+
+export default class AddPostLikeService implements IAddPostLikeService {
   public async execute(
     postId: string,
     id: string | undefined

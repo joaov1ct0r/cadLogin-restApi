@@ -12,7 +12,9 @@ import IUser from "../interfaces/IUser";
 
 import BadRequestError from "../errors/BadRequestError";
 
-export default class AddPostCommentService {
+import IAddPostCommentService from "../interfaces/IAddPostCommentService";
+
+export default class AddPostCommentService implements IAddPostCommentService {
   public async execute(
     id: string | undefined,
     postId: string,

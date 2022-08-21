@@ -6,7 +6,9 @@ import InternalError from "../errors/InternalError";
 
 import bcrypt from "bcryptjs";
 
-export default class EditUserService {
+import IEditUserService from "../interfaces/IEditUserService";
+
+export default class EditUserService implements IEditUserService {
   public async execute({
     email,
     password,
