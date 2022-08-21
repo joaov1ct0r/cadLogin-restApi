@@ -6,7 +6,7 @@ export default interface IUsersInMemoryDB {
     password: string,
     name: string,
     bornAt: string
-  ): Promise<IUser>;
+  ): Promise<Object>;
 
   exists(email: string): Promise<boolean>;
 }
