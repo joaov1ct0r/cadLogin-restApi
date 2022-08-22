@@ -8,7 +8,11 @@ import DeletePostCommentService from "../services/DeletePostCommentService";
 
 import IDeletePostCommentService from "../interfaces/IDeletePostCommentService";
 
-export default class DeletePostCommentController {
+import IDeletePostCommentController from "../interfaces/IDeletePostCommentController";
+
+export default class DeletePostCommentController
+  implements IDeletePostCommentController
+{
   public async handle(req: IReq, res: Response): Promise<Response> {
     const { error } = validateHandleDeletePostComment(req.body);
 

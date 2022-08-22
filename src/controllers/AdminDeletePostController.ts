@@ -6,7 +6,11 @@ import AdminDeletePostService from "../services/AdminDeletePostService";
 
 import IAdminDeletePostService from "../interfaces/IAdminDeletePostService";
 
-export default class AdminDeletePostController {
+import IAdminDeletePostController from "../interfaces/IAdminDeletePostController";
+
+export default class AdminDeletePostController
+  implements IAdminDeletePostController
+{
   public async handle(req: Request, res: Response): Promise<Response> {
     const { error } = validateHandleAdminDeletePost(req.body);
 

@@ -8,7 +8,11 @@ import EditPostCommentService from "../services/EditPostCommentService";
 
 import IEditPostCommentService from "../interfaces/IEditPostCommentService";
 
-export default class EditPostCommentController {
+import IEditPostCommentController from "../interfaces/IEditPostCommentController";
+
+export default class EditPostCommentController
+  implements IEditPostCommentController
+{
   public async handle(req: IReq, res: Response): Promise<Response> {
     const { error } = validateHandleEditPostComment(req.body);
 

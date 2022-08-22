@@ -6,7 +6,11 @@ import IAuthenticateUserService from "../interfaces/IAuthenticateUserService";
 
 import AuthenticateUserService from "../services/AuthenticateUserService";
 
-export default class AuthenticateUserController {
+import IAuthenticateUserController from "../interfaces/IAuthenticateUserController";
+
+export default class AuthenticateUserController
+  implements IAuthenticateUserController
+{
   public async handle(req: Request, res: Response): Promise<Response> {
     const { error } = validateHandleUserLogin(req.body);
 

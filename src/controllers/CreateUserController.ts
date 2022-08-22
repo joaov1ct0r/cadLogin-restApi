@@ -8,7 +8,9 @@ import { validateHandleUserRegister } from "../validations/validateUserData";
 
 import IUser from "../interfaces/IUser";
 
-export default class CreateUserController {
+import ICreateUserController from "../interfaces/ICreateUserController";
+
+export default class CreateUserController implements ICreateUserController {
   public async handle(req: Request, res: Response): Promise<Response> {
     const { error } = validateHandleUserRegister(req.body);
 

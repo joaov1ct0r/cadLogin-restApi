@@ -10,7 +10,9 @@ import IAddPostLikeService from "../interfaces/IAddPostLikeService";
 
 import ILikes from "../interfaces/ILikes";
 
-export default class AddPostLikeController {
+import IAddPostLikeController from "../interfaces/IAddPostLikeController";
+
+export default class AddPostLikeController implements IAddPostLikeController {
   public async handle(req: IReq, res: Response): Promise<Response> {
     const { error } = validateHandleAddPostLike(req.body);
 

@@ -8,7 +8,9 @@ import EditPostService from "../services/EditPostService";
 
 import IEditPostService from "../interfaces/IEditPostService";
 
-export default class EditPostController {
+import IEditPostController from "../interfaces/IEditPostController";
+
+export default class EditPostController implements IEditPostController {
   public async handle(req: IReq, res: Response): Promise<Response> {
     const { error } = validateHandleEditPost(req.body);
 

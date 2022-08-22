@@ -8,7 +8,9 @@ import DeletePostService from "../services/DeletePostService";
 
 import IDeletePostService from "../interfaces/IDeletePostService";
 
-export default class DeletePostController {
+import IDeletePostController from "../interfaces/IDeletePostController";
+
+export default class DeletePostController implements IDeletePostController {
   public async handle(req: IReq, res: Response): Promise<Response> {
     const { error } = validateHandleDeletePost(req.body);
 

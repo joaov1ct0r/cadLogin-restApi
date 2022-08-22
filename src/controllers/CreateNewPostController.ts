@@ -7,9 +7,14 @@ import { validateHandleNewPost } from "../validations/validatePostData";
 import CreateNewPostService from "../services/CreateNewPostService";
 
 import ICreateNewPostService from "../interfaces/ICreateNewPostService";
+
 import IPost from "../interfaces/IPost";
 
-export default class CreateNewPostController {
+import ICreateNewPostController from "../interfaces/ICreateNewPostController";
+
+export default class CreateNewPostController
+  implements ICreateNewPostController
+{
   public async handle(req: IReq, res: Response): Promise<Response> {
     const { error } = validateHandleNewPost(req.body);
 

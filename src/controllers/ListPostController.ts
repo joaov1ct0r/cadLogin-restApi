@@ -8,7 +8,9 @@ import IListPostService from "../interfaces/IListPostService";
 
 import IPost from "../interfaces/IPost";
 
-export default class ListPostController {
+import IListPostController from "../interfaces/IListPostController";
+
+export default class ListPostController implements IListPostController {
   public async handle(req: Request, res: Response): Promise<Response> {
     const { error } = validateHandleOnePost(req.body);
 

@@ -8,7 +8,11 @@ import DeletePostLikeService from "../services/DeletePostLikeService";
 
 import IDeletePostLikeService from "../interfaces/IDeletePostLikeService";
 
-export default class DeletePostLikeController {
+import IDeletePostLikeController from "../interfaces/IDeletePostLikeController";
+
+export default class DeletePostLikeController
+  implements IDeletePostLikeController
+{
   public async handle(req: IReq, res: Response): Promise<Response> {
     const { error } = validateHandleDeletePostLike(req.body);
 

@@ -8,7 +8,9 @@ import IListUserService from "../interfaces/IListUserService";
 
 import IUser from "../interfaces/IUser";
 
-export default class ListUserController {
+import IListUserController from "../interfaces/IListUserController";
+
+export default class ListUserController implements IListUserController {
   public async handle(req: Request, res: Response): Promise<Response> {
     const { error } = validateHandleOneUser(req.body);
 

@@ -6,7 +6,11 @@ import AdminEditUserService from "../services/AdminEditUserService";
 
 import IAdminEditUserService from "../interfaces/IAdminEditUserService";
 
-export default class AdminEditUserController {
+import IAdminEditUserController from "../interfaces/IAdminEditUserController";
+
+export default class AdminEditUserController
+  implements IAdminEditUserController
+{
   public async handle(req: Request, res: Response): Promise<Response> {
     const { error } = validateHandleAdminEditUser(req.body);
 

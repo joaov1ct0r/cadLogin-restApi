@@ -6,7 +6,11 @@ import AdminDeleteUserService from "../services/AdminDeleteUserService";
 
 import IAdminDeleteUserService from "../interfaces/IAdminDeleteUserService";
 
-export default class AdminDeleteUserController {
+import IAdminDeleteUserController from "../interfaces/IAdminDeleteUserController";
+
+export default class AdminDeleteUserController
+  implements IAdminDeleteUserController
+{
   public async handle(req: Request, res: Response): Promise<Response> {
     const { error } = validateHandleAdminDeleteUser(req.body);
 

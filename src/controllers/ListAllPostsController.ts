@@ -6,7 +6,9 @@ import ListAllPostsService from "../services/ListAllPostsService";
 
 import IListAllPostsService from "../interfaces/IListAllPostsService";
 
-export default class ListAllPostsController {
+import IListAllPostsController from "../interfaces/IListAllPostsController";
+
+export default class ListAllPostsController implements IListAllPostsController {
   public async handle(req: Request, res: Response): Promise<Response> {
     const listAllPostsService: IListAllPostsService = new ListAllPostsService();
     try {

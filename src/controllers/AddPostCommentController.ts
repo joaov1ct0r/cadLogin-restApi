@@ -10,7 +10,11 @@ import IAddPostCommentService from "../interfaces/IAddPostCommentService";
 
 import IComments from "../interfaces/IComments";
 
-export default class AddPostCommentController {
+import IAddPostCommentController from "../interfaces/IAddPostCommentController";
+
+export default class AddPostCommentController
+  implements IAddPostCommentController
+{
   public async handle(req: IReq, res: Response): Promise<Response> {
     const { error } = validateHandleAddPostComment(req.body);
 
