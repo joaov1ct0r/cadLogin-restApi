@@ -16,10 +16,16 @@
     "removeComments": true,
     "typeRoots": [
       "./node_modules/@types",
-      "src/interfaces"
+      "./src/interfaces"
     ]
   },
+  "exclude": [
+    "node_modules",
+    "build"
+  ],
   "include": [
-    "./src/**/*"
+    "./src/**/*",
+    "./src/__tests__/**/*",
+    ".jest.config.ts"
   ]
 }
