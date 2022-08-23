@@ -9,9 +9,9 @@
     "start": "node ./build/index.js",
     "dev": "ts-node-dev ./src/index.ts",
     "build": "tsc",
-    "pretest": "NODE_ENV=test sequelize db:migrate",
+    "pretest": "NODE_ENV=test npx sequelize-cli db:migrate",
     "test": "NODE_ENV=test jest",
-    "posttest": "NODE_ENV=test sequelize db:migrate:undo:all"
+    "posttest": "NODE_ENV=test npx sequelize-cli db:migrate:undo:all"
   },
   "keywords": [
     "jwt",
@@ -63,7 +63,6 @@
     "sqlite3": "^5.0.11",
     "ts-jest": "^28.0.8",
     "ts-node-dev": "^1.1.8",
-    "typescript": "^4.5.4",
-    "uuidv4": "^6.2.13"
+    "typescript": "^4.5.4"
   }
 }
