@@ -12,7 +12,7 @@ export default {
   },
   test: {
     dialect: "sqlite",
-    storage: "./__tests__/database.sqlite",
+    storage: "./src/__tests__/database.sqlite",
   },
   production: {
     username: process.env.DB_USER,
