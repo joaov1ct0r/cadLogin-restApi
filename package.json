@@ -9,9 +9,7 @@
     "start": "node ./build/index.js",
     "dev": "ts-node-dev ./src/index.ts",
     "build": "tsc",
-    "pretest": "NODE_ENV=test npx sequelize-cli db:migrate",
-    "test": "NODE_ENV=test jest",
-    "posttest": "NODE_ENV=test npx sequelize-cli db:migrate:undo:all"
+    "test": "jest"
   },
   "keywords": [
     "jwt",
