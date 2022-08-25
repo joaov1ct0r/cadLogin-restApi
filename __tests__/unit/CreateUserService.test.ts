@@ -1,16 +1,38 @@
+import CreateUserService from "../../src/services/CreateUserService";
+
+import User from "../../src/database/models/userModel";
+
+import BadRequestError from "../../src/errors/BadRequestError";
+
+const makeSut = () => {
+  return new CreateUserService(User);
+};
+
 describe("when create user service is called", () => {
   const mockRepository = {
     findOne: jest.fn(),
     create: jest.fn(),
   };
 
-  it("should sum 2 numbers", () => {
-    const x = 2;
+  describe("execute", () => {
+    it("should return an error if user already exists", async () => {
+      const sut = makeSut();
 
-    const y = 2;
+      const userData = {
+        email: "user@email.com.br",
+        password: "123123123123",
+        name: "user name",
+        bornAt: "11/09/2001",
+      };
 
-    const result = x + y;
+      mockRepository.findOne.mockReturnValue(userData);
 
-    expect(result).toBe(4);
+      await sut.execute(userData);
+
+      const user = await sut.execute(userData);
+
+      expect(user).toBe(typeof BadRequestError);
+      expect(sut).toHaveBeenCalledTimes(2);
+    });
   });
 });
