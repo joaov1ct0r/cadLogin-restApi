@@ -1,5 +1,5 @@
 {
-  "name": "jwt-restapi",
+  "name": "social-media-jwt-rest-api",
   "author": "github.com/joaov1ct0r",
   "version": "1.0.0",
   "description": "API rest de media social para cadastro e login de usuarios, e criação de posts",
