@@ -6,6 +6,8 @@ import ICreateUserService from "../interfaces/ICreateUserService";
 
 import { validateHandleUserRegister } from "../validations/validateUserData";
 
+import User from "../database/models/userModel";
+
 import IUser from "../interfaces/IUser";
 
 import ICreateUserController from "../interfaces/ICreateUserController";
@@ -26,7 +28,7 @@ export default class CreateUserController implements ICreateUserController {
 
     const bornAt: string = req.body.bornAt;
 
-    const createUserService: ICreateUserService = new CreateUserService();
+    const createUserService: ICreateUserService = new CreateUserService(User);
 
     try {
       const user: IUser = await createUserService.execute({
