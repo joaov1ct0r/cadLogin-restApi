@@ -9,15 +9,22 @@ import ICreateUserRequest from "../interfaces/ICreateUserRequest";
 import BadRequestError from "../errors/BadRequestError";
 
 import ICreateUserService from "../interfaces/ICreateUserService";
+import { ModelStatic } from "sequelize";
 
 export default class CreateUserService implements ICreateUserService {
+  private readonly repository: ModelStatic<IUser>;
+
+  constructor(repository: typeof User) {
+    this.repository = repository;
+  }
+
   public async execute({
     email,
     password,
     name,
     bornAt,
   }: ICreateUserRequest): Promise<IUser> {
-    const isUserRegistered: IUser | null = await User.findOne({
+    const isUserRegistered: IUser | null = await this.repository.findOne({
       where: { email },
     });
 
@@ -25,7 +32,7 @@ export default class CreateUserService implements ICreateUserService {
       throw new BadRequestError("Usuario já cadastrado!");
     }
 
-    const newUser: IUser = await User.create({
+    const newUser: IUser = await this.repository.create({
       email,
       password: bcrypt.hashSync(password),
       name,
