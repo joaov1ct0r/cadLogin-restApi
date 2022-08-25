@@ -12,5 +12,11 @@ export default {
   preset: "ts-jest",
 
   // The glob patterns Jest uses to detect test files
-  testMatch: ["./__tests__/**/*.test.ts?(x)"],
+  testMatch: ["**/__tests__/**/*.test.ts?(x)"],
+
+  globals: {
+    "ts-jest": {
+      isolatedModules: true,
+    },
+  },
 };

@@ -6,6 +6,6 @@ describe("sum", () => {
 
     const result = x + y;
 
-    expect(result).toBe(5);
+    expect(result).toBe(4);
   });
 });
