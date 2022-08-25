@@ -24,8 +24,6 @@
     "build"
   ],
   "include": [
-    "./src/**/*",
-    "./src/__tests__/**/*",
-    ".jest.config.ts"
+    "./src/**/*"
   ]
 }
