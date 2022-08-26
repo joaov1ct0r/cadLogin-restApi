@@ -57,8 +57,6 @@ describe("create user service", () => {
 
       const returnedData = { ...userInputData, ...id };
 
-      const mockRepository = mock<ICreateUserService>();
-
       mockRepository.execute.mockReturnValue(
         returnedData as unknown as Promise<IUser>
       );
