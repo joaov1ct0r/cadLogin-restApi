@@ -9,6 +9,7 @@ import ICreateUserRequest from "../interfaces/ICreateUserRequest";
 import BadRequestError from "../errors/BadRequestError";
 
 import ICreateUserService from "../interfaces/ICreateUserService";
+
 import { ModelStatic } from "sequelize";
 
 export default class CreateUserService implements ICreateUserService {
