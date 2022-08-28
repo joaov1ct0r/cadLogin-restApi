@@ -1,5 +1,3 @@
-// import { jest } from "@jest/globals";
-
 import { mock } from "jest-mock-extended";
 
 import IUser from "../../src/interfaces/IUser";
