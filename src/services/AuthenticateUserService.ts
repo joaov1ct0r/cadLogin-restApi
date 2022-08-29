@@ -12,11 +12,18 @@ import UnathorizedError from "../errors/UnathorizedError";
 
 import IAuthenticateUserService from "../interfaces/IAuthenticateUserService";
 
+import { ModelStatic } from "sequelize";
+
 export default class AuthenticateUserService
   implements IAuthenticateUserService
 {
+  private readonly repository: ModelStatic<IUser>;
+  constructor(repository: typeof User) {
+    this.repository = repository;
+  }
+
   public async execute(email: string, password: string) {
-    const isUserRegistered: IUser | null = await User.findOne({
+    const isUserRegistered: IUser | null = await this.repository.findOne({
       where: { email },
     });
 
