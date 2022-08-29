@@ -30,13 +30,12 @@ describe("create user service", () => {
         bornAt: "11/09/2001",
       };
 
-      mockRepository.findOne.mockRejectedValue(
-        new BadRequestError("Usuario já cadastrado!")
-      );
+      mockRepository.findOne.mockResolvedValue({ id: "1" } as IUser);
 
       expect(async () => {
         await sut.execute(userInputData);
       }).rejects.toThrow(new BadRequestError("Usuario já cadastrado!"));
+
       expect(mockRepository.findOne).toHaveBeenCalledTimes(1);
     });
 
