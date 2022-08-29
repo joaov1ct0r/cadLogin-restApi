@@ -8,28 +8,40 @@ import CreateUserService from "../../src/services/CreateUserService";
 
 import ICreateUserService from "../../src/interfaces/ICreateUserService";
 
-// import BadRequestError from "../../src/errors/BadRequestError";
+import BadRequestError from "../../src/errors/BadRequestError";
+
+const makeSut = () => {
+  const mockRepository = mock<typeof User>();
+
+  const sut: ICreateUserService = new CreateUserService(mockRepository);
+
+  return { sut, mockRepository };
+};
 
 describe("create user service", () => {
   describe("when execute is called", () => {
-    // it("should throw an error if user already exists", async () => {
-    //   const userInputData = {
-    //     email: "user@email.com.br",
-    //     password: "123123123",
-    //     name: "user name",
-    //     bornAt: "11/09/2001",
-    //   };
-    //   // await sut.execute(userInputData);
-    //   expect(async () => {
-    //     await sut.execute(userInputData);
-    //   }).rejects.toThrow(new BadRequestError("Usuario já cadastrado!"));
-    //   expect(mockRepository.findOne).toHaveBeenCalledTimes(1);
-    // });
+    it("should throw an error if user already exists", async () => {
+      const { sut, mockRepository } = makeSut();
+
+      const userInputData = {
+        email: "user@email.com.br",
+        password: "123123123",
+        name: "user name",
+        bornAt: "11/09/2001",
+      };
+
+      mockRepository.findOne.mockRejectedValue(
+        new BadRequestError("Usuario já cadastrado!")
+      );
+
+      expect(async () => {
+        await sut.execute(userInputData);
+      }).rejects.toThrow(new BadRequestError("Usuario já cadastrado!"));
+      expect(mockRepository.findOne).toHaveBeenCalledTimes(1);
+    });
 
     it("should create a new user", async () => {
-      const mockRepository = mock<typeof User>();
-
-      const sut: ICreateUserService = new CreateUserService(mockRepository);
+      const { sut, mockRepository } = makeSut();
 
       const userInputData = {
         email: "user@mail.com.br",
