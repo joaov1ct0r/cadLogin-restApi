@@ -35,8 +35,6 @@ describe("create user service", () => {
       expect(async () => {
         await sut.execute(userInputData);
       }).rejects.toThrow(new BadRequestError("Usuario já cadastrado!"));
-
-      expect(mockRepository.findOne).toHaveBeenCalledTimes(1);
     });
 
     it("should create a new user", async () => {
@@ -62,10 +60,6 @@ describe("create user service", () => {
       const user = await sut.execute(userInputData);
 
       expect(user).toHaveProperty("id");
-
-      expect(mockRepository.findOne).toHaveBeenCalledTimes(1);
-
-      expect(mockRepository.create).toHaveBeenCalledTimes(1);
     });
   });
 });

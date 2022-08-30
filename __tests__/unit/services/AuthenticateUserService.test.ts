@@ -1,6 +1,6 @@
 import { mock } from "jest-mock-extended";
 
-// import IUser from "../../../src/interfaces/IUser";
+import IUser from "../../../src/interfaces/IUser";
 
 import User from "../../../src/database/models/userModel";
 
@@ -10,6 +10,10 @@ import IAuthenticateUserService from "../../../src/interfaces/IAuthenticateUserS
 
 import BadRequestError from "../../../src/errors/BadRequestError";
 
+import UnathorizedError from "../../../src/errors/UnathorizedError";
+
+import bcrypt from "bcryptjs";
+
 const makeSut = () => {
   const mockRepository = mock<typeof User>();
 
@@ -17,7 +21,9 @@ const makeSut = () => {
     mockRepository
   );
 
-  return { sut, mockRepository };
+  const mockBcryptjs = mock<typeof bcrypt>();
+
+  return { sut, mockRepository, mockBcryptjs };
 };
 
 describe("authenticate user service", () => {
@@ -35,8 +41,26 @@ describe("authenticate user service", () => {
       expect(async () => {
         await sut.execute(userData.email, userData.password);
       }).rejects.toThrow(new BadRequestError("Usuario não registrado!"));
+    });
 
-      expect(mockRepository.findOne).toHaveBeenCalledTimes(1);
+    it("should return exception if password isnt matching", async () => {
+      const { sut, mockRepository, mockBcryptjs } = makeSut();
+
+      const userData = {
+        email: "useremail@mail.com",
+        password: "123123123",
+      };
+
+      mockRepository.findOne.mockResolvedValue({
+        id: "1",
+        password: userData.password,
+      } as IUser);
+
+      mockBcryptjs.compareSync.mockReturnValue(false);
+
+      expect(async () => {
+        await sut.execute(userData.email, userData.password);
+      }).rejects.toThrow(new UnathorizedError("Falha na autenticação!"));
     });
   });
 });
