@@ -27,5 +27,15 @@ describe("delete user service", () => {
         await sut.execute("1");
       }).rejects.toThrow(new InternalError("Falha ao deletar usuario!"));
     });
+
+    it("should return number of deleted lines", async () => {
+      const { sut, mockRepository } = makeSut();
+
+      mockRepository.destroy.mockResolvedValueOnce(5);
+
+      const deletedLines = await sut.execute("1");
+
+      expect(deletedLines).toBeGreaterThan(0);
+    });
   });
 });
