@@ -8,7 +8,17 @@ import bcrypt from "bcryptjs";
 
 import IEditUserService from "../interfaces/IEditUserService";
 
+import { ModelStatic } from "sequelize";
+
+import IUser from "../interfaces/IUser";
+
 export default class EditUserService implements IEditUserService {
+  private readonly repository: ModelStatic<IUser>;
+
+  constructor(repository: typeof User) {
+    this.repository = repository;
+  }
+
   public async execute({
     email,
     password,
@@ -16,7 +26,7 @@ export default class EditUserService implements IEditUserService {
     bornAt,
     id,
   }: IEditUserRequest): Promise<number> {
-    const editedUser: [affectedCount: number] = await User.update(
+    const editedUser: [affectedCount: number] = await this.repository.update(
       {
         email,
         password: bcrypt.hashSync(password),
