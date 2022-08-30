@@ -9,6 +9,9 @@
     "start": "node ./build/index.js",
     "dev": "ts-node-dev ./src/index.ts",
     "build": "tsc",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
+    "test:verbose": "jest --verbose",
     "test": "jest"
   },
   "keywords": [
