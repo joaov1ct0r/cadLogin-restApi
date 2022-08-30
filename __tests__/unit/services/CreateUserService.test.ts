@@ -2,7 +2,7 @@ import { mock } from "jest-mock-extended";
 
 import IUser from "../../../src/interfaces/IUser";
 
-import User from "../../../src/database/models/userModel";
+import { ModelStatic } from "sequelize";
 
 import CreateUserService from "../../../src/services/CreateUserService";
 
@@ -11,7 +11,7 @@ import ICreateUserService from "../../../src/interfaces/ICreateUserService";
 import BadRequestError from "../../../src/errors/BadRequestError";
 
 const makeSut = () => {
-  const mockRepository = mock<typeof User>();
+  const mockRepository = mock<ModelStatic<IUser>>();
 
   const sut: ICreateUserService = new CreateUserService(mockRepository);
 

@@ -2,7 +2,7 @@ import { mock } from "jest-mock-extended";
 
 import IUser from "../../../src/interfaces/IUser";
 
-import User from "../../../src/database/models/userModel";
+import { ModelStatic } from "sequelize";
 
 import AuthenticateUserService from "../../../src/services/AuthenticateUserService";
 
@@ -19,7 +19,7 @@ import IJwt from "../../../src/interfaces/IJson";
 import bcrypt from "bcryptjs";
 
 const makeSut = () => {
-  const mockRepository = mock<typeof User>();
+  const mockRepository = mock<ModelStatic<IUser>>();
 
   const sut: IAuthenticateUserService = new AuthenticateUserService(
     mockRepository

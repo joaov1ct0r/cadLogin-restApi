@@ -1,5 +1,3 @@
-import User from "../database/models/userModel";
-
 import IEditUserRequest from "../interfaces/IEditUserRequest";
 
 import InternalError from "../errors/InternalError";
@@ -15,7 +13,7 @@ import IUser from "../interfaces/IUser";
 export default class EditUserService implements IEditUserService {
   private readonly repository: ModelStatic<IUser>;
 
-  constructor(repository: typeof User) {
+  constructor(repository: ModelStatic<IUser>) {
     this.repository = repository;
   }
 

@@ -1,5 +1,3 @@
-import User from "../database/models/userModel";
-
 import IUser from "../interfaces/IUser";
 
 import bcrypt from "bcryptjs";
@@ -15,7 +13,7 @@ import { ModelStatic } from "sequelize";
 export default class CreateUserService implements ICreateUserService {
   private readonly repository: ModelStatic<IUser>;
 
-  constructor(repository: typeof User) {
+  constructor(repository: ModelStatic<IUser>) {
     this.repository = repository;
   }
 
