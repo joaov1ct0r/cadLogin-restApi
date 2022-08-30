@@ -1,15 +1,17 @@
 import { mock } from "jest-mock-extended";
 
-import User from "../../../src/database/models/userModel";
-
 import DeleteUserService from "../../../src/services/DeleteUserService";
 
 import IDeleteUserService from "../../../src/interfaces/IDeleteUserService";
 
 import InternalError from "../../../src/errors/InternalError";
 
+import { ModelStatic } from "sequelize";
+
+import IUser from "../../../src/interfaces/IUser";
+
 const makeSut = () => {
-  const mockRepository = mock<typeof User>();
+  const mockRepository = mock<ModelStatic<IUser>>();
 
   const sut: IDeleteUserService = new DeleteUserService(mockRepository);
 
