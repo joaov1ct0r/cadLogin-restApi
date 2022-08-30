@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 import User from "../database/models/userModel";
 
 import IUser from "../interfaces/IUser";

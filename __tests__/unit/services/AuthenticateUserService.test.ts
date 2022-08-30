@@ -12,6 +12,10 @@ import BadRequestError from "../../../src/errors/BadRequestError";
 
 import UnathorizedError from "../../../src/errors/UnathorizedError";
 
+import jwt from "jsonwebtoken";
+
+import IJwt from "../../../src/interfaces/IJson";
+
 import bcrypt from "bcryptjs";
 
 const makeSut = () => {
@@ -21,9 +25,7 @@ const makeSut = () => {
     mockRepository
   );
 
-  const mockBcryptjs = mock<typeof bcrypt>();
-
-  return { sut, mockRepository, mockBcryptjs };
+  return { sut, mockRepository };
 };
 
 describe("authenticate user service", () => {
@@ -36,7 +38,7 @@ describe("authenticate user service", () => {
         password: "123123123",
       };
 
-      mockRepository.findOne.mockResolvedValue(null);
+      mockRepository.findOne.mockResolvedValueOnce(null);
 
       expect(async () => {
         await sut.execute(userData.email, userData.password);
@@ -44,23 +46,46 @@ describe("authenticate user service", () => {
     });
 
     it("should return exception if password isnt matching", async () => {
-      const { sut, mockRepository, mockBcryptjs } = makeSut();
+      const { sut, mockRepository } = makeSut();
 
       const userData = {
         email: "useremail@mail.com",
         password: "123123123",
       };
 
-      mockRepository.findOne.mockResolvedValue({
+      mockRepository.findOne.mockResolvedValueOnce({
         id: "1",
-        password: userData.password,
+        password: "789789789",
       } as IUser);
-
-      mockBcryptjs.compareSync.mockReturnValue(false);
 
       expect(async () => {
         await sut.execute(userData.email, userData.password);
       }).rejects.toThrow(new UnathorizedError("Falha na autenticação!"));
+    });
+
+    it("should return a token if user is registered", async () => {
+      const { sut, mockRepository } = makeSut();
+
+      // const userData = {
+      //   email: "useremail@mail.com",
+      //   password: "123123123",
+      // };
+
+      mockRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        email: "useremail@mail.com",
+        password: bcrypt.hashSync("123123123"),
+        admin: true,
+      } as IUser);
+
+      const token = await sut.execute("useremail@mail.com", "123123123");
+
+      const compareToken = jwt.verify(
+        token,
+        process.env.JWT_TOKEN_SECRET as string
+      ) as IJwt;
+
+      expect(compareToken.admin).toBe(true);
     });
   });
 });
