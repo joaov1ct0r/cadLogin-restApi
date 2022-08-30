@@ -66,19 +66,19 @@ describe("authenticate user service", () => {
     it("should return a token if user is registered", async () => {
       const { sut, mockRepository } = makeSut();
 
-      // const userData = {
-      //   email: "useremail@mail.com",
-      //   password: "123123123",
-      // };
+      const userData = {
+        email: "useremail@mail.com",
+        password: "123123123",
+      };
 
       mockRepository.findOne.mockResolvedValueOnce({
         id: "1",
-        email: "useremail@mail.com",
-        password: bcrypt.hashSync("123123123"),
+        email: userData.email,
+        password: bcrypt.hashSync(userData.password),
         admin: true,
       } as IUser);
 
-      const token = await sut.execute("useremail@mail.com", "123123123");
+      const token = await sut.execute(userData.email, userData.password);
 
       const compareToken = jwt.verify(
         token,
