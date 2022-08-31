@@ -1,14 +1,19 @@
-import User from "../database/models/userModel";
-
 import IUser from "../interfaces/IUser";
 
 import BadRequestError from "../errors/BadRequestError";
 
 import IListUserService from "../interfaces/IListUserService";
+import { ModelStatic } from "sequelize";
 
 export default class ListUserService implements IListUserService {
+  private readonly repository: ModelStatic<IUser>;
+
+  constructor(repository: ModelStatic<IUser>) {
+    this.repository = repository;
+  }
+
   public async execute(email: string): Promise<IUser> {
-    const user: IUser | null = await User.findOne({
+    const user: IUser | null = await this.repository.findOne({
       where: { email },
     });
 
