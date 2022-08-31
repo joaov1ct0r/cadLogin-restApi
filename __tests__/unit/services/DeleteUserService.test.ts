@@ -10,12 +10,19 @@ import { ModelStatic } from "sequelize";
 
 import IUser from "../../../src/interfaces/IUser";
 
+import IPost from "../../../src/interfaces/IPost";
+
 const makeSut = () => {
   const mockRepository = mock<ModelStatic<IUser>>();
 
-  const sut: IDeleteUserService = new DeleteUserService(mockRepository);
+  const mockPostRepository = mock<ModelStatic<IPost>>();
 
-  return { mockRepository, sut };
+  const sut: IDeleteUserService = new DeleteUserService(
+    mockRepository,
+    mockPostRepository
+  );
+
+  return { mockRepository, sut, mockPostRepository };
 };
 
 describe("delete user service", () => {
@@ -31,9 +38,11 @@ describe("delete user service", () => {
     });
 
     it("should return number of deleted lines", async () => {
-      const { sut, mockRepository } = makeSut();
+      const { sut, mockRepository, mockPostRepository } = makeSut();
 
       mockRepository.destroy.mockResolvedValueOnce(5);
+
+      mockPostRepository.destroy.mockResolvedValueOnce(5);
 
       const deletedLines = await sut.execute("1");
 

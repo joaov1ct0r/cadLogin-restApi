@@ -1,18 +1,28 @@
-import User from "../database/models/userModel";
-
 import IUser from "../interfaces/IUser";
-
-import Post from "../database/models/postModel";
 
 import IPost from "../interfaces/IPost";
 
 import BadRequestError from "../errors/BadRequestError";
 
 import ICreateNewPostService from "../interfaces/ICreateNewPostService";
+import { ModelStatic } from "sequelize/types";
 
 export default class CreateNewPostService implements ICreateNewPostService {
+  private readonly repository: ModelStatic<IPost>;
+
+  private readonly userRepository: ModelStatic<IUser>;
+
+  constructor(
+    repository: ModelStatic<IPost>,
+    userRepository: ModelStatic<IUser>
+  ) {
+    this.repository = repository;
+
+    this.userRepository = userRepository;
+  }
+
   public async execute(id: string, content: string): Promise<IPost> {
-    const user: IUser | null = await User.findOne({
+    const user: IUser | null = await this.userRepository.findOne({
       where: { id },
     });
 
@@ -20,7 +30,7 @@ export default class CreateNewPostService implements ICreateNewPostService {
       throw new BadRequestError("Usuario não encontrado!");
     }
 
-    const newPost: IPost = await Post.create({
+    const newPost: IPost = await this.repository.create({
       author: user!.email,
       content,
       userId: user!.id,
