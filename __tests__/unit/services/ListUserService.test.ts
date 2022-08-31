@@ -29,5 +29,23 @@ describe("list user service", () => {
         await sut.execute("any@mail.com.br");
       }).rejects.toThrow(new BadRequestError("Usuario não encontrado!"));
     });
+
+    it("should return a user is execute is succeed", async () => {
+      const { sut, mockRepository } = makeSut();
+
+      mockRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        email: "any@mail.com.br",
+        password: "123123123",
+        bornAt: "11/09/2001",
+        admin: true,
+      } as IUser);
+
+      const user = await sut.execute("any@mail.com.br");
+
+      expect(user).toHaveProperty("id");
+
+      expect(user.email).toEqual("any@mail.com.br");
+    });
   });
 });
