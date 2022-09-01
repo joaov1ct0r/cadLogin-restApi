@@ -49,5 +49,28 @@ describe("edit post service", () => {
         await sut.execute("1", "1", "titulo editado de post");
       }).rejects.toThrow(new InternalError("Falha ao atualizar Post!"));
     });
+
+    it("should return number of deleted lines", async () => {
+      const { sut, mockRepository } = makeSut();
+
+      mockRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        author: "any@mail.com.br",
+        content: "titulo de post",
+        userId: "1",
+        likes: ["0"],
+        comments: ["0"],
+      } as IPost);
+
+      mockRepository.update.mockResolvedValueOnce([1] as [affectedCount: 1]);
+
+      const deletedLines = await sut.execute(
+        "1",
+        "1",
+        "titulo editado de post"
+      );
+
+      expect(deletedLines).toEqual(1);
+    });
   });
 });
