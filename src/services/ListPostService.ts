@@ -1,5 +1,3 @@
-import Post from "../database/models/postModel";
-
 import IPost from "../interfaces/IPost";
 
 import Likes from "../database/models/likesModel";
@@ -10,9 +8,17 @@ import BadRequestError from "../errors/BadRequestError";
 
 import IListPostService from "../interfaces/IListPostService";
 
+import { ModelStatic } from "sequelize";
+
 export default class ListPostService implements IListPostService {
+  private readonly repository: ModelStatic<IPost>;
+
+  constructor(repository: ModelStatic<IPost>) {
+    this.repository = repository;
+  }
+
   public async execute(postId: string): Promise<IPost> {
-    const post: IPost | null = await Post.findOne({
+    const post: IPost | null = await this.repository.findOne({
       include: [
         {
           model: Likes,
