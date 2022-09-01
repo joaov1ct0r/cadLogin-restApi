@@ -29,5 +29,24 @@ describe("list post service", () => {
         await sut.execute("1");
       }).rejects.toThrow(new BadRequestError("Post não encontrado!"));
     });
+
+    it("should return a post", async () => {
+      const { sut, mockRepository } = makeSut();
+
+      mockRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        author: "any@mail.com.br",
+        content: "titulo de post",
+        userId: "1",
+        likes: ["0"],
+        comments: ["0"],
+      } as IPost);
+
+      const post = await sut.execute("1");
+
+      expect(post).toHaveProperty("content");
+
+      expect(post.id).toEqual("1");
+    });
   });
 });
