@@ -1,27 +1,39 @@
-import Likes from "../database/models/likesModel";
-
 import ILikes from "../interfaces/ILikes";
 
-import Post from "../database/models/postModel";
-
 import IPost from "../interfaces/IPost";
-
-import User from "../database/models/userModel";
 
 import IUser from "../interfaces/IUser";
 
 import BadRequestError from "../errors/BadRequestError";
 
-import { Op } from "sequelize";
+import { ModelStatic, Op } from "sequelize";
 
 import IAddPostLikeService from "../interfaces/IAddPostLikeService";
 
 export default class AddPostLikeService implements IAddPostLikeService {
+  private readonly repository: ModelStatic<IPost>;
+
+  private readonly userRepository: ModelStatic<IUser>;
+
+  private readonly likesRepository: ModelStatic<ILikes>;
+
+  constructor(
+    repository: ModelStatic<IPost>,
+    userRepository: ModelStatic<IUser>,
+    likesRepository: ModelStatic<ILikes>
+  ) {
+    this.repository = repository;
+
+    this.userRepository = userRepository;
+
+    this.likesRepository = likesRepository;
+  }
+
   public async execute(
     postId: string,
     id: string | undefined
   ): Promise<ILikes> {
-    const isPostRegistered: IPost | null = await Post.findOne({
+    const isPostRegistered: IPost | null = await this.repository.findOne({
       where: { id: postId },
     });
 
@@ -29,11 +41,11 @@ export default class AddPostLikeService implements IAddPostLikeService {
       throw new BadRequestError("Post não encontrado!");
     }
 
-    const user: IUser | null = await User.findOne({
+    const user: IUser | null = await this.userRepository.findOne({
       where: { id },
     });
 
-    const isLikeRegistered: ILikes | null = await Likes.findOne({
+    const isLikeRegistered: ILikes | null = await this.likesRepository.findOne({
       where: {
         [Op.and]: [
           {
@@ -49,7 +61,7 @@ export default class AddPostLikeService implements IAddPostLikeService {
     }
 
     // eslint-disable-next-line no-unused-vars
-    const addedLike: ILikes = await Likes.create({
+    const addedLike: ILikes = await this.likesRepository.create({
       postId,
       likedBy: user!.email,
       userId: user!.id,
