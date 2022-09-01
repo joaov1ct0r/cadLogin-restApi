@@ -14,6 +14,8 @@ import DeletePostService from "../../../src/services/DeletePostService";
 
 import BadRequestError from "../../../src/errors/BadRequestError";
 
+import InternalError from "../../../src/errors/InternalError";
+
 const makeSut = () => {
   const mockRepository = mock<ModelStatic<IPost>>();
 
@@ -40,6 +42,25 @@ describe("delete post service", () => {
       expect(async () => {
         await sut.execute("1", "1");
       }).rejects.toThrow(new BadRequestError("Post não encontrado!"));
+    });
+
+    it("should throw an exception if fails to delete post", async () => {
+      const { sut, mockRepository } = makeSut();
+
+      mockRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        author: "any@mail.com.br",
+        content: "titulo de post",
+        userId: "1",
+        likes: ["0"],
+        comments: ["0"],
+      } as IPost);
+
+      mockRepository.destroy.mockResolvedValueOnce(0);
+
+      expect(async () => {
+        await sut.execute("1", "1");
+      }).rejects.toThrow(new InternalError("Falha ao deletar post!"));
     });
   });
 });
