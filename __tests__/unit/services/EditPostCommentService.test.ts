@@ -14,6 +14,8 @@ import { ModelStatic } from "sequelize";
 
 import BadRequestError from "../../../src/errors/BadRequestError";
 
+import InternalError from "../../../src/errors/InternalError";
+
 const makeSut = () => {
   const mockRepository = mock<ModelStatic<IPost>>();
 
@@ -59,6 +61,46 @@ describe("edit post comment service", () => {
       expect(async () => {
         await sut.execute("1", "1", "1", "titulo editado de post");
       }).rejects.toThrow(new BadRequestError("Comentario não encontrado!"));
+    });
+
+    it("should throw exception if fails to edit comment", async () => {
+      const {
+        sut,
+        mockRepository,
+        mockCommentsRepository,
+        mockUserRepository,
+      } = makeSut();
+
+      mockRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        author: "any@mail.com.br",
+        content: "titulo de post",
+        userId: "1",
+        likes: ["0"],
+        comments: ["0"],
+      } as IPost);
+
+      mockCommentsRepository.findOne.mockResolvedValueOnce({
+        postId: "1",
+        id: "1",
+        author: "any@mail.com.br",
+        comment: "comment de post",
+      } as IComments);
+
+      mockUserRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        email: "any@mail.com.br",
+        password: "123123123",
+        name: "user name",
+        bornAt: "01/09/2001",
+        admin: true,
+      } as IUser);
+
+      mockCommentsRepository.update.mockResolvedValueOnce([0]);
+
+      expect(async () => {
+        await sut.execute("1", "1", "1", "comment editado");
+      }).rejects.toThrow(new InternalError("Falha ao atualizar comentario!"));
     });
   });
 });
