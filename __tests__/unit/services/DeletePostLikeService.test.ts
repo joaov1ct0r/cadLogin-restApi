@@ -83,5 +83,33 @@ describe("delete post like service", () => {
         await sut.execute("1", "1");
       }).rejects.toThrow(new InternalError("Falha ao deletar Like!"));
     });
+
+    it("should return number of deleted lines when deleted like", async () => {
+      const { sut, mockLikesRepository, mockRepository } = makeSut();
+
+      mockRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        author: "any@mail.com.br",
+        content: "titulo de post",
+        userId: "1",
+        likes: ["0"],
+        comments: ["0"],
+      } as IPost);
+
+      mockLikesRepository.findOne.mockResolvedValueOnce({
+        postId: "1",
+        userId: "1",
+        id: "1",
+        likedBy: "any@mail.com.br",
+      } as ILikes);
+
+      mockLikesRepository.destroy.mockResolvedValueOnce(4);
+
+      const deletedLines = await sut.execute("1", "1");
+
+      expect(deletedLines).toBeGreaterThan(0);
+
+      expect(deletedLines).toEqual(4);
+    });
   });
 });
