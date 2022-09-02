@@ -1,8 +1,4 @@
-import Post from "../database/models/postModel";
-
 import IPost from "../interfaces/IPost";
-
-import Comments from "../database/models/commentsModel";
 
 import IComments from "../interfaces/IComments";
 
@@ -10,19 +6,32 @@ import BadRequestError from "../errors/BadRequestError";
 
 import InternalError from "../errors/InternalError";
 
-import { Op } from "sequelize";
+import { ModelStatic, Op } from "sequelize";
 
 import IDeletePostCommentService from "../interfaces/IDeletePostCommentService";
 
 export default class DeletePostCommentService
   implements IDeletePostCommentService
 {
+  private readonly repository: ModelStatic<IPost>;
+
+  private readonly commentRepository: ModelStatic<IComments>;
+
+  constructor(
+    repository: ModelStatic<IPost>,
+    commentRepository: ModelStatic<IComments>
+  ) {
+    this.repository = repository;
+
+    this.commentRepository = commentRepository;
+  }
+
   public async execute(
     userId: string | undefined,
     postId: string,
     commentId: string
   ): Promise<number> {
-    const isPostRegistered: IPost | null = await Post.findOne({
+    const isPostRegistered: IPost | null = await this.repository.findOne({
       where: { id: postId },
     });
 
@@ -30,23 +39,24 @@ export default class DeletePostCommentService
       throw new BadRequestError("Post não encontrado!");
     }
 
-    const isCommentRegistered: IComments | null = await Comments.findOne({
-      where: {
-        [Op.and]: [
-          {
-            postId,
-            userId,
-            id: commentId,
-          },
-        ],
-      },
-    });
+    const isCommentRegistered: IComments | null =
+      await this.commentRepository.findOne({
+        where: {
+          [Op.and]: [
+            {
+              postId,
+              userId,
+              id: commentId,
+            },
+          ],
+        },
+      });
 
     if (isCommentRegistered === null) {
       throw new BadRequestError("Comentario não encontrado!");
     }
 
-    const deletedComment: number = await Comments.destroy({
+    const deletedComment: number = await this.commentRepository.destroy({
       where: {
         [Op.and]: [
           {
