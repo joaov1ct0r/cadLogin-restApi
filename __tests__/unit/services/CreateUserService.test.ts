@@ -27,7 +27,7 @@ describe("create user service", () => {
         email: "user@email.com.br",
         password: "123123123",
         name: "user name",
-        bornAt: "11/09/2001",
+        bornAt: "01/09/2001",
       };
 
       mockRepository.findOne.mockResolvedValue({ id: "1" } as IUser);
@@ -44,7 +44,7 @@ describe("create user service", () => {
         email: "user@mail.com.br",
         password: "123123123",
         name: "user name",
-        bornAt: "11/09/2001",
+        bornAt: "01/09/2001",
       };
 
       mockRepository.findOne.mockResolvedValue(null);
@@ -54,7 +54,7 @@ describe("create user service", () => {
         email: "user@mail.com.br",
         password: "123123123",
         name: "user name",
-        bornAt: "11/09/2001",
+        bornAt: "01/09/2001",
       } as IUser);
 
       const user = await sut.execute(userInputData);

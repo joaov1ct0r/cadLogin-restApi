@@ -37,7 +37,7 @@ describe("list user service", () => {
         id: "1",
         email: "any@mail.com.br",
         password: "123123123",
-        bornAt: "11/09/2001",
+        bornAt: "01/09/2001",
         admin: true,
       } as IUser);
 

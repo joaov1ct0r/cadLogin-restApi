@@ -27,7 +27,7 @@ describe("list all users service", () => {
           email: "any@mail.com.br",
           password: "123123123",
           name: "user name",
-          bornAt: "11/09/2001",
+          bornAt: "01/09/2001",
           admin: true,
         } as IUser,
         {
@@ -35,7 +35,7 @@ describe("list all users service", () => {
           email: "any@mail.com.br",
           password: "123123123",
           name: "user name",
-          bornAt: "11/09/2001",
+          bornAt: "01/09/2001",
           admin: true,
         } as IUser,
       ]);
