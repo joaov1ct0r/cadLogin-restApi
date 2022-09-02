@@ -57,5 +57,24 @@ describe("delete post comment service", () => {
         await sut.execute("1", "1", "1");
       }).rejects.toThrow(new BadRequestError("Comentario não encontrado!"));
     });
+
+    it("should throw an exception if fails to delete comment is null", async () => {
+      const { sut, mockRepository, mockCommentsRepository } = makeSut();
+
+      mockRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        author: "any@mail.com.br",
+        content: "titulo de post",
+        userId: "1",
+        likes: ["0"],
+        comments: ["0"],
+      } as IPost);
+
+      mockCommentsRepository.findOne.mockResolvedValueOnce(null);
+
+      expect(async () => {
+        await sut.execute("1", "1", "1");
+      }).rejects.toThrow(new BadRequestError("Comentario não encontrado!"));
+    });
   });
 });
