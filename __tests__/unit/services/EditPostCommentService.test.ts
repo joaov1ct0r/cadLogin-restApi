@@ -102,5 +102,52 @@ describe("edit post comment service", () => {
         await sut.execute("1", "1", "1", "comment editado");
       }).rejects.toThrow(new InternalError("Falha ao atualizar comentario!"));
     });
+
+    it("should return number of edited lines from edited comment", async () => {
+      const {
+        sut,
+        mockRepository,
+        mockCommentsRepository,
+        mockUserRepository,
+      } = makeSut();
+
+      mockRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        author: "any@mail.com.br",
+        content: "titulo de post",
+        userId: "1",
+        likes: ["0"],
+        comments: ["0"],
+      } as IPost);
+
+      mockCommentsRepository.findOne.mockResolvedValueOnce({
+        postId: "1",
+        id: "1",
+        author: "any@mail.com.br",
+        comment: "comment de post",
+      } as IComments);
+
+      mockUserRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        email: "any@mail.com.br",
+        password: "123123123",
+        name: "user name",
+        bornAt: "01/09/2001",
+        admin: true,
+      } as IUser);
+
+      mockCommentsRepository.update.mockResolvedValueOnce([4]);
+
+      const editedLines = await sut.execute(
+        "1",
+        "1",
+        "1",
+        "comment editado de post"
+      );
+
+      expect(editedLines).toBeGreaterThan(0);
+
+      expect(editedLines).toEqual(4);
+    });
   });
 });
