@@ -75,5 +75,43 @@ describe("add post like service", () => {
         await sut.execute("1", "1");
       }).rejects.toThrow(new BadRequestError("Like já registrado!"));
     });
+
+    it("should return liked post", async () => {
+      const { sut, mockRepository, mockLikesRepository, mockUserRepository } =
+        makeSut();
+
+      mockRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        author: "any@mail.com.br",
+        content: "titulo de post",
+        userId: "1",
+        likes: ["0"],
+        comments: ["0"],
+      } as IPost);
+
+      mockUserRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        email: "any@mail.com.br",
+        password: "123123123",
+        name: "user name",
+        bornAt: "11/09/2001",
+        admin: true,
+      } as IUser);
+
+      mockLikesRepository.findOne.mockResolvedValueOnce(null);
+
+      mockLikesRepository.create.mockResolvedValueOnce({
+        postId: "1",
+        userId: "1",
+        id: "1",
+        likedBy: "any@mail.com.br",
+      } as ILikes);
+
+      const likedPost = await sut.execute("1", "1");
+
+      expect(likedPost).toHaveProperty("likedBy");
+
+      expect(likedPost.postId).toEqual("1");
+    });
   });
 });
