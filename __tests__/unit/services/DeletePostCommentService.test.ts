@@ -83,5 +83,33 @@ describe("delete post comment service", () => {
         await sut.execute("1", "1", "1");
       }).rejects.toThrow(new InternalError("Falha ao deletar comentario!"));
     });
+
+    it("should return number of deleted lines of deleted comment", async () => {
+      const { sut, mockRepository, mockCommentsRepository } = makeSut();
+
+      mockRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        author: "any@mail.com.br",
+        content: "titulo de post",
+        userId: "1",
+        likes: ["0"],
+        comments: ["0"],
+      } as IPost);
+
+      mockCommentsRepository.findOne.mockResolvedValueOnce({
+        postId: "1",
+        id: "1",
+        author: "any@mail.com.br",
+        comment: "comment de post",
+      } as IComments);
+
+      mockCommentsRepository.destroy.mockResolvedValueOnce(4);
+
+      const deletedLines = await sut.execute("1", "1", "1");
+
+      expect(deletedLines).toBeGreaterThan(0);
+
+      expect(deletedLines).toEqual(4);
+    });
   });
 });
