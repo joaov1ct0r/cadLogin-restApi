@@ -41,5 +41,45 @@ describe("add post comment service", () => {
         await sut.execute("1", "1", "comment de post");
       }).rejects.toThrow(new BadRequestError("Post não encontrado!"));
     });
+
+    it("should return created comment when succeed", async () => {
+      const {
+        sut,
+        mockCommentsRepository,
+        mockUserRepository,
+        mockRepository,
+      } = makeSut();
+
+      mockRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        author: "any@mail.com.br",
+        content: "titulo de post",
+        userId: "1",
+        likes: ["0"],
+        comments: ["0"],
+      } as IPost);
+
+      mockUserRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        email: "any@mail.com.br",
+        password: "123123123",
+        name: "user name",
+        bornAt: "01/09/2001",
+        admin: true,
+      } as IUser);
+
+      mockCommentsRepository.create.mockResolvedValueOnce({
+        postId: "1",
+        id: "1",
+        author: "any@mail.com.br",
+        comment: "comment de post",
+      } as IComments);
+
+      const createdComment = await sut.execute("1", "1", "comment de post");
+
+      expect(createdComment).toHaveProperty("comment");
+
+      expect(createdComment.author).toEqual("any@mail.com.br");
+    });
   });
 });
