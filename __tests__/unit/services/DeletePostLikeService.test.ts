@@ -38,5 +38,24 @@ describe("delete post like service", () => {
         await sut.execute("1", "1");
       }).rejects.toThrow(new BadRequestError("Post não encontrado!"));
     });
+
+    it("should throw an exception if like is null", async () => {
+      const { sut, mockRepository, mockLikesRepository } = makeSut();
+
+      mockRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        author: "any@mail.com.br",
+        content: "titulo de post",
+        userId: "1",
+        likes: ["0"],
+        comments: ["0"],
+      } as IPost);
+
+      mockLikesRepository.findOne.mockResolvedValueOnce(null);
+
+      expect(async () => {
+        await sut.execute("1", "1");
+      }).rejects.toThrow(new BadRequestError("Like não encontrado!"));
+    });
   });
 });
