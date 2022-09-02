@@ -70,11 +70,18 @@ describe("delete post comment service", () => {
         comments: ["0"],
       } as IPost);
 
-      mockCommentsRepository.findOne.mockResolvedValueOnce(null);
+      mockCommentsRepository.findOne.mockResolvedValueOnce({
+        postId: "1",
+        id: "1",
+        author: "any@mail.com.br",
+        comment: "comment de post",
+      } as IComments);
+
+      mockCommentsRepository.destroy.mockResolvedValueOnce(0);
 
       expect(async () => {
         await sut.execute("1", "1", "1");
-      }).rejects.toThrow(new BadRequestError("Comentario não encontrado!"));
+      }).rejects.toThrow(new InternalError("Falha ao deletar comentario!"));
     });
   });
 });
