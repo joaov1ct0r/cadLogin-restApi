@@ -1,26 +1,39 @@
-import Comments from "../database/models/commentsModel";
-
 import IComments from "../interfaces/IComments";
 
-import Post from "../database/models/postModel";
-
 import IPost from "../interfaces/IPost";
-
-import User from "../database/models/userModel";
 
 import IUser from "../interfaces/IUser";
 
 import BadRequestError from "../errors/BadRequestError";
 
 import IAddPostCommentService from "../interfaces/IAddPostCommentService";
+import { ModelStatic } from "sequelize/types";
 
 export default class AddPostCommentService implements IAddPostCommentService {
+  private readonly repository: ModelStatic<IPost>;
+
+  private readonly commentsRepository: ModelStatic<IComments>;
+
+  private readonly userRepository: ModelStatic<IUser>;
+
+  constructor(
+    repository: ModelStatic<IPost>,
+    commentsRepository: ModelStatic<IComments>,
+    userRepository: ModelStatic<IUser>
+  ) {
+    this.repository = repository;
+
+    this.commentsRepository = commentsRepository;
+
+    this.userRepository = userRepository;
+  }
+
   public async execute(
     id: string | undefined,
     postId: string,
     comment: string
   ): Promise<IComments> {
-    const isPostRegistered: IPost | null = await Post.findOne({
+    const isPostRegistered: IPost | null = await this.repository.findOne({
       where: { id: postId },
     });
 
@@ -28,11 +41,11 @@ export default class AddPostCommentService implements IAddPostCommentService {
       throw new BadRequestError("Post não encontrado!");
     }
 
-    const user: IUser | null = await User.findOne({
+    const user: IUser | null = await this.userRepository.findOne({
       where: { id },
     });
 
-    const createdComment: IComments = await Comments.create({
+    const createdComment: IComments = await this.commentsRepository.create({
       author: user!.email,
       userId: user!.id,
       comment,
