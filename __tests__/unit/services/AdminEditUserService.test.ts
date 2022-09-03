@@ -62,5 +62,32 @@ describe("admin edit user service", () => {
         );
       }).rejects.toThrow(new InternalError("Falha ao atualizar usuario!"));
     });
+
+    it("should return number of edited lines when editing user", async () => {
+      const { sut, mockRepository } = makeSut();
+
+      mockRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        email: "any@mail.com.br",
+        password: "123123123",
+        name: "user name",
+        bornAt: "01/09/2001",
+        admin: false,
+      } as IUser);
+
+      mockRepository.update.mockResolvedValueOnce([4]);
+
+      const editedLines = await sut.execute(
+        "any@mail.com.br",
+        "any_new@mail.com.br",
+        "789789789",
+        "user new name",
+        "02/09/2001"
+      );
+
+      expect(editedLines).toBeGreaterThan(0);
+
+      expect(editedLines).toEqual(4);
+    });
   });
 });
