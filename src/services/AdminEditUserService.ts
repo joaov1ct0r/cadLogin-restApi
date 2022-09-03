@@ -8,7 +8,7 @@ import BadRequestError from "../errors/BadRequestError";
 
 import IAdminEditUserService from "../interfaces/IAdminEditUserService";
 
-import { ModelStatic } from "sequelize/types";
+import { ModelStatic } from "sequelize";
 
 export default class AdminEditUserService implements IAdminEditUserService {
   private readonly repository: ModelStatic<IUser>;
