@@ -9,7 +9,10 @@ import IPost from "../../../src/interfaces/IPost";
 import IAdminDeleteUserService from "../../../src/interfaces/IAdminDeleteUserService";
 
 import AdminDeleteUserService from "../../../src/services/AdminDeleteUserService";
+
 import BadRequestError from "../../../src/errors/BadRequestError";
+
+import InternalError from "../../../src/errors/InternalError";
 
 const makeSut = () => {
   const mockRepository = mock<ModelStatic<IUser>>();
@@ -34,6 +37,25 @@ describe("admin delete user service", () => {
       expect(async () => {
         await sut.execute("any@mail.com.br");
       }).rejects.toThrow(new BadRequestError("Usuario não encontrado!"));
+    });
+
+    it("should throw an exception if fails to delete user", async () => {
+      const { sut, mockRepository } = makeSut();
+
+      mockRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        email: "any@mail.com.br",
+        password: "123123123",
+        name: "user name",
+        bornAt: "01/09/2001",
+        admin: false,
+      } as IUser);
+
+      mockRepository.destroy.mockResolvedValueOnce(0);
+
+      expect(async () => {
+        await sut.execute("any@mail.com.br");
+      }).rejects.toThrow(new InternalError("Falha ao deletar usuario!"));
     });
   });
 });
