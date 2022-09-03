@@ -8,7 +8,7 @@ import AdminEditUserService from "../../../src/services/AdminEditUserService";
 
 import { ModelStatic } from "sequelize";
 
-// import InternalError from "../../../src/errors/InternalError";
+import InternalError from "../../../src/errors/InternalError";
 
 import BadRequestError from "../../../src/errors/BadRequestError";
 
@@ -36,6 +36,31 @@ describe("admin edit user service", () => {
           "02/09/2001"
         );
       }).rejects.toThrow(new BadRequestError("Usuario não encontrado!"));
+    });
+
+    it("should throw exception if fails to edit user", async () => {
+      const { sut, mockRepository } = makeSut();
+
+      mockRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        email: "any@mail.com.br",
+        password: "123123123",
+        name: "user name",
+        bornAt: "01/09/2001",
+        admin: false,
+      } as IUser);
+
+      mockRepository.update.mockResolvedValueOnce([0]);
+
+      expect(async () => {
+        await sut.execute(
+          "any@mail.com.br",
+          "any_new@mail.com.br",
+          "789789789",
+          "user new name",
+          "02/09/2001"
+        );
+      }).rejects.toThrow(new InternalError("Falha ao atualizar usuario!"));
     });
   });
 });
