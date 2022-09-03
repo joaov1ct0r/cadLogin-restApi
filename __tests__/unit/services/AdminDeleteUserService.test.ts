@@ -57,5 +57,28 @@ describe("admin delete user service", () => {
         await sut.execute("any@mail.com.br");
       }).rejects.toThrow(new InternalError("Falha ao deletar usuario!"));
     });
+
+    it("should return number of deleted lines when succeed to delete user", async () => {
+      const { sut, mockRepository, mockPostRepository } = makeSut();
+
+      mockRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        email: "any@mail.com.br",
+        password: "123123123",
+        name: "user name",
+        bornAt: "01/09/2001",
+        admin: false,
+      } as IUser);
+
+      mockRepository.destroy.mockResolvedValueOnce(5);
+
+      mockPostRepository.destroy.mockResolvedValueOnce(5);
+
+      const deletedLines = await sut.execute("any@mail.com.br");
+
+      expect(deletedLines).toBeGreaterThan(0);
+
+      expect(deletedLines).toEqual(5);
+    });
   });
 });
