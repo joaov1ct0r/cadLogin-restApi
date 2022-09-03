@@ -52,5 +52,26 @@ describe("admin delete post service", () => {
         await sut.execute("1");
       }).rejects.toThrow(new InternalError("Falha ao deletar Post!"));
     });
+
+    it("should return number of deleted lines when succeed to delete post", async () => {
+      const { sut, mockRepository } = makeSut();
+
+      mockRepository.findOne.mockResolvedValueOnce({
+        id: "1",
+        author: "any@mail.com.br",
+        content: "titulo de post",
+        userId: "1",
+        likes: ["0"],
+        comments: ["0"],
+      } as IPost);
+
+      mockRepository.destroy.mockResolvedValueOnce(5);
+
+      const deletedLines = await sut.execute("1");
+
+      expect(deletedLines).toBeGreaterThan(0);
+
+      expect(deletedLines).toEqual(5);
+    });
   });
 });
