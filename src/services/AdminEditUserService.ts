@@ -1,5 +1,3 @@
-import User from "../database/models/userModel";
-
 import IUser from "../interfaces/IUser";
 
 import bcrypt from "bcryptjs";
@@ -10,7 +8,15 @@ import BadRequestError from "../errors/BadRequestError";
 
 import IAdminEditUserService from "../interfaces/IAdminEditUserService";
 
+import { ModelStatic } from "sequelize/types";
+
 export default class AdminEditUserService implements IAdminEditUserService {
+  private readonly repository: ModelStatic<IUser>;
+
+  constructor(repository: ModelStatic<IUser>) {
+    this.repository = repository;
+  }
+
   public async execute(
     userEmail: string,
     userNewEmail: string,
@@ -18,7 +24,7 @@ export default class AdminEditUserService implements IAdminEditUserService {
     userNewName: string,
     userNewBornAt: string
   ): Promise<number> {
-    const isUserRegistered: IUser | null = await User.findOne({
+    const isUserRegistered: IUser | null = await this.repository.findOne({
       where: { email: userEmail },
     });
 
@@ -26,7 +32,7 @@ export default class AdminEditUserService implements IAdminEditUserService {
       throw new BadRequestError("Usuario não encontrado!");
     }
 
-    const updatedUser: [affectedCount: number] = await User.update(
+    const updatedUser: [affectedCount: number] = await this.repository.update(
       {
         email: userNewEmail,
         password: bcrypt.hashSync(userNewPassword),
