@@ -12,7 +12,9 @@
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
     "test:verbose": "jest --verbose",
-    "test": "jest"
+    "pretest": "NODE_ENV=test npx sequelize-cli db:migrate",
+    "test": "NODE_ENV=test jest",
+    "posttest": "NODE_ENV=test npx sequelize-cli db:migrate:undo:all"
   },
   "keywords": [
     "jwt",
