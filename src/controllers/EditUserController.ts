@@ -4,6 +4,8 @@ import IReq from "../interfaces/IRequest";
 
 import { validateHandleUserEdit } from "../validations/validateUserData";
 
+import User from "../database/models/userModel";
+
 import IEditUserService from "../interfaces/IEditUserService";
 
 import EditUserService from "../services/EditUserService";
@@ -28,7 +30,7 @@ export default class EditUserController implements IEditUserController {
 
     const id: string | undefined = req.userId;
 
-    const editUserService: IEditUserService = new EditUserService();
+    const editUserService: IEditUserService = new EditUserService(User);
 
     try {
       // eslint-disable-next-line no-unused-vars
