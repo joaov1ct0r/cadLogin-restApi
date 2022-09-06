@@ -52,7 +52,7 @@ describe("create user", () => {
       .post("/api/users/register")
       .set("Accept", "application/json")
       .send({
-        email: "anyusernew@mail.com.br",
+        email: "anycreateusernew@mail.com.br",
         password: "123123123",
         name: "user name name",
         bornAt: "01/09/2001",

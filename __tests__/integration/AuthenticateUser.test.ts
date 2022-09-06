@@ -14,7 +14,7 @@ describe("authenticate user", () => {
       .post("/api/users/login")
       .set("Accept", "application/json")
       .send({
-        email: "usernewemail@mail.com.br",
+        email: "usernotregistered@mail.com.br",
         password: "123123123",
       });
 
@@ -26,7 +26,7 @@ describe("authenticate user", () => {
       .post("/api/users/register")
       .set("Accept", "application/json")
       .send({
-        email: "usernewemail@mail.com.br",
+        email: "usernotauthenticated@mail.com.br",
         password: "789789789",
         name: "user name name",
         bornAt: "01/09/2001",
@@ -36,7 +36,7 @@ describe("authenticate user", () => {
       .post("/api/users/login")
       .set("Accept", "application/json")
       .send({
-        email: "usernewemail@mail.com.br",
+        email: "usernotauthenticated@mail.com.br",
         password: "123123123",
       });
 
@@ -48,7 +48,7 @@ describe("authenticate user", () => {
       .post("/api/users/register")
       .set("Accept", "application/json")
       .send({
-        email: "usernewemail@mail.com.br",
+        email: "userauthenticated@mail.com.br",
         password: "789789789",
         name: "user name name",
         bornAt: "01/09/2001",
@@ -58,13 +58,13 @@ describe("authenticate user", () => {
       .post("/api/users/login")
       .set("Accept", "application/json")
       .send({
-        email: "usernewemail@mail.com.br",
+        email: "userauthenticated@mail.com.br",
         password: "789789789",
       });
 
-    console.log(response.headers["set-cookie"][0]);
+    console.log(response.headers["set-cookie"]);
 
-    expect(response.headers["set-cookie"][0]).toBeDefined();
+    expect(response.headers["set-cookie"]).toBeDefined();
 
     expect(response.status).toEqual(200);
   });
