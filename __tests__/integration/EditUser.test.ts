@@ -13,6 +13,38 @@ describe("edit user", () => {
     jest.setTimeout(30000);
   });
 
+  it("should return an exception if wrong data is send", async () => {
+    await request(new App().server)
+      .post("/api/users/register")
+      .set("Accept", "application/json")
+      .send({
+        email: "usereditingwrong@mail.com.br",
+        password: "789789789",
+        name: "user name name",
+        bornAt: "01/09/2001",
+      });
+
+    const login = await request(new App().server)
+      .post("/api/users/login")
+      .set("Accept", "application/json")
+      .send({
+        email: "usereditingwrong@mail.com.br",
+        password: "789789789",
+      });
+
+    const response = await request(new App().server)
+      .put("/api/users/edit")
+      .set("Cookie", [login.headers["set-cookie"]])
+      .send({
+        email: "usereditedwrong@mail.com.br",
+        password: "123",
+        name: "user",
+        bornAt: "02",
+      });
+
+    expect(response.status).toEqual(400);
+  });
+
   it("should edit user", async () => {
     await request(new App().server)
       .post("/api/users/register")
@@ -41,8 +73,6 @@ describe("edit user", () => {
         name: "user new edited name",
         bornAt: "02/09/2001",
       });
-
-    console.log(login.headers["set-cookie"]);
 
     expect(response.status).toEqual(204);
   });
