@@ -6,6 +6,8 @@ import ListUserService from "../services/ListUserService";
 
 import IListUserService from "../interfaces/IListUserService";
 
+import User from "../database/models/userModel";
+
 import IUser from "../interfaces/IUser";
 
 import IListUserController from "../interfaces/IListUserController";
@@ -20,7 +22,7 @@ export default class ListUserController implements IListUserController {
 
     const email: string = req.body.email;
 
-    const listUserService: IListUserService = new ListUserService();
+    const listUserService: IListUserService = new ListUserService(User);
 
     try {
       const user: IUser = await listUserService.execute(email);
