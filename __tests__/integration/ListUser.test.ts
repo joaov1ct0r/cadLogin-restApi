@@ -131,5 +131,7 @@ describe("list user", () => {
       });
 
     expect(response.status).toEqual(200);
+
+    expect(response.body.user).toHaveProperty("id");
   });
 });
