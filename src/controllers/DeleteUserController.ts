@@ -2,6 +2,10 @@ import { Response } from "express";
 
 import IReq from "../interfaces/IRequest";
 
+import User from "../database/models/userModel";
+
+import Post from "../database/models/postModel";
+
 import DeleteUserService from "../services/DeleteUserService";
 
 import IDeleteUserService from "../interfaces/IDeleteUserService";
@@ -12,7 +16,10 @@ export default class DeleteUserController implements IDeleteUserController {
   public async handle(req: IReq, res: Response): Promise<Response> {
     const id: string | undefined = req.userId;
 
-    const deleteUserService: IDeleteUserService = new DeleteUserService();
+    const deleteUserService: IDeleteUserService = new DeleteUserService(
+      User,
+      Post
+    );
 
     try {
       // eslint-disable-next-line no-unused-vars
