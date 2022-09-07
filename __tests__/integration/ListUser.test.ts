@@ -25,7 +25,7 @@ describe("list user", () => {
       });
 
     const response = await request(new App().server)
-      .put("/api/users/edit")
+      .get("/api/users/user")
       .send({
         email: "userlisting@mail.com.br",
         password: "123123123",
@@ -56,7 +56,7 @@ describe("list user", () => {
       });
 
     const response = await request(new App().server)
-      .put("/api/users/edit")
+      .get("/api/users/user")
       .set("Cookie", [login.headers["set-cookie"]])
       .send({
         email: "a@mail.br",
@@ -85,12 +85,51 @@ describe("list user", () => {
       });
 
     const response = await request(new App().server)
-      .put("/api/users/edit")
+      .get("/api/users/user")
       .set("Cookie", [login.headers["set-cookie"]])
       .send({
         email: "abcdefghijklmnopqrstuvwxyz@mail.com.br",
       });
 
     expect(response.status).toEqual(400);
+  });
+
+  it("should return a searched user", async () => {
+    await request(new App().server)
+      .post("/api/users/register")
+      .set("Accept", "application/json")
+      .send({
+        email: "searcheduser@mail.com.br",
+        password: "789789789",
+        name: "user name name",
+        bornAt: "01/09/2001",
+      });
+
+    await request(new App().server)
+      .post("/api/users/register")
+      .set("Accept", "application/json")
+      .send({
+        email: "userseaching@mail.com.br",
+        password: "789789789",
+        name: "user name name",
+        bornAt: "01/09/2001",
+      });
+
+    const login = await request(new App().server)
+      .post("/api/users/login")
+      .set("Accept", "application/json")
+      .send({
+        email: "userseaching@mail.com.br",
+        password: "789789789",
+      });
+
+    const response = await request(new App().server)
+      .get("/api/users/user")
+      .set("Cookie", [login.headers["set-cookie"]])
+      .send({
+        email: "searcheduser@mail.com.br",
+      });
+
+    expect(response.status).toEqual(200);
   });
 });
