@@ -30,4 +30,30 @@ describe("delete user", () => {
 
     expect(response.status).toEqual(500);
   });
+
+  it("should delete a user", async () => {
+    await request(new App().server)
+      .post("/api/users/register")
+      .set("Accept", "application/json")
+      .send({
+        email: "userdeleting@mail.com.br",
+        password: "123123123",
+        name: "user name name",
+        bornAt: "01/09/2001",
+      });
+
+    const loginRequest = await request(new App().server)
+      .post("/api/users/login")
+      .set("Accept", "application/json")
+      .send({
+        email: "userdeleting@mail.com.br",
+        password: "123123123",
+      });
+
+    const response = await request(new App().server)
+      .delete("/api/users/delete")
+      .set("Cookie", [loginRequest.headers["set-cookie"]]);
+
+    expect(response.status).toEqual(204);
+  });
 });
