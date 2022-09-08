@@ -8,7 +8,11 @@ import CreateNewPostService from "../services/CreateNewPostService";
 
 import ICreateNewPostService from "../interfaces/ICreateNewPostService";
 
+import Post from "../database/models/postModel";
+
 import IPost from "../interfaces/IPost";
+
+import User from "../database/models/userModel";
 
 import ICreateNewPostController from "../interfaces/ICreateNewPostController";
 
@@ -27,7 +31,7 @@ export default class CreateNewPostController
     const content: string = req.body.content;
 
     const createNewPostService: ICreateNewPostService =
-      new CreateNewPostService();
+      new CreateNewPostService(Post, User);
 
     try {
       const post: IPost = await createNewPostService.execute(id, content);
