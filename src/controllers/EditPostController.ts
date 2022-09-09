@@ -4,6 +4,8 @@ import { Response } from "express";
 
 import { validateHandleEditPost } from "../validations/validatePostData";
 
+import Post from "../database/models/postModel";
+
 import EditPostService from "../services/EditPostService";
 
 import IEditPostService from "../interfaces/IEditPostService";
@@ -24,7 +26,7 @@ export default class EditPostController implements IEditPostController {
 
     const id: string | undefined = req.userId;
 
-    const editPostService: IEditPostService = new EditPostService();
+    const editPostService: IEditPostService = new EditPostService(Post);
     try {
       // eslint-disable-next-line no-unused-vars
       const isPostEdited: number = await editPostService.execute(
