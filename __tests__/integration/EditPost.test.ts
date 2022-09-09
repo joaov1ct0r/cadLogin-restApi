@@ -93,4 +93,45 @@ describe("edit post", () => {
 
     expect(response.status).toEqual(400);
   });
+
+  it("should return an edited post", async () => {
+    jest.setTimeout(70000);
+
+    await request(new App().server)
+      .post("/api/users/register")
+      .set("Accept", "application/json")
+      .send({
+        email: "userwithuneditedpost@mail.com",
+        password: "789789789",
+        name: "user name name",
+        bornAt: "01/09/2001",
+      });
+
+    const login = await request(new App().server)
+      .post("/api/users/login")
+      .set("Accept", "application/json")
+      .send({
+        email: "userwithuneditedpost@mail.com",
+        password: "789789789",
+      });
+
+    const postCreated = await request(new App().server)
+      .post("/api/posts/register")
+      .set("Cookie", [login.headers["set-cookie"]])
+      .send({
+        content: "titulo de post",
+      });
+
+    const response = await request(new App().server)
+      .put("/api/posts/edit")
+      .set("Cookie", [login.headers["set-cookie"]])
+      .send({
+        postId: String(postCreated.body.post.id),
+        content: "titulo de post editado",
+      });
+
+    console.log(response.error);
+
+    expect(response.status).toEqual(204);
+  });
 });
