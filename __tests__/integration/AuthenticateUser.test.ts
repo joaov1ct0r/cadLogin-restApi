@@ -43,6 +43,27 @@ describe("authenticate user", () => {
     expect(response.status).toEqual(401);
   });
 
+  it("should return an exception if wrong data is send", async () => {
+    await request(new App().server)
+      .post("/api/users/register")
+      .set("Accept", "application/json")
+      .send({
+        email: "userwrongdata@mail.com.br",
+        password: "789789789",
+        name: "user name name",
+        bornAt: "01/09/2001",
+      });
+
+    const response = await request(new App().server)
+      .post("/api/users/login")
+      .set("Accept", "application/json")
+      .send({
+        email: "userwrongdata@mail.com.br",
+      });
+
+    expect(response.status).toEqual(400);
+  });
+
   it("should return a token when authenticated", async () => {
     await request(new App().server)
       .post("/api/users/register")
@@ -61,8 +82,6 @@ describe("authenticate user", () => {
         email: "userauthenticated@mail.com.br",
         password: "789789789",
       });
-
-    console.log(response.headers["set-cookie"]);
 
     expect(response.headers["set-cookie"]).toBeDefined();
 

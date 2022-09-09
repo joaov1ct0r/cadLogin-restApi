@@ -9,9 +9,9 @@
     "start": "node ./build/index.js",
     "dev": "ts-node-dev ./src/index.ts",
     "build": "tsc",
-    "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch",
-    "test:verbose": "jest --verbose",
+    "test:coverage": "NODE_ENV=test jest --coverage",
+    "test:watch": "NODE_ENV=test jest --watch",
+    "test:verbose": "NODE_ENV=test jest --verbose",
     "pretest": "NODE_ENV=test npx sequelize-cli db:migrate",
     "test": "NODE_ENV=test jest __tests__/integration",
     "posttest": "NODE_ENV=test npx sequelize-cli db:migrate:undo:all"
