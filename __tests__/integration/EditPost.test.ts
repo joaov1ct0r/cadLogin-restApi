@@ -130,8 +130,6 @@ describe("edit post", () => {
         content: "titulo de post editado",
       });
 
-    console.log(response.error);
-
     expect(response.status).toEqual(204);
   });
 });
