@@ -8,6 +8,12 @@ import AddPostLikeService from "../services/AddPostLikeService";
 
 import IAddPostLikeService from "../interfaces/IAddPostLikeService";
 
+import Post from "../database/models/postModel";
+
+import User from "../database/models/userModel";
+
+import Likes from "../database/models/likesModel";
+
 import ILikes from "../interfaces/ILikes";
 
 import IAddPostLikeController from "../interfaces/IAddPostLikeController";
@@ -24,7 +30,11 @@ export default class AddPostLikeController implements IAddPostLikeController {
 
     const postId: string = req.body.postId;
 
-    const addPostLikeService: IAddPostLikeService = new AddPostLikeService();
+    const addPostLikeService: IAddPostLikeService = new AddPostLikeService(
+      Post,
+      User,
+      Likes
+    );
 
     try {
       const like: ILikes = await addPostLikeService.execute(postId, id);
