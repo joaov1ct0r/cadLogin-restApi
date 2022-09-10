@@ -10,6 +10,12 @@ import IDeletePostService from "../interfaces/IDeletePostService";
 
 import IDeletePostController from "../interfaces/IDeletePostController";
 
+import Post from "../database/models/postModel";
+
+import Comments from "../database/models/commentsModel";
+
+import Likes from "../database/models/likesModel";
+
 export default class DeletePostController implements IDeletePostController {
   public async handle(req: IReq, res: Response): Promise<Response> {
     const { error } = validateHandleDeletePost(req.body);
@@ -22,7 +28,11 @@ export default class DeletePostController implements IDeletePostController {
 
     const postId: string = req.body.postId;
 
-    const deletePostService: IDeletePostService = new DeletePostService();
+    const deletePostService: IDeletePostService = new DeletePostService(
+      Post,
+      Comments,
+      Likes
+    );
 
     try {
       // eslint-disable-next-line no-unused-vars
