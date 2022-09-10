@@ -141,4 +141,40 @@ describe("add post like", () => {
 
     expect(response.status).toEqual(400);
   });
+
+  it("should like a post", async () => {
+    await request(new App().server)
+      .post("/api/users/register")
+      .set("Accept", "application/json")
+      .send({
+        email: "fhgluserlikingpost42@mail.com.br",
+        password: "789789789",
+        name: "user name name",
+        bornAt: "01/09/2001",
+      });
+
+    const login = await request(new App().server)
+      .post("/api/users/login")
+      .set("Accept", "application/json")
+      .send({
+        email: "fhgluserlikingpost42@mail.com.br",
+        password: "789789789",
+      });
+
+    const postCreated = await request(new App().server)
+      .post("/api/posts/register")
+      .set("Cookie", [login.headers["set-cookie"]])
+      .send({
+        content: "novo post",
+      });
+
+    const response = await request(new App().server)
+      .post("/api/posts/like")
+      .set("Cookie", [login.headers["set-cookie"]])
+      .send({
+        postId: String(postCreated.body.post.id),
+      });
+
+    expect(response.status).toEqual(201);
+  });
 });
