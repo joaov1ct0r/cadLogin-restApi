@@ -10,6 +10,10 @@ import IDeletePostLikeService from "../interfaces/IDeletePostLikeService";
 
 import IDeletePostLikeController from "../interfaces/IDeletePostLikeController";
 
+import Post from "../database/models/postModel";
+
+import Likes from "../database/models/likesModel";
+
 export default class DeletePostLikeController
   implements IDeletePostLikeController
 {
@@ -25,7 +29,7 @@ export default class DeletePostLikeController
     const postId: string = req.body.postId;
 
     const deletePostLikeService: IDeletePostLikeService =
-      new DeletePostLikeService();
+      new DeletePostLikeService(Post, Likes);
 
     try {
       // eslint-disable-next-line no-unused-vars
