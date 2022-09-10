@@ -25,8 +25,11 @@ describe("add post like", () => {
       });
 
     const response = await request(new App().server)
-      .delete("/api/posts/delete")
-      .set("Accept", "application/json");
+      .post("/api/posts/like")
+      .set("Accept", "application/json")
+      .send({
+        postId: "290",
+      });
 
     expect(response.status).toEqual(500);
   });
