@@ -28,9 +28,6 @@ describe("list user", () => {
       .get("/api/users/user")
       .send({
         email: "userlisting@mail.com.br",
-        password: "123123123",
-        name: "user name name",
-        bornAt: "02/09/2001",
       });
 
     expect(response.status).toEqual(500);
