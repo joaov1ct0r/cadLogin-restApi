@@ -9,6 +9,7 @@ const DB: sequelize.Sequelize = new sequelize.Sequelize({
       : (process.env.DB_DATABASE as string),
   username: process.env.DB_USER as string,
   password: process.env.DB_PASSWORD as string,
+  logging: false,
 });
 
 export default DB;
