@@ -65,6 +65,7 @@ describe("edit post comment", () => {
       .set("Cookie", [login.headers["set-cookie"]])
       .send({
         postId: String(postCreated.body.post.id),
+        comment: "novo comment",
       });
 
     const response = await request(new App().server)
