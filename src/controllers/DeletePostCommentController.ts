@@ -4,6 +4,10 @@ import { Response } from "express";
 
 import { validateHandleDeletePostComment } from "../validations/validatePostData";
 
+import Post from "../database/models/postModel";
+
+import Comments from "../database/models/commentsModel";
+
 import DeletePostCommentService from "../services/DeletePostCommentService";
 
 import IDeletePostCommentService from "../interfaces/IDeletePostCommentService";
@@ -27,7 +31,7 @@ export default class DeletePostCommentController
     const userId: string | undefined = req.userId;
 
     const deletePostCommentService: IDeletePostCommentService =
-      new DeletePostCommentService();
+      new DeletePostCommentService(Post, Comments);
 
     try {
       // eslint-disable-next-line no-unused-vars
