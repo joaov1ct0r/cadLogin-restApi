@@ -4,6 +4,12 @@ import { Response } from "express";
 
 import { validateHandleEditPostComment } from "../validations/validatePostData";
 
+import Post from "../database/models/postModel";
+
+import User from "../database/models/userModel";
+
+import Comments from "../database/models/commentsModel";
+
 import EditPostCommentService from "../services/EditPostCommentService";
 
 import IEditPostCommentService from "../interfaces/IEditPostCommentService";
@@ -29,7 +35,7 @@ export default class EditPostCommentController
     const userId: string | undefined = req.userId;
 
     const editPostCommentService: IEditPostCommentService =
-      new EditPostCommentService();
+      new EditPostCommentService(Post, User, Comments);
 
     try {
       // eslint-disable-next-line no-unused-vars
