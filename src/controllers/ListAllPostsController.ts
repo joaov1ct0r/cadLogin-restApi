@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 
+import Post from "../database/models/postModel";
+
 import IPost from "../interfaces/IPost";
 
 import ListAllPostsService from "../services/ListAllPostsService";
@@ -10,7 +12,9 @@ import IListAllPostsController from "../interfaces/IListAllPostsController";
 
 export default class ListAllPostsController implements IListAllPostsController {
   public async handle(req: Request, res: Response): Promise<Response> {
-    const listAllPostsService: IListAllPostsService = new ListAllPostsService();
+    const listAllPostsService: IListAllPostsService = new ListAllPostsService(
+      Post
+    );
     try {
       const posts: IPost[] = await listAllPostsService.execute();
 
