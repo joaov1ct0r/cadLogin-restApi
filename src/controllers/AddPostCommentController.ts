@@ -4,6 +4,12 @@ import { Response } from "express";
 
 import { validateHandleAddPostComment } from "../validations/validatePostData";
 
+import Post from "../database/models/postModel";
+
+import Comments from "../database/models/commentsModel";
+
+import User from "../database/models/userModel";
+
 import AddPostCommentService from "../services/AddPostCommentService";
 
 import IAddPostCommentService from "../interfaces/IAddPostCommentService";
@@ -29,7 +35,7 @@ export default class AddPostCommentController
     const id: string | undefined = req.userId;
 
     const addPostCommentService: IAddPostCommentService =
-      new AddPostCommentService();
+      new AddPostCommentService(Post, Comments, User);
 
     try {
       const newComment: IComments = await addPostCommentService.execute(
