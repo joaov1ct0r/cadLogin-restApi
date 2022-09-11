@@ -6,6 +6,8 @@ import ListPostService from "../services/ListPostService";
 
 import IListPostService from "../interfaces/IListPostService";
 
+import Post from "../database/models/postModel";
+
 import IPost from "../interfaces/IPost";
 
 import IListPostController from "../interfaces/IListPostController";
@@ -20,7 +22,7 @@ export default class ListPostController implements IListPostController {
 
     const postId: string = req.body.postId;
 
-    const listPostService: IListPostService = new ListPostService();
+    const listPostService: IListPostService = new ListPostService(Post);
 
     try {
       const post: IPost = await listPostService.execute(postId);
