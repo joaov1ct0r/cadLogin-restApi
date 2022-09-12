@@ -10,7 +10,7 @@ describe("edit user", () => {
   beforeEach(async () => {
     await truncate();
 
-    jest.setTimeout(30000);
+    jest.setTimeout(70000);
   });
 
   it("should return an exception if not authenticated", async () => {
