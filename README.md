@@ -9,29 +9,11 @@
   <br>
   <li>NPM</li>
   <br>
-  <li>Express</li>
-  <br>
-  <li>PostgreSQL</li>
-  <br>
-  <li>bcrypt</li>
-  <br>
-  <li>dotenv</li>
-  <br>
-  <li>JWT</li>
-  <br>
-  <li>@hapi/joi</li>
-  <br>
-  <li>cookie-parser</li>
-  <br>
-  <li>cors</li>
-  <br>
-  <li>Sequelize</li>
-  <br>
 </ul>
 
 <h2>Sobre</h2>
 
-<p>Rest API de Social Media com cadastro e login do usuario, criação e interação com posts.</p>
+<p>REST API para Social Media com cadastro e login de usuários e criações e interações com posts feita com JavaScript utilizando o runtime NodeJS com o framework Express com TypeScript, protegendo rotas utilizando JWT (Json Web Token), autenticando os dados de entrada com @hapi/joi e criando models, migrations e armazenando os dados no banco de dados PostgreSQL utilizando Sequelize. testes unitarios e de integração feitos com Jest e SuperTest.</p>
 
 <h2>MODO DE USO</h2>
 
@@ -56,6 +38,7 @@
   <li>DB_USER = SEU USUARIO DO BANCO DE DADOS</li>
   <li>DB_PASSWORD = SENHA DO SEU BANCO DE DADOS</li>
   <li>DB_DATABASE = NOME DO SEU BANCO DE DADOS</li>
+  <li>DB_DATABASE_TEST = NOME DO SEU BANCO DE DADOS DE TESTE</li>
   <li>DB_PORT = PORTA DO SEU BANCO DE DADOS</li>
   <li>DB_DIALECT = DIALETO DO SEU BANCO DE DADOS</li>
   <li>JWT_TOKEN_SECRET = SEU JWT TOKEN SECRET</li>
@@ -74,8 +57,8 @@
 <hr>
 
 <p>APOS TER OS ARQUIVOS EM SUA MAQUINA ESCOLHA O MODO EM QUE QUER RODAR O PROJETO:
-  <br>PRODUÇÃO: <code>npm run build</code>
-  <code>npm run start</code>
+  <br>PRODUÇÃO: 1º<code>npm run build</code>
+  2º<code>npm run start</code>
 
 <br>DESENVOLVIMENTO: <code>npm run dev</code>
 
