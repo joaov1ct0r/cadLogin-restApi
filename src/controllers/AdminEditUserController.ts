@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 
 import { validateHandleAdminEditUser } from "../validations/validateAdminData";
 
+import User from "../database/models/userModel";
+
 import AdminEditUserService from "../services/AdminEditUserService";
 
 import IAdminEditUserService from "../interfaces/IAdminEditUserService";
@@ -29,7 +31,7 @@ export default class AdminEditUserController
     const userNewBornAt: string = req.body.userNewBornAt;
 
     const adminEditUserService: IAdminEditUserService =
-      new AdminEditUserService();
+      new AdminEditUserService(User);
 
     try {
       // eslint-disable-next-line no-unused-vars
