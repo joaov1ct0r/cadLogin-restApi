@@ -1,21 +1,27 @@
-FROM node:latest
-
-ENV NODE_ENV=production
+FROM node:latest as development
 
 WORKDIR /usr/src/app
 
-COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
+COPY package*.json .
 
 RUN npm install
 
-RUN tsc
+COPY . .
 
-COPY ./build .
+RUN npm run build
 
-EXPOSE 3000
+FROM node:latest as production
 
-RUN chown -R node /usr/src/app
+ARG NODE_ENV=production
 
-USER node
+ENV NODE_ENV=${NODE_ENV}
 
-CMD ["npm", "start"]
+WORKDIR /usr/src/app
+
+COPY package*.json .
+
+RUN npm ci --only=production
+
+COPY --from=development /usr/src/app/build ./build
+
+CMD ["node", "./build/index.js"]
