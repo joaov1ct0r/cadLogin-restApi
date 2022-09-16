@@ -4,7 +4,7 @@ services:
   api:
     build:
       context: .
-      target: development
+      target: production
     volumes:
       - ./:/usr/src/app
       - /usr/src/app/node_modules
@@ -15,11 +15,11 @@ services:
       - database
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
-    command: npm run dev
+    command: npm run start
 
   database:
     image: postgres
-    container_name: database
+    container_name: database_prod
     restart: always
     env_file:
       - .env
