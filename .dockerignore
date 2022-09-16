@@ -22,4 +22,6 @@
 **/values.dev.yaml
 /node_modules
 /build
+node_modules/
+build/
 README.md
