@@ -8,6 +8,8 @@ import IAdminDeletePostService from "../interfaces/IAdminDeletePostService";
 
 import IAdminDeletePostController from "../interfaces/IAdminDeletePostController";
 
+import Post from "../database/models/postModel";
+
 export default class AdminDeletePostController
   implements IAdminDeletePostController
 {
@@ -21,7 +23,7 @@ export default class AdminDeletePostController
     const postId: string = req.body.postId;
 
     const adminDeletePostService: IAdminDeletePostService =
-      new AdminDeletePostService();
+      new AdminDeletePostService(Post);
 
     try {
       // eslint-disable-next-line no-unused-vars
