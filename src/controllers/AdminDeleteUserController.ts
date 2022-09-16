@@ -8,6 +8,10 @@ import IAdminDeleteUserService from "../interfaces/IAdminDeleteUserService";
 
 import IAdminDeleteUserController from "../interfaces/IAdminDeleteUserController";
 
+import User from "../database/models/userModel";
+
+import Post from "../database/models/postModel";
+
 export default class AdminDeleteUserController
   implements IAdminDeleteUserController
 {
@@ -21,7 +25,7 @@ export default class AdminDeleteUserController
     const userEmail: string = req.body.userEmail;
 
     const adminDeleteUserService: IAdminDeleteUserService =
-      new AdminDeleteUserService();
+      new AdminDeleteUserService(User, Post);
 
     try {
       // eslint-disable-next-line no-unused-vars
