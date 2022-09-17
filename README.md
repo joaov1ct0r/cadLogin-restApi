@@ -49,7 +49,7 @@
 <hr>
 
 <p>APOS TER OS ARQUIVOS EM SUA MAQUINA ESCOLHA O MODO EM QUE QUER RODAR O PROJETO:
-  <br>PRODUÇÃO: 1º<code>sudo docker compose up -f docker-compose.yml --build -d</code>
+  <br>PRODUÇÃO: 1º<code>sudo docker compose up --build -d</code>
 
 <br>DESENVOLVIMENTO: <code>sudo docker compose up -f docker-compose.dev.yml --build -d</code>
 
