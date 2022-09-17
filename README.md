@@ -45,22 +45,13 @@
   <li>NODE_ENV = AMBIENTE DO SEU NODE</li>
 </ul>
 
-<h3>Sequelize</h3>
-<hr>
-
-<p>APOS INSERIR OS DADOS NO ARQUIVO .env DIGITE EM SEU TERMINAL: 
-  <br><code>npx sequelize-cli db:create</code>
-  <br><code>npx sequelize-cli db:migrate</code>
-</p>
-
 <h3>SERVER</h3>
 <hr>
 
 <p>APOS TER OS ARQUIVOS EM SUA MAQUINA ESCOLHA O MODO EM QUE QUER RODAR O PROJETO:
-  <br>PRODUÇÃO: 1º<code>npm run build</code>
-  2º<code>npm run start</code>
+  <br>PRODUÇÃO: 1º<code>sudo docker compose up -f docker-compose.yml --build -d</code>
 
-<br>DESENVOLVIMENTO: <code>npm run dev</code>
+<br>DESENVOLVIMENTO: <code>sudo docker compose up -f docker-compose.dev.yml --build -d</code>
 
 </p>
 
