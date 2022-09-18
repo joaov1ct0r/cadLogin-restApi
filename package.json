@@ -6,8 +6,8 @@
   "main": "./src/index.ts",
   "type": "module",
   "scripts": {
-    "start": "./src/scripts/sequelize.sh && npm run build && node ./build/index.js",
-    "dev": "./src/scripts/sequelize.sh && ts-node-dev ./src/index.ts",
+    "start": "npx sequelize-cli db:create && npx sequelize-cli db:migrate && npm run build && node ./build/index.js",
+    "dev": "npx sequelize-cli db:create && npx sequelize-cli db:migrate && ts-node-dev ./src/index.ts",
     "build": "tsc",
     "test:coverage": "NODE_ENV=test jest --coverage",
     "test:watch": "NODE_ENV=test jest --watch",
