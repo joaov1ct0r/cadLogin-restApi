@@ -8,7 +8,7 @@
   "scripts": {
     "start": "npx sequelize-cli db:create && npx sequelize-cli db:migrate && npm run build && node ./build/index.js",
     "dev": "npx sequelize-cli db:create && npx sequelize-cli db:migrate && ts-node-dev ./src/index.ts",
-    "build": "tsc",
+    "build": "rimraf ./build && tsc",
     "test:coverage": "NODE_ENV=test jest --coverage",
     "test:watch": "NODE_ENV=test jest --watch",
     "test:verbose": "NODE_ENV=test jest --verbose",
