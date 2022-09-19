@@ -11,6 +11,8 @@
   <br>
   <li>Docker</li>
   <br>
+  <li>Docker Compose</li>
+  <br>
 </ul>
 
 <h2>Sobre</h2>
