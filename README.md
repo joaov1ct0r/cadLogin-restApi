@@ -9,6 +9,8 @@
   <br>
   <li>NPM</li>
   <br>
+  <li>Docker</li>
+  <br>
 </ul>
 
 <h2>Sobre</h2>
