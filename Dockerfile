@@ -2,7 +2,7 @@ FROM node:14-alpine as development
 
 WORKDIR /usr/src/app
 
-COPY ./package.json /usr/src/app
+COPY ./package*.json /usr/src/app/
 
 RUN npm install
 
@@ -18,7 +18,7 @@ ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /usr/src/app
 
-COPY package.json /usr/src/app
+COPY package.json /usr/src/app/
 
 RUN npm install --only=production
 
