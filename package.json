@@ -9,8 +9,9 @@
     "node": ">=16.17"
   },
   "scripts": {
-    "up": "npm run build && docker compose up -d",
+    "up": "npm run build && docker compose up -d --build",
     "down": "docker compose down",
+    "up:dev":"docker compose up -f docker-compose.dev.yml -d --build",
     "start": "npm pkg set type=commonjs && node ./build/index.js",
     "dev": "npm pkg set type=module && ts-node-dev ./src/index.ts",
     "build": "rimraf ./build && tsc",
