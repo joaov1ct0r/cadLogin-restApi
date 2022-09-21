@@ -18,6 +18,8 @@ services:
       - database
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
+    links:
+      - database
     command: npm run dev
 
   database:
