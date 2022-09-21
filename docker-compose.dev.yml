@@ -20,8 +20,12 @@ services:
 
   database:
     image: postgres
-    container_name: database
+    container_name: database_prod
     restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
     env_file:
       - .env
     ports: 
