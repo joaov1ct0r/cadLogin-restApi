@@ -3,21 +3,21 @@
   "author": "github.com/joaov1ct0r",
   "version": "1.0.0",
   "description": "REST API de Social Media com cadastro e login de usuários e criações e interações com posts feita com JavaScript utilizando o runtime NodeJS com o framework Express com TypeScript, protegendo rotas utilizando JWT (Json Web Token), autenticando os dados de entrada com @hapi/joi e criando models, migrations e armazenando os dados no banco de dados PostgreSQL utilizando Sequelize. testes unitarios e de integração feitos com Jest e SuperTest, ambientes criados em containers Docker utilizando Docker Compose.",
-  "exports": "./src/index.js",
-  "type": "module",
+  "main": "./build/index.js",
+  "type": "commonjs",
   "engines": {
     "node": ">=16.17"
   },
   "scripts": {
-    "start": "node ./build/index.js",
-    "dev": "ts-node-dev ./src/index.ts",
+    "start": "npm pkg set type=commonjs && node ./build/index.js",
+    "dev": "npm pkg set type=module && ts-node-dev ./src/index.ts",
     "build": "rimraf ./build && tsc",
-    "test:coverage": "NODE_ENV=test jest --coverage",
-    "test:watch": "NODE_ENV=test jest --watch",
-    "test:verbose": "NODE_ENV=test jest --verbose",
-    "pretest": "NODE_ENV=test npx sequelize-cli db:migrate",
-    "test": "NODE_ENV=test jest __tests__/integration",
-    "posttest": "NODE_ENV=test npx sequelize-cli db:migrate:undo:all"
+    "test:coverage": "npm pkg set type=module && NODE_ENV=test jest --coverage",
+    "test:watch": "npm pkg set type=module && NODE_ENV=test jest --watch",
+    "test:verbose": "npm pkg set type=module && NODE_ENV=test jest --verbose",
+    "pretest": "npm pkg set type=module && NODE_ENV=test npx sequelize-cli db:migrate",
+    "test": "npm pkg set type=module && NODE_ENV=test jest __tests__/integration",
+    "posttest": "npm pkg set type=module && NODE_ENV=test npx sequelize-cli db:migrate:undo:all"
   },
   "keywords": [
     "jwt",

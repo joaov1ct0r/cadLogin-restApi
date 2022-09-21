@@ -5,7 +5,6 @@
     "lib": [
       "es6"
     ],
-    // "moduleResolution": "node",
     "allowJs": true,
     "outDir": "build",
     "rootDir": "src",
