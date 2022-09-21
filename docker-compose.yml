@@ -7,6 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: production
+    image: api_container_prod
     volumes:
       - ./:/usr/src/app
       - /usr/src/app/node_modules
