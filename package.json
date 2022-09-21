@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "npm pkg set type='commonjs' && rimraf ./build && tsc",
-    "start": "npm pkg set type='commonjs' && npm run build && node ./build/index.js",
+    "start": "npm pkg set type='commonjs' && node ./build/index.js",
     "dev": "npm pkg set type='module' && ts-node-dev ./src/index.ts",
     "test:coverage": "npm pkg set type='module' && NODE_ENV=test jest --coverage",
     "test:watch": "npm pkg set type='module' && NODE_ENV=test jest --watch",
@@ -56,7 +56,6 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
-    "rimraf": "^3.0.2",
     "sequelize": "^6.17.0",
     "swagger-ui-express": "^4.4.0"
   },
@@ -83,6 +82,7 @@
     "jest": "^28.1.3",
     "jest-mock-extended": "^2.0.7",
     "prettier": "^2.6.2",
+    "rimraf": "^3.0.2",
     "supertest": "^6.2.4",
     "ts-jest": "^28.0.8",
     "ts-node-dev": "^1.1.8",
