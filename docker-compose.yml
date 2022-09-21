@@ -2,6 +2,7 @@ version: '3.4'
 
 services:
   api:
+    container_name: api_prod
     build:
       context: .
       dockerfile: Dockerfile
