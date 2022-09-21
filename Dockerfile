@@ -24,4 +24,6 @@ RUN npm install --only=production
 
 COPY --from=development /usr/src/app/build ./build
 
+EXPOSE 3000
+
 CMD ["node", "./build/index.js"]
