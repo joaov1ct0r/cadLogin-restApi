@@ -2,7 +2,7 @@ import sequelize, { Dialect } from "sequelize";
 
 const DB: sequelize.Sequelize = new sequelize.Sequelize({
   dialect: (process.env.DB_DIALECT as Dialect) || "postgres",
-  host: process.env.DB_HOST as string,
+  host: (process.env.DB_HOST as string) || ("localhost" as string),
   database:
     process.env.NODE_ENV === "test"
       ? (process.env.DB_DATABASE_TEST as string)
