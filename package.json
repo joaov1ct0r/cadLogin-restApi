@@ -12,12 +12,12 @@
     "build": "npm pkg set type='commonjs' && rimraf ./build && tsc",
     "start": "./src/scripts/db.sh && npm pkg set type='commonjs' && node ./build/index.js",
     "dev": "./src/scripts/db.sh && npm pkg set type='module' && ts-node-dev ./src/index.ts",
-    "test:coverage": "npm pkg set type='module' && NODE_ENV=test jest --coverage",
-    "test:watch": "npm pkg set type='module' && NODE_ENV=test jest --watch",
-    "test:verbose": "npm pkg set type='module' && NODE_ENV=test jest --verbose",
-    "pretest": "npm pkg set type='module' && NODE_ENV=test npx sequelize-cli db:migrate",
-    "test": "npm pkg set type='module' && NODE_ENV=test jest __tests__/integration",
-    "posttest": "npm pkg set type='module' && NODE_ENV=test npx sequelize-cli db:migrate:undo:all"
+    "test:coverage": "./src/scripts/db.sh && npm pkg set type='module' && NODE_ENV=test jest --coverage",
+    "test:watch": "./src/scripts/db.sh && npm pkg set type='module' && NODE_ENV=test jest --watch",
+    "test:verbose": "./src/scripts/db.sh && npm pkg set type='module' && NODE_ENV=test jest --verbose",
+    "pretest": "./src/scripts/db.sh && npm pkg set type='module' && NODE_ENV=test npx sequelize-cli db:migrate",
+    "test": "./src/scripts/db.sh && npm pkg set type='module' && NODE_ENV=test jest __tests__/integration",
+    "posttest": "./src/scripts/db.sh && npm pkg set type='module' && NODE_ENV=test npx sequelize-cli db:migrate:undo:all"
   },
   "keywords": [
     "jwt",
