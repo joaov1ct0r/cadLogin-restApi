@@ -49,14 +49,6 @@
   <li>NODE_ENV = AMBIENTE DO SEU NODE</li>
 </ul>
 
-<h3>Sequelize</h3>
-<hr>
-
-<p>APOS INSERIR OS DADOS NO ARQUIVO .env DIGITE EM SEU TERMINAL: 
-  <br><code>npx sequelize-cli db:create</code>
-  <br><code>npx sequelize-cli db:migrate</code>
-</p>
-
 <h3>SERVER</h3>
 <hr>
 
