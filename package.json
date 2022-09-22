@@ -11,7 +11,7 @@
   "scripts": {
     "build": "npm pkg set type='commonjs' && rimraf ./build && tsc",
     "start": "./src/scripts/db.sh && npm pkg set type='commonjs' && node ./build/index.js",
-    "dev": "npm pkg set type='module' && ts-node-dev ./src/index.ts",
+    "dev": "./src/scripts/db.sh && npm pkg set type='module' && ts-node-dev ./src/index.ts",
     "test:coverage": "npm pkg set type='module' && NODE_ENV=test jest --coverage",
     "test:watch": "npm pkg set type='module' && NODE_ENV=test jest --watch",
     "test:verbose": "npm pkg set type='module' && NODE_ENV=test jest --verbose",
