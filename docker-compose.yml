@@ -9,7 +9,7 @@ services:
       target: production
     image: api_container_prod
     volumes:
-      - ./build:/usr/src/app/build
+      - ./build/:/usr/src/app/build/
       - /usr/src/app/node_modules
     env_file:
       - .env
