@@ -34,3 +34,4 @@ services:
       - .env
     ports: 
       - ${DB_PORT}:5432
+      - 9229:9229
