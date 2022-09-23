@@ -9,15 +9,15 @@
     "node": ">=14"
   },
   "scripts": {
-    "build": "npm pkg set type='commonjs' && rimraf ./build && tsc",
-    "start": "./src/scripts/db.sh && npm pkg set type='commonjs' && node ./build/index.js",
-    "dev": "npm pkg set type='module' && ts-node-dev ./src/index.ts",
-    "test:coverage": "./src/scripts/db.sh && npm pkg set type='module' && NODE_ENV=test jest --coverage",
-    "test:watch": "./src/scripts/db.sh && npm pkg set type='module' && NODE_ENV=test jest --watch",
-    "test:verbose": "./src/scripts/db.sh && npm pkg set type='module' && NODE_ENV=test jest --verbose",
-    "pretest": "./src/scripts/db.sh && npm pkg set type='module' && NODE_ENV=test npx sequelize-cli db:migrate",
-    "test": "./src/scripts/db.sh && npm pkg set type='module' && NODE_ENV=test jest __tests__/integration",
-    "posttest": "./src/scripts/db.sh && npm pkg set type='module' && NODE_ENV=test npx sequelize-cli db:migrate:undo:all"
+    "build": "rimraf ./build && tsc",
+    "start": "NODE_ENV='production' && npm pkg set type='commonjs' && node ./build/index.js",
+    "dev": "NODE_ENV='development' && npm pkg set type='module' && ts-node-dev ./src/index.ts",
+    "test:coverage": "NODE_ENV='test' && npm pkg set type='module' && jest --coverage",
+    "test:watch": "NODE_ENV='test' && npm pkg set type='module' && jest --watch",
+    "test:verbose": "NODE_ENV='test' && npm pkg set type='module' && jest --verbose",
+    "pretest": "NODE_ENV='test' && npm pkg set type='module' && npx sequelize-cli db:migrate",
+    "test": "npm pkg set type='module' && jest __tests__/integration",
+    "posttest": "npm pkg set type='module' && npx sequelize-cli db:migrate:undo:all && NODE_ENV='development'"
   },
   "keywords": [
     "jwt",
@@ -54,9 +54,8 @@
     "dotenv": "^13.0.0",
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
-    "pg": "^8.7.3",
-    "pg-hstore": "^2.3.4",
-    "sequelize": "^6.17.0",
+    "pg": "^8.8.0",
+    "sequelize": "^6.23.1",
     "swagger-ui-express": "^4.4.0"
   },
   "devDependencies": {

@@ -49,6 +49,13 @@
   <li>NODE_ENV = AMBIENTE DO SEU NODE</li>
 </ul>
 
+<h3>Sequelize</h3>
+<hr>
+
+<p>APOS INSERIR OS DADOS NO ARQUIVO .env VA ATE O DIRETORIO ROOT DO PROJETO E DIGITE EM SEU TERMINAL: 
+  <br><code>./src/scripts/db.sh</code>
+PARA GERAR A DATABASE E AS TABELAS</p>
+
 <h3>SERVER</h3>
 <hr>
 
