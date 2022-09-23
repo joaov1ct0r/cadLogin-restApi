@@ -18,7 +18,7 @@ services:
       - database
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
-    command: npm run start
+    command: bash -c "./build/scripts/db.sh && npm run start"
 
   database:
     image: postgres
