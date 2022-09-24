@@ -20,4 +20,4 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install --omit=dev
+RUN npm install --only=production
