@@ -4,6 +4,10 @@ services:
   api:
     container_name: api_prod
     build:
+      args:
+        - Dialect=postgres
+        - DB_DIALECT=postgres
+        - NODE_ENV=production
       context: .
       dockerfile: Dockerfile
       target: production
@@ -11,16 +15,6 @@ services:
     volumes:
       - ./build:/usr/src/app/build
       - /usr/src/app/node_modules
-    environment:
-      - NODE_ENV=${NODE_ENV}
-      - DB_DIALECT=${DB_DIALECT}
-      - SERVER_PORT=${SERVER_PORT}
-      - JWT_TOKEN_SECRET=${JWT_TOKEN_SECRET}
-      - DB_HOST=${DB_HOST}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_DATABASE=${DB_DATABASE}
-      - DB_PORT=${DB_PORT}
     env_file:
       - .env
     restart: always
@@ -28,7 +22,7 @@ services:
       - database
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
-    command: sh -c "npx sequelize-cli db:create && npx sequelize-cli db:migrate && npm run start"
+    command: sh -c "export NODE_ENV='production' && npm install sequelize-cli && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npm run start"
 
   database:
     image: postgres

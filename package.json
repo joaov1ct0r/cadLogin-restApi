@@ -4,12 +4,12 @@
   "version": "1.0.0",
   "description": "REST API de Social Media com cadastro e login de usuários e criações e interações com posts feita com JavaScript utilizando o runtime NodeJS com o framework Express com TypeScript, protegendo rotas utilizando JWT (Json Web Token), autenticando os dados de entrada com @hapi/joi e criando models, migrations e armazenando os dados no banco de dados PostgreSQL utilizando Sequelize. testes unitarios e de integração feitos com Jest e SuperTest, ambientes criados em containers Docker utilizando Docker Compose.",
   "main": "./build/index.js",
-  "type": "commonjs",
+  "type": "module",
   "engines": {
     "node": ">=14"
   },
   "scripts": {
-    "build": "npm pkg set type='commonjs' && rimraf ./build && tsc",
+    "build": "NODE_ENV='production' && npm pkg set type='commonjs' && rimraf ./build && tsc",
     "start": "NODE_ENV='production' && node ./build/index.js",
     "dev": "NODE_ENV='development' && npm pkg set type='module' && ts-node-dev ./src/index.ts",
     "test:coverage": "NODE_ENV='test' && npm pkg set type='module' && jest --coverage",
