@@ -22,7 +22,7 @@ services:
       - database
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
-    command: sh -c "export NODE_ENV='production' && npm install sequelize-cli && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npm run start"
+    command: sh -c "export NODE_ENV='production'; ./build/scripts/db.sh; npm run start"
 
   database:
     image: postgres
