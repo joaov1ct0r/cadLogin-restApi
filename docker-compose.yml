@@ -11,6 +11,8 @@ services:
     volumes:
       - ./build:/usr/src/app/build
       - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=production
     env_file:
       - .env
     restart: always
@@ -18,7 +20,7 @@ services:
       - database
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
-    command: sh -c "ls ./build && npm run start"
+    command: sh -c "npx sequelize-cli db:create && npx sequelize-cli db:migrate && npm run start"
 
   database:
     image: postgres

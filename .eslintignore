@@ -1,0 +1,10 @@
+/build/**
+/coverage/**
+/docs/**
+!/docs/.eleventy.js
+/jsdoc/**
+/templates/**
+/tmp/**
+/tools/internal-rules/node_modules/**
+test.js
+!.eslintrc.js
