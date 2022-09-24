@@ -28,4 +28,6 @@ WORKDIR /usr/src/app
 
 COPY [ "package*.json", ".sequelizerc", "./" ]
 
+COPY ["./src/scripts", "./build/scripts"]
+
 RUN npm install --omit=dev
