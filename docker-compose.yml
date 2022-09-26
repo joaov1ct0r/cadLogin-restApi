@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  api:
+  api_prod:
     container_name: api_prod
     build:
       args:
@@ -10,7 +10,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: production
-    image: api_container_prod
+    image: api_prod
     entrypoint: [ "/bin/sh", "./scripts/db.sh" ]
     volumes:
       - ./build:/usr/src/app/build
@@ -22,12 +22,12 @@ services:
       - DB_DIALECT=postgres
     restart: always
     depends_on:
-      - database
+      - database_prod
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
     command: sh -c "npm run start"
 
-  database:
+  database_prod:
     image: postgres
     container_name: database_prod
     restart: always

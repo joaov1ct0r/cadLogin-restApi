@@ -2,7 +2,10 @@ import sequelize from "sequelize";
 
 const DB: sequelize.Sequelize = new sequelize.Sequelize({
   dialect: "postgres",
-  host: process.env.DB_HOST,
+  host:
+    process.env.NODE_ENV === "production"
+      ? process.env.DB_HOST
+      : process.env.DB_HOST_DEV,
   database:
     process.env.NODE_ENV === "test"
       ? (process.env.DB_DATABASE_TEST as string)
