@@ -5,24 +5,27 @@ services:
     container_name: api_prod
     build:
       args:
-        - Dialect=postgres
         - DB_DIALECT=postgres
         - NODE_ENV=production
       context: .
       dockerfile: Dockerfile
       target: production
     image: api_container_prod
+    entrypoint: [ "/bin/sh", "./scripts/db.sh" ]
     volumes:
       - ./build:/usr/src/app/build
       - /usr/src/app/node_modules
     env_file:
       - .env
+    environment:
+      - NODE_ENV=production
+      - DB_DIALECT=postgres
     restart: always
     depends_on:
       - database
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
-    command: sh -c "export NODE_ENV='production'; ./build/scripts/db.sh; npm run start"
+    command: sh -c "npm run start"
 
   database:
     image: postgres

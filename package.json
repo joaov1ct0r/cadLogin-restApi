@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "NODE_ENV='production' && npm pkg set type='commonjs' && rimraf ./build && tsc",
-    "start": "NODE_ENV='production' && node ./build/index.js",
+    "start": "NODE_ENV='production' && npm pkg set type='commonjs' && node ./build/index.js",
     "dev": "NODE_ENV='development' && npm pkg set type='module' && ts-node-dev ./src/index.ts",
     "test:coverage": "NODE_ENV='test' && npm pkg set type='module' && jest --coverage",
     "test:watch": "NODE_ENV='test' && npm pkg set type='module' && jest --watch",
