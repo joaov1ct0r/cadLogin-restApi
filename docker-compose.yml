@@ -11,9 +11,11 @@ services:
       dockerfile: Dockerfile
       target: production
     image: api_prod
-    entrypoint: [ "/bin/sh", "./scripts/db.sh" ]
+    entrypoint: ["/bin/sh", "./scripts/db.sh"]
     volumes:
+      - ./src/database:/usr/src/app/src/database
       - ./build:/usr/src/app/build
+      - ./src/scripts:/usr/src/app/scripts
       - /usr/src/app/node_modules
     env_file:
       - .env
@@ -39,3 +41,5 @@ services:
       - .env
     ports: 
       - ${DB_PORT}:5432
+    expose:
+      - 5432
