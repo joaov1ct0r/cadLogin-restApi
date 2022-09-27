@@ -41,5 +41,3 @@ services:
       - .env
     ports: 
       - ${DB_PORT}:5432
-    expose:
-      - 5432
