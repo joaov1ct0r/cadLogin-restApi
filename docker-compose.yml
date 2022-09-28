@@ -28,6 +28,11 @@ services:
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
     command: sh -c "npm run start"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   database_prod:
     image: postgres
