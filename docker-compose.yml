@@ -23,11 +23,12 @@ services:
       - NODE_ENV=production
       - DB_DIALECT=postgres
     restart: always
+    links:
+      - database_prod
     depends_on:
       - database_prod
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
-    command: sh -c "npm run start"
     logging:
       driver: "json-file"
       options:

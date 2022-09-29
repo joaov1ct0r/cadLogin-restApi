@@ -25,5 +25,3 @@ WORKDIR /usr/src/app
 COPY [ "package*.json", ".sequelizerc", "./" ]
 
 RUN npm install --only=production
-
-CMD [ "npm", "run", "start" ]
