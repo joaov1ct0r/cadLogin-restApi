@@ -11,6 +11,8 @@ services:
       dockerfile: Dockerfile
       target: production
     image: api_prod
+    links:
+      - database_prod:database_prod
     entrypoint: ["/bin/sh", "./scripts/db.sh"]
     volumes:
       - ./src/database:/usr/src/app/src/database
@@ -23,8 +25,6 @@ services:
       - NODE_ENV=production
       - DB_DIALECT=postgres
     restart: always
-    links:
-      - database_prod
     depends_on:
       - database_prod
     ports:
@@ -37,7 +37,7 @@ services:
 
   database_prod:
     image: postgres
-    container_name: database_prod
+    container_name: database
     restart: always
     environment:
       - POSTGRES_USER=${DB_USER}
@@ -47,3 +47,5 @@ services:
       - .env
     ports: 
       - ${DB_PORT}:5432
+    expose:
+      - 5432
