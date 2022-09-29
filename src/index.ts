@@ -7,11 +7,23 @@ import DB from "./database/config/database";
 new App().server.listen(process.env.SERVER_PORT, async () => {
   console.log("Server running");
 
-  try {
-    await DB.authenticate();
+  let retries: number = 5;
 
-    console.log("DB Connected!!");
-  } catch (error: any) {
-    throw new Error(error);
+  while (retries) {
+    try {
+      await DB.authenticate();
+
+      console.log("DB Connected!!");
+
+      break;
+    } catch (error: any) {
+      console.log(error);
+
+      retries -= 1;
+
+      console.log(`retries left ${retries}!`);
+
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+    }
   }
 });

@@ -1,6 +1,20 @@
 version: '3.4'
 
 services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+    env_file:
+      - .env
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports: 
+      - ${DB_PORT}:5432
+
   api_prod:
     container_name: api_prod
     build:
@@ -11,8 +25,6 @@ services:
       dockerfile: Dockerfile
       target: production
     image: api_prod
-    links:
-      - database_prod:database_prod
     entrypoint: ["/bin/sh", "./scripts/db.sh"]
     volumes:
       - ./src/database:/usr/src/app/src/database
@@ -26,7 +38,7 @@ services:
       - DB_DIALECT=postgres
     restart: always
     depends_on:
-      - database_prod
+      - db
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
     logging:
@@ -34,18 +46,3 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
-
-  database_prod:
-    image: postgres
-    container_name: database
-    restart: always
-    environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_DATABASE}
-    env_file:
-      - .env
-    ports: 
-      - ${DB_PORT}:5432
-    expose:
-      - 5432
