@@ -25,7 +25,7 @@ services:
       dockerfile: Dockerfile
       target: production
     image: api_prod
-    entrypoint: ["/bin/sh", "./scripts/db.sh"]
+    entrypoint: ["/bin/sh", "./scripts/entrypoint.sh"]
     volumes:
       - ./src/database:/usr/src/app/src/database
       - ./build:/usr/src/app/build
