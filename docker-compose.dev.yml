@@ -28,7 +28,9 @@ services:
     image: api_dev
     entrypoint: ["/bin/sh", "./scripts/entrypoint_dev.sh"]
     volumes:
-      - ./:/usr/src/app/
+      - ./src/database:/usr/src/app/src/database
+      - ./src/scripts:/usr/src/app/scripts
+      - .:/usr/src/app
       - /usr/src/app/node_modules
       - /usr/src/app/build
     env_file:
