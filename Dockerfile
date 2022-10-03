@@ -1,4 +1,4 @@
-FROM node:16.17-alpine3.15 as development
+FROM node:14-alpine as development
 
 ARG DB_DIALECT=postgres
 
@@ -12,11 +12,15 @@ WORKDIR /usr/src/app
 
 COPY [ "package*.json", "./" ]
 
+RUN npm install --only=production
+
 RUN npm install
 
 COPY [".sequelizerc", ".eslintignore", ".eslintrc.json", "tsconfig.json", "./"]
 
 COPY [ "./src", "./src"]
+
+RUN npm install -g npm@8.19.2
 
 FROM node:16-alpine as production
 
