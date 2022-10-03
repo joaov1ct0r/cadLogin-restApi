@@ -7,10 +7,7 @@ const DB: sequelize.Sequelize = new sequelize.Sequelize(
   process.env.DB_USER!,
   process.env.DB_PASSWORD!,
   {
-    host:
-      process.env.NODE_ENV! === "production"
-        ? process.env.DB_HOST!
-        : process.env.DB_HOST_DEV!,
+    host: process.env.DB_HOST!,
     dialect: "postgres" as Dialect,
     logging: true,
   }

@@ -19,23 +19,18 @@ services:
     container_name: api_prod
     build:
       args:
-        - DB_DIALECT=postgres
         - NODE_ENV=production
       context: .
       dockerfile: Dockerfile
       target: production
     image: api_prod
-    entrypoint: ["/bin/sh", "./scripts/entrypoint.sh"]
+    entrypoint: ["/bin/sh", "./src/scripts/entrypoint.sh"]
     volumes:
       - ./src/database:/usr/src/app/src/database
-      - ./build:/usr/src/app/build
-      - ./src/scripts:/usr/src/app/scripts
-      - /usr/src/app/node_modules
     env_file:
       - .env
     environment:
       - NODE_ENV=production
-      - DB_DIALECT=postgres
     restart: always
     depends_on:
       - db

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 npm pkg set type='commonjs';
 

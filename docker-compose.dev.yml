@@ -20,24 +20,19 @@ services:
     container_name: api_dev
     build:
       args:
-          - DB_DIALECT=postgres
           - NODE_ENV=development
       context: .
       dockerfile: Dockerfile
       target: development
     image: api_dev
-    entrypoint: ["/bin/sh", "./scripts/entrypoint_dev.sh"]
+    entrypoint: ["/bin/sh", "./src/scripts/entrypoint_dev.sh"]
     volumes:
-      - ./src/database:/usr/src/app/src/database
-      - ./src/scripts:/usr/src/app/scripts
       - .:/usr/src/app
-      - /usr/src/app/node_modules
-      - /usr/src/app/build
+      - ./src/database:/usr/src/app/src/database
     env_file:
       - .env
     environment:
       - NODE_ENV=development
-      - DB_DIALECT=postgres
     restart: always
     depends_on:
       - db
