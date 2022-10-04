@@ -1,30 +1,22 @@
 # Stage 1 Development
-FROM node:14-alpine as development
+FROM node:16.17.1 as development
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY package.json ./
+
+COPY package-lock.json ./
 
 RUN npm install
 
-COPY . .
+ADD . /usr/src/app
 
 RUN npm run build
 
-RUN npm install sequelize-cli --save-dev
-
-RUN npm install -g npm@8.19.2
-
 # Stage 2 Production
-FROM node:16-alpine as production
+FROM node:16.17.1-alpine3.16 as production
 
 WORKDIR /usr/src/app
-
-RUN npm install -g npm@8.19.2
-
-RUN npm config set fetch-retry-mintimeout 20000
-
-RUN npm config set fetch-retry-maxtimeout 120000
 
 COPY --from=development /usr/src/app/src/scripts ./src/scripts
 

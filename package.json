@@ -4,10 +4,7 @@
   "version": "1.0.0",
   "description": "REST API de Social Media com cadastro e login de usuários e criações e interações com posts feita com JavaScript utilizando o runtime NodeJS com o framework Express com TypeScript, protegendo rotas utilizando JWT (Json Web Token), autenticando os dados de entrada com @hapi/joi e criando models, migrations e armazenando os dados no banco de dados PostgreSQL utilizando Sequelize. testes unitarios e de integração feitos com Jest e SuperTest, ambientes criados em containers Docker utilizando Docker Compose.",
   "main": "./build/index.js",
-  "type": "module",
-  "engines": {
-    "node": ">=14"
-  },
+  "type": "commonjs",
   "scripts": {
     "build": "rimraf ./build && tsc",
     "start": "npm pkg set type='commonjs'; node ./build/index.js",
@@ -52,7 +49,6 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^13.0.0",
-    "esm": "^3.2.25",
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.8.0",

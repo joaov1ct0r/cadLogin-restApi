@@ -25,7 +25,6 @@ services:
       dockerfile: Dockerfile
       target: development
     image: api_dev
-    tty: true
     entrypoint: ["/bin/sh", "./src/scripts/entrypoint_dev.sh"]
     volumes:
       - .:/usr/src/app
