@@ -8,7 +8,7 @@
   "scripts": {
     "build": "rimraf ./build && tsc",
     "start": "npm pkg set type='commonjs'; node ./build/index.js",
-    "dev": "npm pkg set type='module'; ts-node-dev --transpile-only --deps --watch ./src --poll --respawn -- ./src/index.ts",
+    "dev": "npm pkg set type='module'; ts-node-dev ./src/index.ts",
     "test:coverage": "NODE_ENV='test' && npm pkg set type='module' && jest --coverage",
     "test:watch": "NODE_ENV='test' && npm pkg set type='module' && jest --watch",
     "test:verbose": "NODE_ENV='test' && npm pkg set type='module' && jest --verbose",

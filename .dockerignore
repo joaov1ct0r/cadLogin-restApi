@@ -25,3 +25,5 @@
 node_modules/
 build/
 README.md
+Dockerfile
+docker-compose*.yaml
