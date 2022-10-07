@@ -26,17 +26,13 @@
 
 <p>FAÇA O DOWNLOAD DOS ARQUIVOS OU USE SSH:<br><code>git pull git@github.com:joaov1ct0r/social-media-jwt-rest-api.git</code></p>
 
-<h3>DEPENDENCIAS</h3>
-<hr>
-
-<p>INSTALE TODAS AS DEPENDENCIAS NECESSARIAS COM O COMANDO<code>npm install</code></p>
-
 <h3>VARIAVEIS DE AMBIENTE</h3>
 <hr>
 
-<p>ABRA O ARQUIVO .env E ALTERE AS VARIAVEIS DE AMBIENTE COM SEUS DADOS</p>
+<p>ABRA O ARQUIVO .env E ALTERE AS VARIAVEIS DE AMBIENTE COM SEUS DADOS(USE .env.example COMO EXEMPLO)</p>
 
 <ul>
+  <li>SERVER_HOST = HOST DO SEU SERVER</li>
   <li>SERVER_PORT = PORTA QUE VOCÊ QUEIRA RODAR O SERVIDOR</li>
   <li>DB_HOST = ROTA PARA SEU BANCO DE DADOS</li>
   <li>DB_USER = SEU USUARIO DO BANCO DE DADOS</li>
@@ -44,25 +40,17 @@
   <li>DB_DATABASE = NOME DO SEU BANCO DE DADOS</li>
   <li>DB_DATABASE_TEST = NOME DO SEU BANCO DE DADOS DE TESTE</li>
   <li>DB_PORT = PORTA DO SEU BANCO DE DADOS</li>
-  <li>DB_DIALECT = DIALETO DO SEU BANCO DE DADOS</li>
   <li>JWT_TOKEN_SECRET = SEU JWT TOKEN SECRET</li>
   <li>NODE_ENV = AMBIENTE DO SEU NODE</li>
 </ul>
-
-<h3>Sequelize</h3>
-<hr>
-
-<p>APOS INSERIR OS DADOS NO ARQUIVO .env VA ATE O DIRETORIO ROOT DO PROJETO E DIGITE EM SEU TERMINAL: 
-  <br><code>./src/scripts/db.sh</code>
-PARA GERAR A DATABASE E AS TABELAS</p>
 
 <h3>SERVER</h3>
 <hr>
 
 <p>APOS TER OS ARQUIVOS EM SUA MAQUINA ESCOLHA O MODO EM QUE QUER RODAR O PROJETO:
-  <br>PRODUÇÃO: 1º<code>sudo docker compose up --build -d</code>
+  <br>PRODUÇÃO: <code>sudo docker compose up --build -d</code>
 
-<br>DESENVOLVIMENTO: <code>sudo docker compose up -f docker-compose.dev.yml --build -d</code>
+<br>DESENVOLVIMENTO: <code>sudo docker compose up -f docker-compose.dev.yaml --build -d</code>
 
 </p>
 
