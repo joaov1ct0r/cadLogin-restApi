@@ -17,7 +17,7 @@
 
 <h2>Sobre</h2>
 
-<p>REST API de Social Media com cadastro e login de usuários e criações e interações com posts feita com JavaScript utilizando o runtime NodeJS com o framework Express com TypeScript, protegendo rotas utilizando JWT (Json Web Token), autenticando os dados de entrada com @hapi/joi e criando models, migrations e armazenando os dados no banco de dados PostgreSQL utilizando Sequelize. testes unitarios e de integração feitos com Jest e SuperTest, ambientes criados em containers Docker utilizando Docker Compose.</p>
+<p>REST API de Social Media com cadastro e login de usuários e criações e interações com posts feita com JavaScript utilizando o runtime NodeJS com o framework Express com TypeScript, protegendo rotas utilizando JWT (Json Web Token), autenticando os dados de entrada com @hapi/joi e criando models, migrations e armazenando os dados no banco de dados PostgreSQL utilizando Sequelize. testes unitarios e de integração feitos com Jest e SuperTest, ambientes criados em containers Docker utilizando Dockerfile e Docker Compose.</p>
 
 <h2>MODO DE USO</h2>
 
