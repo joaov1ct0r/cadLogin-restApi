@@ -38,9 +38,11 @@ export default class DeletePostController implements IDeletePostController {
       // eslint-disable-next-line no-unused-vars
       const deletedPost: number = await deletePostService.execute(id, postId);
 
-      return res.status(204).send();
+      return res.status(204).json({ message: "Post deletado", status: 204 });
     } catch (err: any) {
-      return res.status(err.statusCode).json({ error: err.message });
+      return res
+        .status(err.statusCode)
+        .json({ error: err.message, status: err.statusCode });
     }
   }
 }
