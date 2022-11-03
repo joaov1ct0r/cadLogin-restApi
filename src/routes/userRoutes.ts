@@ -1,5 +1,7 @@
 import express from "express";
 
+import resolver from "../utils/Resolver";
+
 import auth from "../middlewares/auth";
 
 import CreateUserController from "../controllers/CreateUserController";
@@ -42,16 +44,16 @@ const listAllUsersController: IListAllUsersController =
 
 const listUserController: IListUserController = new ListUserController();
 
-userRouter.post("/register", createUserController.handle);
+userRouter.post("/register", resolver(createUserController.handle));
 
-userRouter.post("/login", authenticateUserController.handle);
+userRouter.post("/login", resolver(authenticateUserController.handle));
 
-userRouter.put("/edit", auth, editUserController.handle);
+userRouter.put("/edit", auth, resolver(editUserController.handle));
 
-userRouter.delete("/delete", auth, deleteUserController.handle);
+userRouter.delete("/delete", auth, resolver(deleteUserController.handle));
 
-userRouter.get("/user", auth, listUserController.handle);
+userRouter.get("/user", auth, resolver(listUserController.handle));
 
-userRouter.get("/users", auth, listAllUsersController.handle);
+userRouter.get("/users", auth, resolver(listAllUsersController.handle));
 
 export default userRouter;
