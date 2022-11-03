@@ -4,9 +4,15 @@ import App from "../../src/app";
 
 import request from "supertest";
 
+import Comments from "../../src/database/models/commentsModel";
+
 describe("edit post comment", () => {
   beforeEach(async () => {
     jest.setTimeout(70000);
+  });
+
+  afterEach(async () => {
+    await Comments.truncate({ cascade: true });
   });
 
   it("should return an exception if not authenticated", async () => {

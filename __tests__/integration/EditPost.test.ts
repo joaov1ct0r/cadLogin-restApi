@@ -4,7 +4,12 @@ import App from "../../src/app";
 
 import request from "supertest";
 
+import Post from "../../src/database/models/postModel";
+
 describe("edit post", () => {
+  afterEach(async () => {
+    await Post.truncate({ cascade: true });
+  });
   it("should return an exception if not authenticated", async () => {
     jest.setTimeout(70000);
 

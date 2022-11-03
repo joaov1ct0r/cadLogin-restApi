@@ -2,7 +2,12 @@ import App from "../../src/app";
 
 import request from "supertest";
 
+import User from "../../src/database/models/userModel";
+
 describe("authenticate user", () => {
+  afterEach(async () => {
+    await User.truncate({ cascade: true });
+  });
   it("should return an exception if user is not registered", async () => {
     const response = await request(new App().server)
       .post("/api/users/login")

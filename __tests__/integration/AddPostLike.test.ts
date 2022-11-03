@@ -2,11 +2,17 @@ import { jest } from "@jest/globals";
 
 import App from "../../src/app";
 
+import Post from "../../src/database/models/postModel";
+
 import request from "supertest";
 
 describe("add post like", () => {
   beforeEach(async () => {
     jest.setTimeout(70000);
+  });
+
+  afterEach(async () => {
+    await Post.truncate({ cascade: true });
   });
 
   it("should return an exception if not authenticated", async () => {

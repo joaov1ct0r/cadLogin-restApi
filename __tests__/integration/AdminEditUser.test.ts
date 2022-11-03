@@ -4,9 +4,15 @@ import App from "../../src/app";
 
 import request from "supertest";
 
+import User from "../../src/database/models/userModel";
+
 describe("admin edit user", () => {
   beforeEach(async () => {
     jest.setTimeout(70000);
+  });
+
+  afterEach(async () => {
+    await User.truncate({ cascade: true });
   });
 
   it("should return an exception if not authenticated", async () => {

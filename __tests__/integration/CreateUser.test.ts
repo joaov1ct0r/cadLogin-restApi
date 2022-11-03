@@ -2,7 +2,12 @@ import App from "../../src/app";
 
 import request from "supertest";
 
+import User from "../../src/database/models/userModel";
+
 describe("create user", () => {
+  afterEach(async () => {
+    await User.truncate({ cascade: true });
+  });
   it("should return an exception if wrong data is send", async () => {
     const response = await request(new App().server)
       .post("/api/users/register")
