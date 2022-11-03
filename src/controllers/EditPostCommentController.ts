@@ -46,9 +46,13 @@ export default class EditPostCommentController
         comment
       );
 
-      return res.status(204).send();
+      return res
+        .status(204)
+        .json({ message: "Post Comment editado", status: 204 });
     } catch (err: any) {
-      return res.status(err.statusCode).json({ error: err.message });
+      return res
+        .status(err.statusCode)
+        .json({ error: err.message, status: err.statusCode });
     }
   }
 }
