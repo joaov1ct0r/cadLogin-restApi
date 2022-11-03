@@ -19,9 +19,11 @@ export default class ListAllUsersController implements IListAllUsersController {
     try {
       const users: IUser[] = await listAllUsersService.execute();
 
-      return res.status(200).json({ users });
-    } catch (err: unknown) {
-      return res.status(500).json({ error: err });
+      return res.status(200).json({ users, status: 200 });
+    } catch (err: any) {
+      return res
+        .status(err.statusCode)
+        .json({ error: err.message, status: err.statusCode });
     }
   }
 }
