@@ -44,9 +44,11 @@ export default class AddPostCommentController
         comment
       );
 
-      return res.status(201).json({ newComment });
+      return res.status(201).json({ newComment, status: 201 });
     } catch (err: any) {
-      return res.status(err.statusCode).json({ error: err.message });
+      return res
+        .status(err.statusCode)
+        .json({ error: err.message, status: err.statusCode });
     }
   }
 }
