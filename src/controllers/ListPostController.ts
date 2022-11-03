@@ -27,9 +27,11 @@ export default class ListPostController implements IListPostController {
     try {
       const post: IPost = await listPostService.execute(postId);
 
-      return res.status(200).json({ post });
+      return res.status(200).json({ post, status: 200 });
     } catch (err: any) {
-      return res.status(err.statusCode).json({ error: err.message });
+      return res
+        .status(err.statusCode)
+        .json({ error: err.message, status: err.statusCode });
     }
   }
 }
