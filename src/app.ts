@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 
 import cookieParser from "cookie-parser";
 
@@ -31,6 +31,16 @@ export default class App {
     this.server.use(express.json());
     this.server.use(cookieParser());
     this.server.use(express.urlencoded({ extended: true }));
+    this.server.use(
+      (error: any, req: Request, res: Response, next: NextFunction) => {
+        if (error && error.statusCode) {
+          return res.status(error.statusCode).json({
+            message: error.message,
+            status: error.statusCode,
+          });
+        } else return res.status(500).json({ error });
+      }
+    );
   }
 
   private userRoutes() {
