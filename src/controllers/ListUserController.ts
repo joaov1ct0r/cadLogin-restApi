@@ -27,9 +27,11 @@ export default class ListUserController implements IListUserController {
     try {
       const user: IUser = await listUserService.execute(email);
 
-      return res.status(200).json({ user });
+      return res.status(200).json({ user, status: 200 });
     } catch (err: any) {
-      return res.status(err.statusCode).json({ error: err.message });
+      return res
+        .status(err.statusCode)
+        .json({ error: err.message, status: err.statusCode });
     }
   }
 }
