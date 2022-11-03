@@ -1,5 +1,7 @@
 import express from "express";
 
+import resolver from "../utils/Resolver";
+
 import auth from "../middlewares/auth";
 
 import CreateNewPostController from "../controllers/CreateNewPostController";
@@ -71,24 +73,36 @@ const editPostCommentController: IEditPostCommentController =
 const deletePostCommentController: IDeletePostCommentController =
   new DeletePostCommentController();
 
-postRouter.post("/register", auth, createNewPostController.handle);
+postRouter.post("/register", auth, resolver(createNewPostController.handle));
 
-postRouter.post("/like", auth, addPostLikeController.handle);
+postRouter.post("/like", auth, resolver(addPostLikeController.handle));
 
-postRouter.delete("/like/delete", auth, deletePostLikeController.handle);
+postRouter.delete(
+  "/like/delete",
+  auth,
+  resolver(deletePostLikeController.handle)
+);
 
-postRouter.post("/comment", auth, addPostCommentController.handle);
+postRouter.post("/comment", auth, resolver(addPostCommentController.handle));
 
-postRouter.put("/comment/edit", auth, editPostCommentController.handle);
+postRouter.put(
+  "/comment/edit",
+  auth,
+  resolver(editPostCommentController.handle)
+);
 
-postRouter.delete("/comment/delete", auth, deletePostCommentController.handle);
+postRouter.delete(
+  "/comment/delete",
+  auth,
+  resolver(deletePostCommentController.handle)
+);
 
-postRouter.put("/edit", auth, editPostController.handle);
+postRouter.put("/edit", auth, resolver(editPostController.handle));
 
-postRouter.delete("/delete", auth, deletePostController.handle);
+postRouter.delete("/delete", auth, resolver(deletePostController.handle));
 
-postRouter.get("/post", auth, listPostController.handle);
+postRouter.get("/post", auth, resolver(listPostController.handle));
 
-postRouter.get("/posts", auth, listAllPostsController.handle);
+postRouter.get("/posts", auth, resolver(listAllPostsController.handle));
 
 export default postRouter;
