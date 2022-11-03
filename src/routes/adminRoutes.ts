@@ -1,5 +1,7 @@
 import express from "express";
 
+import resolver from "../utils/Resolver";
+
 import auth from "../middlewares/auth";
 
 import admin from "../middlewares/admin";
@@ -27,20 +29,25 @@ const adminDeleteUserController: IAdminDeleteUserController =
 const adminDeletePostController: IAdminDeletePostController =
   new AdminDeletePostController();
 
-adminRouter.put("/user/edit", auth, admin, adminEditUserController.handle);
+adminRouter.put(
+  "/user/edit",
+  auth,
+  admin,
+  resolver(adminEditUserController.handle)
+);
 
 adminRouter.delete(
   "/user/delete",
   auth,
   admin,
-  adminDeleteUserController.handle
+  resolver(adminDeleteUserController.handle)
 );
 
 adminRouter.delete(
   "/post/delete",
   auth,
   admin,
-  adminDeletePostController.handle
+  resolver(adminDeletePostController.handle)
 );
 
 export default adminRouter;
