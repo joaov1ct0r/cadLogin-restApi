@@ -1,16 +1,10 @@
 import { jest } from "@jest/globals";
 
-import truncate from "../utils/truncate";
-
 import App from "../../src/app";
 
 import request from "supertest";
 
 describe("edit post", () => {
-  beforeEach(async () => {
-    await truncate();
-  });
-
   it("should return an exception if not authenticated", async () => {
     jest.setTimeout(70000);
 

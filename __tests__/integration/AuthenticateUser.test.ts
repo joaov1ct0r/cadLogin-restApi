@@ -1,14 +1,8 @@
-import truncate from "../utils/truncate";
-
 import App from "../../src/app";
 
 import request from "supertest";
 
 describe("authenticate user", () => {
-  beforeEach(async () => {
-    await truncate();
-  });
-
   it("should return an exception if user is not registered", async () => {
     const response = await request(new App().server)
       .post("/api/users/login")
