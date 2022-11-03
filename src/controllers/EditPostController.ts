@@ -35,9 +35,11 @@ export default class EditPostController implements IEditPostController {
         content
       );
 
-      return res.status(204).send();
+      return res.status(204).json({ message: "Post editado", status: 204 });
     } catch (err: any) {
-      return res.status(err.statusCode).json({ error: err.message });
+      return res
+        .status(err.statusCode)
+        .json({ error: err.message, status: err.statusCode });
     }
   }
 }
