@@ -39,9 +39,11 @@ export default class AddPostLikeController implements IAddPostLikeController {
     try {
       const like: ILikes = await addPostLikeService.execute(postId, id);
 
-      return res.status(201).json({ like });
+      return res.status(201).json({ like, status: 201 });
     } catch (err: any) {
-      return res.status(err.statusCode).json({ error: err.message });
+      return res
+        .status(err.statusCode)
+        .json({ error: err.message, status: err.statusCode });
     }
   }
 }
