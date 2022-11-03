@@ -18,9 +18,11 @@ export default class ListAllPostsController implements IListAllPostsController {
     try {
       const posts: IPost[] = await listAllPostsService.execute();
 
-      return res.status(200).json({ posts });
+      return res.status(200).json({ posts, status: 200 });
     } catch (err: any) {
-      return res.status(err.statusCode).json({ error: err.message });
+      return res
+        .status(err.statusCode)
+        .json({ error: err.message, status: err.statusCode });
     }
   }
 }
