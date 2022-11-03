@@ -43,9 +43,11 @@ export default class AdminEditUserController
         userNewBornAt
       );
 
-      return res.status(204).send();
+      return res.status(204).json({ message: "User Editado", status: 204 });
     } catch (err: any) {
-      return res.status(err.statusCode).json({ error: err.message });
+      return res
+        .status(err.statusCode)
+        .json({ error: err.message, status: err.statusCode });
     }
   }
 }
