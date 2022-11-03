@@ -36,9 +36,11 @@ export default class CreateNewPostController
     try {
       const post: IPost = await createNewPostService.execute(id, content);
 
-      return res.status(201).json({ post });
+      return res.status(201).json({ post, status: 201 });
     } catch (err: any) {
-      return res.status(err.statusCode).json({ error: err.message });
+      return res
+        .status(err.statusCode)
+        .json({ error: err.message, status: 201 });
     }
   }
 }
