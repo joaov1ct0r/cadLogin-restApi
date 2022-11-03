@@ -38,9 +38,11 @@ export default class CreateUserController implements ICreateUserController {
         bornAt,
       });
 
-      return res.status(201).json({ user });
+      return res.status(201).json({ user, status: 201 });
     } catch (err: any) {
-      return res.status(err.statusCode).json({ error: err.message });
+      return res
+        .status(err.statusCode)
+        .json({ error: err.message, status: err.statusCode });
     }
   }
 }
