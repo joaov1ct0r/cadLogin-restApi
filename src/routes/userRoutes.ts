@@ -12,8 +12,6 @@ import IAuthenticateUserController from "../interfaces/IAuthenticateUserControll
 
 import EditUserController from "../controllers/EditUserController";
 
-import IEditUserController from "../interfaces/IEditUserController";
-
 import DeleteUserController from "../controllers/DeleteUserController";
 
 import IDeleteUserController from "../interfaces/IDeleteUserController";
@@ -33,7 +31,7 @@ const createUserController: CreateUserController = new CreateUserController();
 const authenticateUserController: IAuthenticateUserController =
   new AuthenticateUserController();
 
-const editUserController: IEditUserController = new EditUserController();
+const editUserController: EditUserController = new EditUserController();
 
 const deleteUserController: IDeleteUserController = new DeleteUserController();
 

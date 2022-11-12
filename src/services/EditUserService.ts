@@ -1,19 +1,13 @@
 import IEditUserRequest from "../interfaces/IEditUserRequest";
-
 import InternalError from "../errors/InternalError";
-
 import bcrypt from "bcryptjs";
-
 import IEditUserService from "../interfaces/IEditUserService";
-
-import { ModelStatic } from "sequelize";
-
-import IUser from "../interfaces/IUser";
+import { PrismaClient, User } from "@prisma/client";
 
 export default class EditUserService implements IEditUserService {
-  private readonly repository: ModelStatic<IUser>;
+  private readonly repository: PrismaClient;
 
-  constructor(repository: ModelStatic<IUser>) {
+  constructor(repository: PrismaClient) {
     this.repository = repository;
   }
 
@@ -22,24 +16,22 @@ export default class EditUserService implements IEditUserService {
     password,
     name,
     bornAt,
-    id,
-  }: IEditUserRequest): Promise<number> {
-    const editedUser: [affectedCount: number] = await this.repository.update(
-      {
+    userId,
+  }: IEditUserRequest): Promise<User> {
+    const editedUser: User = await this.repository.user.update({
+      data: {
         email,
         password: bcrypt.hashSync(password),
         name,
         bornAt,
       },
-      {
-        where: { id },
-      }
-    );
+      where: { id: userId },
+    });
 
-    if (editedUser[0] === 0) {
+    if (!editedUser) {
       throw new InternalError("Falha ao atualizar usuario!");
     }
 
-    return Number(editedUser);
+    return editedUser;
   }
 }

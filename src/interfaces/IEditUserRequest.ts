@@ -3,5 +3,5 @@ export default interface IEditUserRequest {
   password: string;
   name: string;
   bornAt: string;
-  id: string | undefined;
+  userId?: number;
 }
