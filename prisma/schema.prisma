@@ -19,6 +19,7 @@ model User {
   admin    Boolean
   Post     Post[]
   Comment  Comment[]
+  Likes    Likes[]
 
   @@map("users")
 }
@@ -30,6 +31,7 @@ model Post {
   user    User      @relation(fields: [userId], references: [id])
   userId  Int
   Comment Comment[]
+  Likes   Likes[]
 
   @@map("posts")
 }
@@ -44,4 +46,15 @@ model Comment {
   postId  Int
 
   @@map("comments")
+}
+
+model Likes {
+  id      Int    @id @default(autoincrement())
+  likedBy String
+  user    User   @relation(fields: [userId], references: [id])
+  userId  Int
+  post    Post   @relation(fields: [postId], references: [id])
+  postId  Int
+
+  @@map("likes")
 }
