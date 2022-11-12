@@ -6,8 +6,6 @@ import auth from "../middlewares/auth";
 
 import CreateUserController from "../controllers/CreateUserController";
 
-import ICreateUserController from "../interfaces/ICreateUserController";
-
 import AuthenticateUserController from "../controllers/AuthenticateUserController";
 
 import IAuthenticateUserController from "../interfaces/IAuthenticateUserController";
@@ -30,7 +28,7 @@ import IListUserController from "../interfaces/IListUserController";
 
 const userRouter: express.Router = express.Router();
 
-const createUserController: ICreateUserController = new CreateUserController();
+const createUserController: CreateUserController = new CreateUserController();
 
 const authenticateUserController: IAuthenticateUserController =
   new AuthenticateUserController();

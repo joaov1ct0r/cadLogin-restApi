@@ -1,16 +1,9 @@
 import { Request, Response } from "express";
-
 import CreateUserService from "../services/CreateUserService";
-
-import ICreateUserService from "../interfaces/ICreateUserService";
-
 import { validateHandleUserRegister } from "../validations/validateUserData";
-
-import User from "../database/models/userModel";
-
-import IUser from "../interfaces/IUser";
-
+import prismaClient from "../database/prismaClient";
 import ICreateUserController from "../interfaces/ICreateUserController";
+import { User } from "@prisma/client";
 
 export default class CreateUserController implements ICreateUserController {
   public async handle(req: Request, res: Response): Promise<Response> {
@@ -28,10 +21,12 @@ export default class CreateUserController implements ICreateUserController {
 
     const bornAt: string = req.body.bornAt;
 
-    const createUserService: ICreateUserService = new CreateUserService(User);
+    const createUserService: CreateUserService = new CreateUserService(
+      prismaClient
+    );
 
     try {
-      const user: IUser = await createUserService.execute({
+      const user: User = await createUserService.execute({
         email,
         password,
         name,

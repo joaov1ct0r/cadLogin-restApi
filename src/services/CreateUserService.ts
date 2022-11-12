@@ -1,19 +1,13 @@
-import IUser from "../interfaces/IUser";
-
 import bcrypt from "bcryptjs";
-
 import ICreateUserRequest from "../interfaces/ICreateUserRequest";
-
 import BadRequestError from "../errors/BadRequestError";
-
 import ICreateUserService from "../interfaces/ICreateUserService";
-
-import { ModelStatic } from "sequelize";
+import { PrismaClient, User } from "@prisma/client";
 
 export default class CreateUserService implements ICreateUserService {
-  private readonly repository: ModelStatic<IUser>;
+  private readonly repository: PrismaClient;
 
-  constructor(repository: ModelStatic<IUser>) {
+  constructor(repository: PrismaClient) {
     this.repository = repository;
   }
 
@@ -22,20 +16,27 @@ export default class CreateUserService implements ICreateUserService {
     password,
     name,
     bornAt,
-  }: ICreateUserRequest): Promise<IUser> {
-    const isUserRegistered: IUser | null = await this.repository.findOne({
-      where: { email },
-    });
+  }: ICreateUserRequest): Promise<User> {
+    const isUserRegistered: User | null = await this.repository.user.findUnique(
+      {
+        where: {
+          email,
+        },
+      }
+    );
 
     if (isUserRegistered !== null) {
       throw new BadRequestError("Usuario já cadastrado!");
     }
 
-    const newUser: IUser = await this.repository.create({
-      email,
-      password: bcrypt.hashSync(password),
-      name,
-      bornAt,
+    const newUser: User = await this.repository.user.create({
+      data: {
+        email,
+        password: bcrypt.hashSync(password),
+        name,
+        bornAt,
+        admin: false,
+      },
     });
 
     return newUser;
