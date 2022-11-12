@@ -1,8 +1,6 @@
 import "dotenv/config";
-
 import App from "./app";
-
-import DB from "./database/config/database";
+import prismaClient from "./database/prismaClient";
 
 new App().server.listen(
   Number(process.env.SERVER_PORT!),
@@ -14,7 +12,7 @@ new App().server.listen(
 
     while (retries) {
       try {
-        await DB.authenticate();
+        await prismaClient.$connect();
 
         console.log("DB Connected!!");
 

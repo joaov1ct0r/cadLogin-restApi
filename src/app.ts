@@ -1,17 +1,10 @@
 import express, { NextFunction, Request, Response } from "express";
-
 import cookieParser from "cookie-parser";
-
 import cors from "cors";
-
 import userRouter from "./routes/userRoutes";
-
 import postRouter from "./routes/postRoutes";
-
 import adminRouter from "./routes/adminRoutes";
-
 import swaggerUi from "swagger-ui-express";
-
 import swaggerDocs from "./swagger.json";
 
 export default class App {
