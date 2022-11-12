@@ -45,6 +45,7 @@
   "license": "MIT",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
+    "@prisma/client": "^4.6.1",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -52,8 +53,7 @@
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.8.0",
-    "sequelize": "^6.23.1",
-    "sequelize-cli": "^6.4.1",
+    "prisma": "^4.6.1",
     "swagger-ui-express": "^4.4.0"
   },
   "devDependencies": {
