@@ -17,6 +17,17 @@ model User {
   name     String
   bornAt   String
   admin    Boolean
+  Post     Post[]
 
   @@map("users")
+}
+
+model Post {
+  id      Int    @id @default(autoincrement())
+  author  String
+  content String
+  user    User   @relation(fields: [userId], references: [id])
+  userId  Int
+
+  @@map("posts")
 }
