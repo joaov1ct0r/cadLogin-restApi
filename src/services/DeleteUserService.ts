@@ -1,37 +1,24 @@
 import InternalError from "../errors/InternalError";
-
 import IDeleteUserService from "../interfaces/IDeleteUserService";
-
-import { ModelStatic } from "sequelize";
-
-import IUser from "../interfaces/IUser";
-
-import IPost from "../interfaces/IPost";
+import { PrismaClient, User } from "@prisma/client";
 
 export default class DeleteUserService implements IDeleteUserService {
-  private readonly repository: ModelStatic<IUser>;
+  private readonly repository: PrismaClient;
 
-  private readonly postRepository: ModelStatic<IPost>;
-
-  constructor(
-    repository: ModelStatic<IUser>,
-    postRepository: ModelStatic<IPost>
-  ) {
+  constructor(repository: PrismaClient) {
     this.repository = repository;
-
-    this.postRepository = postRepository;
   }
 
-  public async execute(id: string | undefined): Promise<number> {
-    const deletedUser: number = await this.repository.destroy({
+  public async execute(id: number | undefined): Promise<User> {
+    const deletedUser: User = await this.repository.user.delete({
       where: { id },
     });
 
-    if (deletedUser === 0) {
+    if (!deletedUser) {
       throw new InternalError("Falha ao deletar usuario!");
     }
 
-    this.postRepository.destroy({
+    this.repository.post.deleteMany({
       where: { userId: id },
     });
 

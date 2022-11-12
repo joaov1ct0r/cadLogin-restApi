@@ -1,27 +1,14 @@
 import express from "express";
-
 import resolver from "../utils/Resolver";
-
 import auth from "../middlewares/auth";
-
 import CreateUserController from "../controllers/CreateUserController";
-
 import AuthenticateUserController from "../controllers/AuthenticateUserController";
-
 import IAuthenticateUserController from "../interfaces/IAuthenticateUserController";
-
 import EditUserController from "../controllers/EditUserController";
-
 import DeleteUserController from "../controllers/DeleteUserController";
-
-import IDeleteUserController from "../interfaces/IDeleteUserController";
-
 import ListAllUsersController from "../controllers/ListAllUsersController";
-
 import IListAllUsersController from "../interfaces/IListAllUsersController";
-
 import ListUserController from "../controllers/ListUserController";
-
 import IListUserController from "../interfaces/IListUserController";
 
 const userRouter: express.Router = express.Router();
@@ -33,7 +20,7 @@ const authenticateUserController: IAuthenticateUserController =
 
 const editUserController: EditUserController = new EditUserController();
 
-const deleteUserController: IDeleteUserController = new DeleteUserController();
+const deleteUserController: DeleteUserController = new DeleteUserController();
 
 const listAllUsersController: IListAllUsersController =
   new ListAllUsersController();

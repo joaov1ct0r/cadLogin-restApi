@@ -1,31 +1,22 @@
 import { Response } from "express";
-
 import IReq from "../interfaces/IRequest";
-
-import User from "../database/models/userModel";
-
-import Post from "../database/models/postModel";
-
+import prismaClient from "../database/prismaClient";
 import DeleteUserService from "../services/DeleteUserService";
-
-import IDeleteUserService from "../interfaces/IDeleteUserService";
-
 import IDeleteUserController from "../interfaces/IDeleteUserController";
 
 export default class DeleteUserController implements IDeleteUserController {
   public async handle(req: IReq, res: Response): Promise<Response> {
     const id: string | undefined = req.userId;
 
-    const deleteUserService: IDeleteUserService = new DeleteUserService(
-      User,
-      Post
+    const deleteUserService: DeleteUserService = new DeleteUserService(
+      prismaClient
     );
 
     try {
       // eslint-disable-next-line no-unused-vars
-      const deletedUser = await deleteUserService.execute(id);
+      const deletedUser = await deleteUserService.execute(Number(id));
 
-      return res.status(204).json({ message: "User deletado", status: 204 });
+      return res.status(204).send();
     } catch (err: any) {
       return res
         .status(err.statusCode)
