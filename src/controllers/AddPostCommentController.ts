@@ -1,22 +1,10 @@
 import IReq from "../interfaces/IRequest";
-
 import { Response } from "express";
-
 import { validateHandleAddPostComment } from "../validations/validatePostData";
-
-import Post from "../database/models/postModel";
-
-import Comments from "../database/models/commentsModel";
-
-import User from "../database/models/userModel";
-
 import AddPostCommentService from "../services/AddPostCommentService";
-
-import IAddPostCommentService from "../interfaces/IAddPostCommentService";
-
-import IComments from "../interfaces/IComments";
-
 import IAddPostCommentController from "../interfaces/IAddPostCommentController";
+import prismaClient from "../database/prismaClient";
+import { Comment } from "@prisma/client";
 
 export default class AddPostCommentController
   implements IAddPostCommentController
@@ -34,13 +22,13 @@ export default class AddPostCommentController
 
     const id: string | undefined = req.userId;
 
-    const addPostCommentService: IAddPostCommentService =
-      new AddPostCommentService(Post, Comments, User);
+    const addPostCommentService: AddPostCommentService =
+      new AddPostCommentService(prismaClient);
 
     try {
-      const newComment: IComments = await addPostCommentService.execute(
-        id,
-        postId,
+      const newComment: Comment = await addPostCommentService.execute(
+        Number(id),
+        Number(postId),
         comment
       );
 

@@ -1,9 +1,9 @@
-import IComments from "./IComments";
+import { Comment } from "@prisma/client";
 
 export default interface IAddPostCommentService {
   execute(
-    id: string | undefined,
-    postId: string,
+    id: number | undefined,
+    postId: number,
     comment: string
-  ): Promise<IComments>;
+  ): Promise<Comment>;
 }
