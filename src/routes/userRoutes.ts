@@ -6,7 +6,6 @@ import AuthenticateUserController from "../controllers/AuthenticateUserControlle
 import EditUserController from "../controllers/EditUserController";
 import DeleteUserController from "../controllers/DeleteUserController";
 import ListAllUsersController from "../controllers/ListAllUsersController";
-import IListAllUsersController from "../interfaces/IListAllUsersController";
 import ListUserController from "../controllers/ListUserController";
 import IListUserController from "../interfaces/IListUserController";
 
@@ -21,7 +20,7 @@ const editUserController: EditUserController = new EditUserController();
 
 const deleteUserController: DeleteUserController = new DeleteUserController();
 
-const listAllUsersController: IListAllUsersController =
+const listAllUsersController: ListAllUsersController =
   new ListAllUsersController();
 
 const listUserController: IListUserController = new ListUserController();

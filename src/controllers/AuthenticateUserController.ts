@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { validateHandleUserLogin } from "../validations/validateUserData";
-import IAuthenticateUserService from "../interfaces/IAuthenticateUserService";
 import AuthenticateUserService from "../services/AuthenticateUserService";
 import IAuthenticateUserController from "../interfaces/IAuthenticateUserController";
 import prismaClient from "../database/prismaClient";
@@ -17,7 +16,7 @@ export default class AuthenticateUserController
 
     const password: string = req.body.password;
 
-    const authenticateUserService: IAuthenticateUserService =
+    const authenticateUserService: AuthenticateUserService =
       new AuthenticateUserService(prismaClient);
 
     try {

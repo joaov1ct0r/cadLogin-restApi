@@ -1,15 +1,8 @@
 import { Request, Response } from "express";
-
 import { validateHandleOneUser } from "../validations/validateUserData";
-
 import ListUserService from "../services/ListUserService";
-
-import IListUserService from "../interfaces/IListUserService";
-
-import User from "../database/models/userModel";
-
-import IUser from "../interfaces/IUser";
-
+import { User } from "@prisma/client";
+import prismaClient from "../database/prismaClient";
 import IListUserController from "../interfaces/IListUserController";
 
 export default class ListUserController implements IListUserController {
@@ -22,10 +15,10 @@ export default class ListUserController implements IListUserController {
 
     const email: string = req.body.email;
 
-    const listUserService: IListUserService = new ListUserService(User);
+    const listUserService: ListUserService = new ListUserService(prismaClient);
 
     try {
-      const user: IUser = await listUserService.execute(email);
+      const user: User = await listUserService.execute(email);
 
       return res.status(200).json({ user, status: 200 });
     } catch (err: any) {

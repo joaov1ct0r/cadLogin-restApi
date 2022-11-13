@@ -1,5 +1,5 @@
-import IUser from "./IUser";
+import { User } from "@prisma/client";
 
 export default interface IListUserService {
-  execute(email: string): Promise<IUser>;
+  execute(email: string): Promise<User>;
 }
