@@ -18,8 +18,20 @@ export default class DeleteUserService implements IDeleteUserService {
       throw new InternalError("Falha ao deletar usuario!");
     }
 
-    this.repository.post.deleteMany({
+    await this.repository.post.deleteMany({
       where: { userId: id },
+    });
+
+    await this.repository.likes.deleteMany({
+      where: {
+        userId: id,
+      },
+    });
+
+    await this.repository.comment.deleteMany({
+      where: {
+        userId: id,
+      },
     });
 
     return deletedUser;
