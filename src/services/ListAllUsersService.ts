@@ -1,21 +1,20 @@
-import IUser from "../interfaces/IUser";
-
-import Post from "../database/models/postModel";
-
+import { User, PrismaClient } from "@prisma/client";
 import IListAllUsersService from "../interfaces/IListAllUsersService";
 
-import { ModelStatic } from "sequelize";
-
 export default class ListAllUsersService implements IListAllUsersService {
-  private readonly repository: ModelStatic<IUser>;
+  private readonly repository: PrismaClient;
 
-  constructor(repository: ModelStatic<IUser>) {
+  constructor(repository: PrismaClient) {
     this.repository = repository;
   }
 
-  public async execute(): Promise<IUser[]> {
-    const users: IUser[] = await this.repository.findAll({
-      include: Post,
+  public async execute(): Promise<User[]> {
+    const users: User[] = await this.repository.user.findMany({
+      include: {
+        Post: true,
+        Comment: true,
+        Likes: true,
+      },
     });
 
     return users;
