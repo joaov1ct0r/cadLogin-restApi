@@ -2,7 +2,6 @@ import IReq from "../interfaces/IRequest";
 import { Response } from "express";
 import { validateHandleEditPost } from "../validations/validatePostData";
 import prismaClient from "../database/prismaClient";
-import { Post } from "@prisma/client";
 import EditPostService from "../services/EditPostService";
 import IEditPostController from "../interfaces/IEditPostController";
 
@@ -23,7 +22,7 @@ export default class EditPostController implements IEditPostController {
     const editPostService: EditPostService = new EditPostService(prismaClient);
     try {
       // eslint-disable-next-line no-unused-vars
-      const isPostEdited: Post = await editPostService.execute(
+      const isPostEdited: Object = await editPostService.execute(
         Number(id),
         Number(postId),
         content

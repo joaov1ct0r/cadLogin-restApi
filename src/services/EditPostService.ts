@@ -14,11 +14,13 @@ export default class EditPostService implements IEditPostService {
     id: number | undefined,
     postId: number,
     content: string
-  ): Promise<Post> {
+  ): Promise<Object> {
     const isPostRegistered: Post | null = await this.repository.post.findFirst({
       where: {
         id: postId,
-        userId: id,
+        AND: {
+          userId: id,
+        },
       },
     });
 
@@ -26,12 +28,15 @@ export default class EditPostService implements IEditPostService {
       throw new BadRequestError("Post não encontrado!");
     }
 
-    const editedPost: Post = await this.repository.post.update({
+    const editedPost = await this.repository.post.updateMany({
       data: {
         content,
       },
       where: {
         id: postId,
+        AND: {
+          userId: id,
+        },
       },
     });
 
@@ -39,6 +44,6 @@ export default class EditPostService implements IEditPostService {
       throw new InternalError("Falha ao atualizar Post!");
     }
 
-    return editedPost;
+    return { message: "Post editado!" };
   }
 }
