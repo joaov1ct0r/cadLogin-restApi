@@ -1,30 +1,20 @@
-import IPost from "../interfaces/IPost";
-
-import Likes from "../database/models/likesModel";
-
-import Comments from "../database/models/commentsModel";
-
+import { Post, PrismaClient } from "@prisma/client";
 import IListAllPostsService from "../interfaces/IListAllPostsService";
 
-import { ModelStatic } from "sequelize";
-
 export default class ListAllPostsService implements IListAllPostsService {
-  private readonly repository: ModelStatic<IPost>;
+  private readonly repository: PrismaClient;
 
-  constructor(repository: ModelStatic<IPost>) {
+  constructor(repository: PrismaClient) {
     this.repository = repository;
   }
 
-  public async execute(): Promise<IPost[]> {
-    const posts: IPost[] = await this.repository.findAll({
-      include: [
-        {
-          model: Likes,
-        },
-        {
-          model: Comments,
-        },
-      ],
+  public async execute(): Promise<Post[]> {
+    const posts: Post[] = await this.repository.post.findMany({
+      include: {
+        Likes: true,
+        Comment: true,
+        user: true,
+      },
     });
 
     return posts;

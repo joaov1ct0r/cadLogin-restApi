@@ -4,10 +4,7 @@ import auth from "../middlewares/auth";
 import CreateNewPostController from "../controllers/CreateNewPostController";
 import EditPostController from "../controllers/EditPostController";
 import DeletePostController from "../controllers/DeletePostController";
-
 import ListAllPostsController from "../controllers/ListAllPostsController";
-
-import IListAllPostsController from "../interfaces/IListAllPostsController";
 
 import ListPostController from "../controllers/ListPostController";
 
@@ -40,9 +37,9 @@ const createNewPostController: CreateNewPostController =
 
 const editPostController: EditPostController = new EditPostController();
 
-const deletePostController: IDeletePostController = new DeletePostController();
+const deletePostController: DeletePostController = new DeletePostController();
 
-const listAllPostsController: IListAllPostsController =
+const listAllPostsController: ListAllPostsController =
   new ListAllPostsController();
 
 const listPostController: IListPostController = new ListPostController();
