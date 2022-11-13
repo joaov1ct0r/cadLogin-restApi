@@ -1,21 +1,9 @@
 import { Response } from "express";
-
 import IReq from "../interfaces/IRequest";
-
 import { validateHandleAddPostLike } from "../validations/validatePostData";
-
 import AddPostLikeService from "../services/AddPostLikeService";
-
-import IAddPostLikeService from "../interfaces/IAddPostLikeService";
-
-import Post from "../database/models/postModel";
-
-import User from "../database/models/userModel";
-
-import Likes from "../database/models/likesModel";
-
-import ILikes from "../interfaces/ILikes";
-
+import prismaClient from "../database/prismaClient";
+import { Likes } from "@prisma/client";
 import IAddPostLikeController from "../interfaces/IAddPostLikeController";
 
 export default class AddPostLikeController implements IAddPostLikeController {
@@ -30,14 +18,15 @@ export default class AddPostLikeController implements IAddPostLikeController {
 
     const postId: string = req.body.postId;
 
-    const addPostLikeService: IAddPostLikeService = new AddPostLikeService(
-      Post,
-      User,
-      Likes
+    const addPostLikeService: AddPostLikeService = new AddPostLikeService(
+      prismaClient
     );
 
     try {
-      const like: ILikes = await addPostLikeService.execute(postId, id);
+      const like: Likes = await addPostLikeService.execute(
+        Number(postId),
+        Number(id)
+      );
 
       return res.status(201).json({ like, status: 201 });
     } catch (err: any) {

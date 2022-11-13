@@ -1,5 +1,4 @@
 import { Response } from "express";
-
 import IReq from "./IRequest";
 
 export default interface IAddPostLikeController {

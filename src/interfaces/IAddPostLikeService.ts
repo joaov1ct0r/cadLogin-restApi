@@ -1,5 +1,5 @@
-import ILikes from "./ILikes";
+import { Likes } from "@prisma/client";
 
 export default interface IAddPostLikeService {
-  execute(postId: string, id: string | undefined): Promise<ILikes>;
+  execute(postId: number, id: number | undefined): Promise<Likes>;
 }
