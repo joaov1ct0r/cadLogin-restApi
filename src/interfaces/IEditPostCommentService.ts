@@ -1,8 +1,8 @@
 export default interface IEditPostCommentService {
   execute(
-    userId: string | undefined,
-    postId: string,
-    commentId: string,
+    userId: number | undefined,
+    postId: number,
+    commentId: number,
     comment: string
-  ): Promise<number>;
+  ): Promise<Object>;
 }

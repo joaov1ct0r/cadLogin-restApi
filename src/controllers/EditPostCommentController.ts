@@ -1,20 +1,9 @@
 import IReq from "../interfaces/IRequest";
-
 import { Response } from "express";
-
 import { validateHandleEditPostComment } from "../validations/validatePostData";
-
-import Post from "../database/models/postModel";
-
-import User from "../database/models/userModel";
-
-import Comments from "../database/models/commentsModel";
-
 import EditPostCommentService from "../services/EditPostCommentService";
-
-import IEditPostCommentService from "../interfaces/IEditPostCommentService";
-
 import IEditPostCommentController from "../interfaces/IEditPostCommentController";
+import prismaClient from "../database/prismaClient";
 
 export default class EditPostCommentController
   implements IEditPostCommentController
@@ -34,21 +23,19 @@ export default class EditPostCommentController
 
     const userId: string | undefined = req.userId;
 
-    const editPostCommentService: IEditPostCommentService =
-      new EditPostCommentService(Post, User, Comments);
+    const editPostCommentService: EditPostCommentService =
+      new EditPostCommentService(prismaClient);
 
     try {
       // eslint-disable-next-line no-unused-vars
-      const editedComment: number = await editPostCommentService.execute(
-        userId,
-        postId,
-        commentId,
+      const editedComment: Object = await editPostCommentService.execute(
+        Number(userId),
+        Number(postId),
+        Number(commentId),
         comment
       );
 
-      return res
-        .status(204)
-        .json({ message: "Post Comment editado", status: 204 });
+      return res.status(204).send();
     } catch (err: any) {
       return res
         .status(err.statusCode)
