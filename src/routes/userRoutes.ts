@@ -3,7 +3,6 @@ import resolver from "../utils/Resolver";
 import auth from "../middlewares/auth";
 import CreateUserController from "../controllers/CreateUserController";
 import AuthenticateUserController from "../controllers/AuthenticateUserController";
-import IAuthenticateUserController from "../interfaces/IAuthenticateUserController";
 import EditUserController from "../controllers/EditUserController";
 import DeleteUserController from "../controllers/DeleteUserController";
 import ListAllUsersController from "../controllers/ListAllUsersController";
@@ -15,7 +14,7 @@ const userRouter: express.Router = express.Router();
 
 const createUserController: CreateUserController = new CreateUserController();
 
-const authenticateUserController: IAuthenticateUserController =
+const authenticateUserController: AuthenticateUserController =
   new AuthenticateUserController();
 
 const editUserController: EditUserController = new EditUserController();

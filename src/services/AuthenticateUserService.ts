@@ -1,31 +1,25 @@
 import "dotenv/config";
-
-import IUser from "../interfaces/IUser";
-
 import bcrypt from "bcryptjs";
-
 import jwt from "jsonwebtoken";
-
 import BadRequestError from "../errors/BadRequestError";
-
 import UnathorizedError from "../errors/UnathorizedError";
-
 import IAuthenticateUserService from "../interfaces/IAuthenticateUserService";
-
-import { ModelStatic } from "sequelize";
+import { PrismaClient, User } from "@prisma/client";
 
 export default class AuthenticateUserService
   implements IAuthenticateUserService
 {
-  private readonly repository: ModelStatic<IUser>;
-  constructor(repository: ModelStatic<IUser>) {
+  private readonly repository: PrismaClient;
+  constructor(repository: PrismaClient) {
     this.repository = repository;
   }
 
   public async execute(email: string, password: string) {
-    const isUserRegistered: IUser | null = await this.repository.findOne({
-      where: { email },
-    });
+    const isUserRegistered: User | null = await this.repository.user.findUnique(
+      {
+        where: { email },
+      }
+    );
 
     if (isUserRegistered === null) {
       throw new BadRequestError("Usuario não registrado!");
