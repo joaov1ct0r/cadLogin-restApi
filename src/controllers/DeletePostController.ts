@@ -2,7 +2,6 @@ import { Response } from "express";
 import IReq from "../interfaces/IRequest";
 import { validateHandleDeletePost } from "../validations/validatePostData";
 import prismaClient from "../database/prismaClient";
-import { Post } from "@prisma/client";
 import IDeletePostController from "../interfaces/IDeletePostController";
 import DeletePostService from "../services/DeletePostService";
 
@@ -24,7 +23,7 @@ export default class DeletePostController implements IDeletePostController {
 
     try {
       // eslint-disable-next-line no-unused-vars
-      const deletedPost: Post = await deletePostService.execute(
+      const deletedPost: Object = await deletePostService.execute(
         Number(id),
         Number(postId)
       );

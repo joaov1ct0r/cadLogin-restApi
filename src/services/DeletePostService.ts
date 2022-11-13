@@ -10,11 +10,16 @@ export default class DeletePostService implements IDeletePostService {
     this.repository = repository;
   }
 
-  public async execute(id: number | undefined, postId: number): Promise<Post> {
+  public async execute(
+    id: number | undefined,
+    postId: number
+  ): Promise<Object> {
     const isPostRegistered: Post | null = await this.repository.post.findFirst({
       where: {
         id: postId,
-        userId: id,
+        AND: {
+          userId: id,
+        },
       },
     });
 
@@ -22,9 +27,12 @@ export default class DeletePostService implements IDeletePostService {
       throw new BadRequestError("Post não encontrado!");
     }
 
-    const deletedPost: Post = await this.repository.post.delete({
+    const deletedPost = await this.repository.post.deleteMany({
       where: {
         id: postId,
+        AND: {
+          userId: id,
+        },
       },
     });
 
@@ -35,12 +43,18 @@ export default class DeletePostService implements IDeletePostService {
     await this.repository.likes.deleteMany({
       where: {
         postId,
+        AND: {
+          userId: id,
+        },
       },
     });
 
     await this.repository.comment.deleteMany({
       where: {
         postId,
+        AND: {
+          userId: id,
+        },
       },
     });
 
