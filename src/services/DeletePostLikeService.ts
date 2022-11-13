@@ -27,8 +27,10 @@ export default class DeletePostLikeService implements IDeletePostLikeService {
     const isLikeRegistered: Likes | null =
       await this.repository.likes.findFirst({
         where: {
-          postId,
           userId,
+          AND: {
+            postId,
+          },
         },
       });
 
@@ -38,8 +40,10 @@ export default class DeletePostLikeService implements IDeletePostLikeService {
 
     const deletedLike = await this.repository.likes.deleteMany({
       where: {
-        postId,
         userId,
+        AND: {
+          postId,
+        },
       },
     });
 
