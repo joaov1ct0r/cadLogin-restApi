@@ -1,5 +1,5 @@
-import IPost from "./IPost";
+import { Post } from "@prisma/client";
 
 export default interface ICreateNewPostService {
-  execute(id: string | undefined, content: string): Promise<IPost>;
+  execute(id: number | undefined, content: string): Promise<Post>;
 }

@@ -1,19 +1,9 @@
 import { Response } from "express";
-
 import IReq from "../interfaces/IRequest";
-
 import { validateHandleNewPost } from "../validations/validatePostData";
-
 import CreateNewPostService from "../services/CreateNewPostService";
-
-import ICreateNewPostService from "../interfaces/ICreateNewPostService";
-
-import Post from "../database/models/postModel";
-
-import IPost from "../interfaces/IPost";
-
-import User from "../database/models/userModel";
-
+import prismaClient from "../database/prismaClient";
+import { Post } from "@prisma/client";
 import ICreateNewPostController from "../interfaces/ICreateNewPostController";
 
 export default class CreateNewPostController
@@ -30,11 +20,15 @@ export default class CreateNewPostController
 
     const content: string = req.body.content;
 
-    const createNewPostService: ICreateNewPostService =
-      new CreateNewPostService(Post, User);
+    const createNewPostService: CreateNewPostService = new CreateNewPostService(
+      prismaClient
+    );
 
     try {
-      const post: IPost = await createNewPostService.execute(id, content);
+      const post: Post = await createNewPostService.execute(
+        Number(id),
+        content
+      );
 
       return res.status(201).json({ post, status: 201 });
     } catch (err: any) {

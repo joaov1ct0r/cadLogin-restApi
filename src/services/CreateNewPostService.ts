@@ -1,28 +1,16 @@
-import IUser from "../interfaces/IUser";
-
-import IPost from "../interfaces/IPost";
-
+import { PrismaClient, Post, User } from "@prisma/client";
 import BadRequestError from "../errors/BadRequestError";
-
 import ICreateNewPostService from "../interfaces/ICreateNewPostService";
-import { ModelStatic } from "sequelize/types";
 
 export default class CreateNewPostService implements ICreateNewPostService {
-  private readonly repository: ModelStatic<IPost>;
+  private readonly repository: PrismaClient;
 
-  private readonly userRepository: ModelStatic<IUser>;
-
-  constructor(
-    repository: ModelStatic<IPost>,
-    userRepository: ModelStatic<IUser>
-  ) {
+  constructor(repository: PrismaClient) {
     this.repository = repository;
-
-    this.userRepository = userRepository;
   }
 
-  public async execute(id: string, content: string): Promise<IPost> {
-    const user: IUser | null = await this.userRepository.findOne({
+  public async execute(id: number, content: string): Promise<Post> {
+    const user: User | null = await this.repository.user.findUnique({
       where: { id },
     });
 
@@ -30,10 +18,12 @@ export default class CreateNewPostService implements ICreateNewPostService {
       throw new BadRequestError("Usuario não encontrado!");
     }
 
-    const newPost: IPost = await this.repository.create({
-      author: user!.email,
-      content,
-      userId: user!.id,
+    const newPost: Post = await this.repository.post.create({
+      data: {
+        author: user!.email,
+        content,
+        userId: user!.id,
+      },
     });
 
     return newPost;
