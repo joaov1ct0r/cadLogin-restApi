@@ -1,20 +1,10 @@
 import { Response } from "express";
-
 import IReq from "../interfaces/IRequest";
-
 import { validateHandleDeletePost } from "../validations/validatePostData";
-
-import DeletePostService from "../services/DeletePostService";
-
-import IDeletePostService from "../interfaces/IDeletePostService";
-
+import prismaClient from "../database/prismaClient";
+import { Post } from "@prisma/client";
 import IDeletePostController from "../interfaces/IDeletePostController";
-
-import Post from "../database/models/postModel";
-
-import Comments from "../database/models/commentsModel";
-
-import Likes from "../database/models/likesModel";
+import DeletePostService from "../services/DeletePostService";
 
 export default class DeletePostController implements IDeletePostController {
   public async handle(req: IReq, res: Response): Promise<Response> {
@@ -28,17 +18,18 @@ export default class DeletePostController implements IDeletePostController {
 
     const postId: string = req.body.postId;
 
-    const deletePostService: IDeletePostService = new DeletePostService(
-      Post,
-      Comments,
-      Likes
+    const deletePostService: DeletePostService = new DeletePostService(
+      prismaClient
     );
 
     try {
       // eslint-disable-next-line no-unused-vars
-      const deletedPost: number = await deletePostService.execute(id, postId);
+      const deletedPost: Post = await deletePostService.execute(
+        Number(id),
+        Number(postId)
+      );
 
-      return res.status(204).json({ message: "Post deletado", status: 204 });
+      return res.status(204).send();
     } catch (err: any) {
       return res
         .status(err.statusCode)

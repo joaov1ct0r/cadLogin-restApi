@@ -1,3 +1,5 @@
+import { Post } from "@prisma/client";
+
 export default interface IDeletePostService {
-  execute(id: string | undefined, postId: string): Promise<number>;
+  execute(id: number | undefined, postId: number): Promise<Post>;
 }

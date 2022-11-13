@@ -3,10 +3,7 @@ import resolver from "../utils/Resolver";
 import auth from "../middlewares/auth";
 import CreateNewPostController from "../controllers/CreateNewPostController";
 import EditPostController from "../controllers/EditPostController";
-
 import DeletePostController from "../controllers/DeletePostController";
-
-import IDeletePostController from "../interfaces/IDeletePostController";
 
 import ListAllPostsController from "../controllers/ListAllPostsController";
 

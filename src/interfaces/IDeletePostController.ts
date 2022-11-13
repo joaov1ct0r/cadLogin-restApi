@@ -1,5 +1,4 @@
 import IReq from "./IRequest";
-
 import { Response } from "express";
 
 export default interface IDeletePostController {
