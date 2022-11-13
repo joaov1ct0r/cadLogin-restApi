@@ -2,10 +2,7 @@ import express from "express";
 import resolver from "../utils/Resolver";
 import auth from "../middlewares/auth";
 import CreateNewPostController from "../controllers/CreateNewPostController";
-
 import EditPostController from "../controllers/EditPostController";
-
-import IEditPostController from "../interfaces/IEditPostController";
 
 import DeletePostController from "../controllers/DeletePostController";
 
@@ -44,7 +41,7 @@ const postRouter: express.Router = express.Router();
 const createNewPostController: CreateNewPostController =
   new CreateNewPostController();
 
-const editPostController: IEditPostController = new EditPostController();
+const editPostController: EditPostController = new EditPostController();
 
 const deletePostController: IDeletePostController = new DeletePostController();
 

@@ -1,15 +1,9 @@
 import IReq from "../interfaces/IRequest";
-
 import { Response } from "express";
-
 import { validateHandleEditPost } from "../validations/validatePostData";
-
-import Post from "../database/models/postModel";
-
+import prismaClient from "../database/prismaClient";
+import { Post } from "@prisma/client";
 import EditPostService from "../services/EditPostService";
-
-import IEditPostService from "../interfaces/IEditPostService";
-
 import IEditPostController from "../interfaces/IEditPostController";
 
 export default class EditPostController implements IEditPostController {
@@ -26,16 +20,16 @@ export default class EditPostController implements IEditPostController {
 
     const id: string | undefined = req.userId;
 
-    const editPostService: IEditPostService = new EditPostService(Post);
+    const editPostService: EditPostService = new EditPostService(prismaClient);
     try {
       // eslint-disable-next-line no-unused-vars
-      const isPostEdited: number = await editPostService.execute(
-        id,
-        postId,
+      const isPostEdited: Post = await editPostService.execute(
+        Number(id),
+        Number(postId),
         content
       );
 
-      return res.status(204).json({ message: "Post editado", status: 204 });
+      return res.status(204).send();
     } catch (err: any) {
       return res
         .status(err.statusCode)

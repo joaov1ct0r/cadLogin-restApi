@@ -1,33 +1,24 @@
-import IPost from "../interfaces/IPost";
-
-import { ModelStatic, Op } from "sequelize";
-
 import BadRequestError from "../errors/BadRequestError";
-
 import InternalError from "../errors/InternalError";
-
 import IEditPostService from "../interfaces/IEditPostService";
+import { PrismaClient, Post } from "@prisma/client";
 
 export default class EditPostService implements IEditPostService {
-  private readonly repository: ModelStatic<IPost>;
+  private readonly repository: PrismaClient;
 
-  constructor(repository: ModelStatic<IPost>) {
+  constructor(repository: PrismaClient) {
     this.repository = repository;
   }
 
   public async execute(
-    id: string | undefined,
-    postId: string,
+    id: number | undefined,
+    postId: number,
     content: string
-  ): Promise<number> {
-    const isPostRegistered: IPost | null = await this.repository.findOne({
+  ): Promise<Post> {
+    const isPostRegistered: Post | null = await this.repository.post.findFirst({
       where: {
-        [Op.and]: [
-          {
-            id: postId,
-            userId: id,
-          },
-        ],
+        id: postId,
+        userId: id,
       },
     });
 
@@ -35,26 +26,19 @@ export default class EditPostService implements IEditPostService {
       throw new BadRequestError("Post não encontrado!");
     }
 
-    const editedPost: [affectedCount: number] = await this.repository.update(
-      {
+    const editedPost: Post = await this.repository.post.update({
+      data: {
         content,
       },
-      {
-        where: {
-          [Op.and]: [
-            {
-              id: postId,
-              userId: id,
-            },
-          ],
-        },
-      }
-    );
+      where: {
+        id: postId,
+      },
+    });
 
-    if (editedPost[0] === 0) {
+    if (!editedPost) {
       throw new InternalError("Falha ao atualizar Post!");
     }
 
-    return Number(editedPost);
+    return editedPost;
   }
 }

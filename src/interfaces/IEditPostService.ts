@@ -1,7 +1,9 @@
+import { Post } from "@prisma/client";
+
 export default interface IEditPostService {
   execute(
-    id: string | undefined,
-    postId: string,
+    id: number | undefined,
+    postId: number,
     content: string
-  ): Promise<number>;
+  ): Promise<Post>;
 }
