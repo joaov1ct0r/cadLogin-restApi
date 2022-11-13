@@ -1,7 +1,7 @@
 export default interface IDeletePostCommentService {
   execute(
-    userId: string | undefined,
-    postId: string,
-    commentId: string
-  ): Promise<number>;
+    userId: number | undefined,
+    postId: number,
+    commentId: number
+  ): Promise<Object>;
 }

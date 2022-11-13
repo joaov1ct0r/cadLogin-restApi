@@ -1,18 +1,9 @@
 import IReq from "../interfaces/IRequest";
-
 import { Response } from "express";
-
 import { validateHandleDeletePostComment } from "../validations/validatePostData";
-
-import Post from "../database/models/postModel";
-
-import Comments from "../database/models/commentsModel";
-
 import DeletePostCommentService from "../services/DeletePostCommentService";
-
-import IDeletePostCommentService from "../interfaces/IDeletePostCommentService";
-
 import IDeletePostCommentController from "../interfaces/IDeletePostCommentController";
+import prismaClient from "../database/prismaClient";
 
 export default class DeletePostCommentController
   implements IDeletePostCommentController
@@ -30,18 +21,18 @@ export default class DeletePostCommentController
 
     const userId: string | undefined = req.userId;
 
-    const deletePostCommentService: IDeletePostCommentService =
-      new DeletePostCommentService(Post, Comments);
+    const deletePostCommentService: DeletePostCommentService =
+      new DeletePostCommentService(prismaClient);
 
     try {
       // eslint-disable-next-line no-unused-vars
-      const deletedComment: number = await deletePostCommentService.execute(
-        userId,
-        postId,
-        commentId
+      const deletedComment: Object = await deletePostCommentService.execute(
+        Number(userId),
+        Number(postId),
+        Number(commentId)
       );
 
-      return res.status(204).json({ message: "Comment deletado", status: 204 });
+      return res.status(204).send();
     } catch (err: any) {
       return res
         .status(err.statusCode)
