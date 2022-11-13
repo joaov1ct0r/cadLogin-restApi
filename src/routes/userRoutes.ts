@@ -7,7 +7,6 @@ import EditUserController from "../controllers/EditUserController";
 import DeleteUserController from "../controllers/DeleteUserController";
 import ListAllUsersController from "../controllers/ListAllUsersController";
 import ListUserController from "../controllers/ListUserController";
-import IListUserController from "../interfaces/IListUserController";
 
 const userRouter: express.Router = express.Router();
 
@@ -23,7 +22,7 @@ const deleteUserController: DeleteUserController = new DeleteUserController();
 const listAllUsersController: ListAllUsersController =
   new ListAllUsersController();
 
-const listUserController: IListUserController = new ListUserController();
+const listUserController: ListUserController = new ListUserController();
 
 userRouter.post("/register", resolver(createUserController.handle));
 
