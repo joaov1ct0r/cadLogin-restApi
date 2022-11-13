@@ -1,33 +1,23 @@
-import IPost from "../interfaces/IPost";
-
-import Likes from "../database/models/likesModel";
-
-import Comments from "../database/models/commentsModel";
-
 import BadRequestError from "../errors/BadRequestError";
-
 import IListPostService from "../interfaces/IListPostService";
-
-import { ModelStatic } from "sequelize";
+import { PrismaClient, Post } from "@prisma/client";
 
 export default class ListPostService implements IListPostService {
-  private readonly repository: ModelStatic<IPost>;
+  private readonly repository: PrismaClient;
 
-  constructor(repository: ModelStatic<IPost>) {
+  constructor(repository: PrismaClient) {
     this.repository = repository;
   }
 
-  public async execute(postId: string): Promise<IPost> {
-    const post: IPost | null = await this.repository.findOne({
-      include: [
-        {
-          model: Likes,
-        },
-        {
-          model: Comments,
-        },
-      ],
-      where: { id: postId },
+  public async execute(postId: number): Promise<Post> {
+    const post: Post | null = await this.repository.post.findFirst({
+      where: {
+        id: postId,
+      },
+      include: {
+        Comment: true,
+        Likes: true,
+      },
     });
 
     if (post === null) {

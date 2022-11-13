@@ -1,5 +1,5 @@
-import IPost from "./IPost";
+import { Post } from "@prisma/client";
 
 export default interface IListPostService {
-  execute(postId: string): Promise<IPost>;
+  execute(postId: number): Promise<Post>;
 }

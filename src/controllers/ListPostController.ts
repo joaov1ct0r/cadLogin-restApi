@@ -1,16 +1,9 @@
 import { Request, Response } from "express";
-
 import { validateHandleOnePost } from "../validations/validatePostData";
-
 import ListPostService from "../services/ListPostService";
-
-import IListPostService from "../interfaces/IListPostService";
-
-import Post from "../database/models/postModel";
-
-import IPost from "../interfaces/IPost";
-
 import IListPostController from "../interfaces/IListPostController";
+import prismaClient from "../database/prismaClient";
+import { Post } from "@prisma/client";
 
 export default class ListPostController implements IListPostController {
   public async handle(req: Request, res: Response): Promise<Response> {
@@ -22,10 +15,10 @@ export default class ListPostController implements IListPostController {
 
     const postId: string = req.body.postId;
 
-    const listPostService: IListPostService = new ListPostService(Post);
+    const listPostService: ListPostService = new ListPostService(prismaClient);
 
     try {
-      const post: IPost = await listPostService.execute(postId);
+      const post: Post = await listPostService.execute(Number(postId));
 
       return res.status(200).json({ post, status: 200 });
     } catch (err: any) {
