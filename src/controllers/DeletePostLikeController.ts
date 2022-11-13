@@ -1,18 +1,9 @@
 import IReq from "../interfaces/IRequest";
-
 import { Response } from "express";
-
 import { validateHandleDeletePostLike } from "../validations/validatePostData";
-
 import DeletePostLikeService from "../services/DeletePostLikeService";
-
-import IDeletePostLikeService from "../interfaces/IDeletePostLikeService";
-
 import IDeletePostLikeController from "../interfaces/IDeletePostLikeController";
-
-import Post from "../database/models/postModel";
-
-import Likes from "../database/models/likesModel";
+import prismaClient from "../database/prismaClient";
 
 export default class DeletePostLikeController
   implements IDeletePostLikeController
@@ -28,19 +19,17 @@ export default class DeletePostLikeController
 
     const postId: string = req.body.postId;
 
-    const deletePostLikeService: IDeletePostLikeService =
-      new DeletePostLikeService(Post, Likes);
+    const deletePostLikeService: DeletePostLikeService =
+      new DeletePostLikeService(prismaClient);
 
     try {
       // eslint-disable-next-line no-unused-vars
-      const deletedLike: number = await deletePostLikeService.execute(
-        userId,
-        postId
+      const deletedLike: Object = await deletePostLikeService.execute(
+        Number(userId),
+        Number(postId)
       );
 
-      return res
-        .status(204)
-        .json({ message: "Post Like deletado", status: 204 });
+      return res.status(204).send();
     } catch (err: any) {
       return res
         .status(err.statusCode)

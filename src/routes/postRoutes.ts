@@ -7,10 +7,7 @@ import DeletePostController from "../controllers/DeletePostController";
 import ListAllPostsController from "../controllers/ListAllPostsController";
 import ListPostController from "../controllers/ListPostController";
 import AddPostLikeController from "../controllers/AddPostLikeController";
-
 import DeletePostLikeController from "../controllers/DeletePostLikeController";
-
-import IDeletePostLikeController from "../interfaces/IDeletePostLikeController";
 
 import AddPostCommentController from "../controllers/AddPostCommentController";
 
@@ -41,7 +38,7 @@ const listPostController: ListPostController = new ListPostController();
 const addPostLikeController: AddPostLikeController =
   new AddPostLikeController();
 
-const deletePostLikeController: IDeletePostLikeController =
+const deletePostLikeController: DeletePostLikeController =
   new DeletePostLikeController();
 
 const addPostCommentController: IAddPostCommentController =

@@ -1,3 +1,3 @@
 export default interface IDeletePostLikeService {
-  execute(userId: string | undefined, postId: string): Promise<number>;
+  execute(userId: number | undefined, postId: number): Promise<Object>;
 }
