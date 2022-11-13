@@ -28,7 +28,9 @@ export default class AddPostLikeService implements IAddPostLikeService {
       await this.repository.likes.findFirst({
         where: {
           postId,
-          userId: id,
+          AND: {
+            userId: id,
+          },
         },
       });
 
