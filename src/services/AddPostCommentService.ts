@@ -10,7 +10,7 @@ export default class AddPostCommentService implements IAddPostCommentService {
   }
 
   public async execute(
-    id: number | undefined,
+    id: number,
     postId: number,
     comment: string
   ): Promise<Comment> {
@@ -20,18 +20,19 @@ export default class AddPostCommentService implements IAddPostCommentService {
       }
     );
 
-    if (isPostRegistered === null) {
+    if (isPostRegistered === null)
       throw new BadRequestError("Post não encontrado!");
-    }
 
     const user: User | null = await this.repository.user.findUnique({
       where: { id },
     });
 
+    if (user === null) throw new BadRequestError("User não encontrado!");
+
     const createdComment: Comment = await this.repository.comment.create({
       data: {
-        author: user!.email,
-        userId: user!.id,
+        author: user.email,
+        userId: user.id,
         comment,
         postId,
       },
