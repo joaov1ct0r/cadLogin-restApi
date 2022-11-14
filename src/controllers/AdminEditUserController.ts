@@ -1,14 +1,8 @@
 import { Request, Response } from "express";
-
 import { validateHandleAdminEditUser } from "../validations/validateAdminData";
-
-import User from "../database/models/userModel";
-
 import AdminEditUserService from "../services/AdminEditUserService";
-
-import IAdminEditUserService from "../interfaces/IAdminEditUserService";
-
 import IAdminEditUserController from "../interfaces/IAdminEditUserController";
+import prismaClient from "../database/prismaClient";
 
 export default class AdminEditUserController
   implements IAdminEditUserController
@@ -30,12 +24,13 @@ export default class AdminEditUserController
 
     const userNewBornAt: string = req.body.userNewBornAt;
 
-    const adminEditUserService: IAdminEditUserService =
-      new AdminEditUserService(User);
+    const adminEditUserService: AdminEditUserService = new AdminEditUserService(
+      prismaClient
+    );
 
     try {
       // eslint-disable-next-line no-unused-vars
-      const updatedUser: number = await adminEditUserService.execute(
+      const updatedUser: Object = await adminEditUserService.execute(
         userEmail,
         userNewEmail,
         userNewPassword,
@@ -43,7 +38,7 @@ export default class AdminEditUserController
         userNewBornAt
       );
 
-      return res.status(204).json({ message: "User Editado", status: 204 });
+      return res.status(204).send();
     } catch (err: any) {
       return res
         .status(err.statusCode)

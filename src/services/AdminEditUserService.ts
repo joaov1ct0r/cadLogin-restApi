@@ -1,19 +1,13 @@
-import IUser from "../interfaces/IUser";
-
 import bcrypt from "bcryptjs";
-
 import InternalError from "../errors/InternalError";
-
 import BadRequestError from "../errors/BadRequestError";
-
 import IAdminEditUserService from "../interfaces/IAdminEditUserService";
-
-import { ModelStatic } from "sequelize";
+import { PrismaClient, User } from "@prisma/client";
 
 export default class AdminEditUserService implements IAdminEditUserService {
-  private readonly repository: ModelStatic<IUser>;
+  private readonly repository: PrismaClient;
 
-  constructor(repository: ModelStatic<IUser>) {
+  constructor(repository: PrismaClient) {
     this.repository = repository;
   }
 
@@ -23,31 +17,31 @@ export default class AdminEditUserService implements IAdminEditUserService {
     userNewPassword: string,
     userNewName: string,
     userNewBornAt: string
-  ): Promise<number> {
-    const isUserRegistered: IUser | null = await this.repository.findOne({
-      where: { email: userEmail },
-    });
-
-    if (isUserRegistered === null) {
-      throw new BadRequestError("Usuario não encontrado!");
-    }
-
-    const updatedUser: [affectedCount: number] = await this.repository.update(
-      {
-        email: userNewEmail,
-        password: bcrypt.hashSync(userNewPassword),
-        name: userNewName,
-        bornAt: userNewBornAt,
-      },
+  ): Promise<Object> {
+    const isUserRegistered: User | null = await this.repository.user.findUnique(
       {
         where: { email: userEmail },
       }
     );
 
-    if (updatedUser[0] === 0) {
+    if (isUserRegistered === null) {
+      throw new BadRequestError("Usuario não encontrado!");
+    }
+
+    const updatedUser: User = await this.repository.user.update({
+      data: {
+        email: userNewEmail,
+        password: bcrypt.hashSync(userNewPassword),
+        name: userNewName,
+        bornAt: userNewBornAt,
+      },
+      where: { email: userEmail },
+    });
+
+    if (!updatedUser) {
       throw new InternalError("Falha ao atualizar usuario!");
     }
 
-    return Number(updatedUser);
+    return { message: "User editado!" };
   }
 }

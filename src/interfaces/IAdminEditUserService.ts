@@ -5,5 +5,5 @@ export default interface IAdminEditUserService {
     userNewPassword: string,
     userNewName: string,
     userNewBornAt: string
-  ): Promise<number>;
+  ): Promise<Object>;
 }
