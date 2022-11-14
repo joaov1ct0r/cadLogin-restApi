@@ -6,8 +6,6 @@ new App().server.listen(
   Number(process.env.SERVER_PORT!),
   String(process.env.SERVER_HOST!),
   async () => {
-    console.log("Server running");
-
     let retries: number = 5;
 
     while (retries) {
@@ -15,6 +13,8 @@ new App().server.listen(
         await prismaClient.$connect();
 
         console.log("DB Connected!!");
+
+        console.log("Server running");
 
         break;
       } catch (error: any) {
