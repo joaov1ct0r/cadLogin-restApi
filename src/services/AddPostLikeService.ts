@@ -24,6 +24,8 @@ export default class AddPostLikeService implements IAddPostLikeService {
       where: { id },
     });
 
+    if (user === null) throw new BadRequestError("User não encontrado!");
+
     const isLikeRegistered: Likes | null =
       await this.repository.likes.findFirst({
         where: {

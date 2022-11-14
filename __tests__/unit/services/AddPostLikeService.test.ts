@@ -1,117 +1,109 @@
-import { mock } from "jest-mock-extended";
-
-import IPost from "../../../src/interfaces/IPost";
-
-import ILikes from "../../../src/interfaces/ILikes";
-
-import IUser from "../../../src/interfaces/IUser";
-
-import { ModelStatic } from "sequelize";
-
-import IAddPostLikeService from "../../../src/interfaces/IAddPostLikeService";
-
+import { mockDeep } from "jest-mock-extended";
 import AddPostLikeService from "../../../src/services/AddPostLikeService";
-
 import BadRequestError from "../../../src/errors/BadRequestError";
+import { PrismaClient } from "@prisma/client";
 
 const makeSut = () => {
-  const mockRepository = mock<ModelStatic<IPost>>();
+  const prismaSpyRepository = mockDeep<PrismaClient>();
 
-  const mockUserRepository = mock<ModelStatic<IUser>>();
+  const sut: AddPostLikeService = new AddPostLikeService(prismaSpyRepository);
 
-  const mockLikesRepository = mock<ModelStatic<ILikes>>();
-
-  const sut: IAddPostLikeService = new AddPostLikeService(
-    mockRepository,
-    mockUserRepository,
-    mockLikesRepository
-  );
-
-  return { sut, mockRepository, mockUserRepository, mockLikesRepository };
+  return { sut, prismaSpyRepository };
 };
 
 describe("add post like service", () => {
   describe("when execute is called", () => {
     it("should throw an exception if post is null", async () => {
-      const { sut, mockRepository } = makeSut();
+      const { sut, prismaSpyRepository } = makeSut();
 
-      mockRepository.findOne.mockResolvedValueOnce(null);
+      prismaSpyRepository.post.findUnique.mockResolvedValueOnce(null);
 
       expect(async () => {
-        await sut.execute("1", "1");
+        await sut.execute(1, 1);
       }).rejects.toThrow(new BadRequestError("Post não encontrado!"));
     });
 
-    it("should throw an exception if like is already created", async () => {
-      const { sut, mockRepository, mockUserRepository, mockLikesRepository } =
-        makeSut();
+    it("should throw an exception if user is null", async () => {
+      const { sut, prismaSpyRepository } = makeSut();
 
-      mockRepository.findOne.mockResolvedValueOnce({
-        id: "1",
-        author: "any@mail.com.br",
+      prismaSpyRepository.post.findUnique.mockResolvedValueOnce({
+        id: 1,
+        userId: 1,
+        author: "any@mail.com",
         content: "titulo de post",
-        userId: "1",
-        likes: ["0"],
-        comments: ["0"],
-      } as IPost);
+      });
 
-      mockUserRepository.findOne.mockResolvedValueOnce({
-        id: "1",
+      prismaSpyRepository.user.findUnique.mockResolvedValueOnce(null);
+
+      expect(async () => {
+        await sut.execute(1, 1);
+      }).rejects.toThrow(new BadRequestError("User não encontrado!"));
+    });
+
+    it("should throw an exception if like is already created", async () => {
+      const { sut, prismaSpyRepository } = makeSut();
+
+      prismaSpyRepository.post.findUnique.mockResolvedValueOnce({
+        id: 1,
+        userId: 1,
+        author: "any@mail.com",
+        content: "titulo de post",
+      });
+
+      prismaSpyRepository.user.findUnique.mockResolvedValueOnce({
+        id: 1,
         email: "any@mail.com.br",
         password: "123123123",
         name: "user name",
         bornAt: "01/09/2001",
-        admin: true,
-      } as IUser);
+        admin: false,
+      });
 
-      mockLikesRepository.findOne.mockResolvedValueOnce({
-        postId: "1",
-        userId: "1",
-        id: "1",
+      prismaSpyRepository.likes.findUnique.mockResolvedValueOnce({
+        postId: 1,
+        userId: 1,
+        id: 1,
         likedBy: "any@mail.com.br",
-      } as ILikes);
+      });
 
       expect(async () => {
-        await sut.execute("1", "1");
+        await sut.execute(1, 1);
       }).rejects.toThrow(new BadRequestError("Like já registrado!"));
     });
 
     it("should return liked post", async () => {
-      const { sut, mockRepository, mockLikesRepository, mockUserRepository } =
-        makeSut();
+      const { sut, prismaSpyRepository } = makeSut();
 
-      mockRepository.findOne.mockResolvedValueOnce({
-        id: "1",
-        author: "any@mail.com.br",
+      prismaSpyRepository.post.findUnique.mockResolvedValueOnce({
+        id: 1,
+        userId: 1,
+        author: "any@mail.com",
         content: "titulo de post",
-        userId: "1",
-        likes: ["0"],
-        comments: ["0"],
-      } as IPost);
+      });
 
-      mockUserRepository.findOne.mockResolvedValueOnce({
-        id: "1",
+      prismaSpyRepository.user.findUnique.mockResolvedValueOnce({
+        id: 1,
         email: "any@mail.com.br",
         password: "123123123",
         name: "user name",
         bornAt: "01/09/2001",
-        admin: true,
-      } as IUser);
+        admin: false,
+      });
 
-      mockLikesRepository.findOne.mockResolvedValueOnce(null);
+      prismaSpyRepository.likes.findFirst.mockResolvedValueOnce(null);
 
-      mockLikesRepository.create.mockResolvedValueOnce({
-        postId: "1",
-        userId: "1",
-        id: "1",
+      prismaSpyRepository.likes.create.mockResolvedValueOnce({
+        postId: 1,
+        userId: 1,
+        id: 1,
         likedBy: "any@mail.com.br",
-      } as ILikes);
+      });
 
-      const likedPost = await sut.execute("1", "1");
+      const likedPost = await sut.execute(1, 1);
 
       expect(likedPost).toHaveProperty("likedBy");
 
-      expect(likedPost.postId).toEqual("1");
+      expect(likedPost.postId).toEqual(1);
     });
   });
 });
