@@ -1,44 +1,34 @@
-import { mock } from "jest-mock-extended";
-
-import IUser from "../../../src/interfaces/IUser";
-
-import { ModelStatic } from "sequelize";
-
+import "dotenv/config";
+import { mockDeep } from "jest-mock-extended";
 import AuthenticateUserService from "../../../src/services/AuthenticateUserService";
-
-import IAuthenticateUserService from "../../../src/interfaces/IAuthenticateUserService";
-
 import BadRequestError from "../../../src/errors/BadRequestError";
-
-import UnathorizedError from "../../../src/errors/UnathorizedError";
-
 import jwt from "jsonwebtoken";
-
 import IJwt from "../../../src/interfaces/IJson";
-
+import { PrismaClient } from "@prisma/client";
+import UnathorizedError from "../../../src/errors/UnathorizedError";
 import bcrypt from "bcryptjs";
 
 const makeSut = () => {
-  const mockRepository = mock<ModelStatic<IUser>>();
+  const prismaSpyRepository = mockDeep<PrismaClient>();
 
-  const sut: IAuthenticateUserService = new AuthenticateUserService(
-    mockRepository
+  const sut: AuthenticateUserService = new AuthenticateUserService(
+    prismaSpyRepository
   );
 
-  return { sut, mockRepository };
+  return { sut, prismaSpyRepository };
 };
 
 describe("authenticate user service", () => {
   describe("when execute is called", () => {
     it("should return exception if user isnt registered", async () => {
-      const { sut, mockRepository } = makeSut();
+      const { sut, prismaSpyRepository } = makeSut();
 
       const userData = {
         email: "useremail@mail.com",
         password: "123123123",
       };
 
-      mockRepository.findOne.mockResolvedValueOnce(null);
+      prismaSpyRepository.user.findUnique.mockResolvedValueOnce(null);
 
       expect(async () => {
         await sut.execute(userData.email, userData.password);
@@ -46,17 +36,21 @@ describe("authenticate user service", () => {
     });
 
     it("should return exception if password isnt matching", async () => {
-      const { sut, mockRepository } = makeSut();
+      const { sut, prismaSpyRepository } = makeSut();
 
       const userData = {
         email: "useremail@mail.com",
         password: "123123123",
       };
 
-      mockRepository.findOne.mockResolvedValueOnce({
-        id: "1",
+      prismaSpyRepository.user.findUnique.mockResolvedValueOnce({
+        id: 1,
+        email: "useremail@mail.com",
         password: "789789789",
-      } as IUser);
+        name: "user name",
+        bornAt: "01/09/2001",
+        admin: false,
+      });
 
       expect(async () => {
         await sut.execute(userData.email, userData.password);
@@ -64,28 +58,27 @@ describe("authenticate user service", () => {
     });
 
     it("should return a token if user is registered", async () => {
-      const { sut, mockRepository } = makeSut();
+      const { sut, prismaSpyRepository } = makeSut();
 
-      const userData = {
+      prismaSpyRepository.user.findUnique.mockResolvedValueOnce({
+        id: 1,
         email: "useremail@mail.com",
-        password: "123123123",
-      };
+        password: bcrypt.hashSync("123123123"),
+        name: "user name",
+        bornAt: "01/09/2001",
+        admin: false,
+      });
 
-      mockRepository.findOne.mockResolvedValueOnce({
-        id: "1",
-        email: userData.email,
-        password: bcrypt.hashSync(userData.password),
-        admin: true,
-      } as IUser);
-
-      const token = await sut.execute(userData.email, userData.password);
+      const token = await sut.execute("useremail@mail.com", "123123123");
 
       const compareToken = jwt.verify(
         token,
         process.env.JWT_TOKEN_SECRET as string
       ) as IJwt;
 
-      expect(compareToken.admin).toBe(true);
+      expect(compareToken).toHaveProperty("id");
+
+      expect(compareToken.admin).toBe(false);
     });
   });
 });
