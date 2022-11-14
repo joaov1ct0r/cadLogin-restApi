@@ -1,77 +1,52 @@
-import { mock } from "jest-mock-extended";
-
-import { ModelStatic } from "sequelize";
-
-import IPost from "../../../src/interfaces/IPost";
-
-import IAdminDeletePostService from "../../../src/interfaces/IAdminDeletePostService";
-
+import { mockDeep } from "jest-mock-extended";
+import { PrismaClient } from "@prisma/client";
 import AdminDeletePostService from "../../../src/services/AdminDeletePostService";
-
 import BadRequestError from "../../../src/errors/BadRequestError";
 
-import InternalError from "../../../src/errors/InternalError";
-
 const makeSut = () => {
-  const mockRepository = mock<ModelStatic<IPost>>();
+  const prismaSpyRepository = mockDeep<PrismaClient>();
 
-  const sut: IAdminDeletePostService = new AdminDeletePostService(
-    mockRepository
+  const sut: AdminDeletePostService = new AdminDeletePostService(
+    prismaSpyRepository
   );
 
-  return { sut, mockRepository };
+  return { sut, prismaSpyRepository };
 };
 
 describe("admin delete post service", () => {
   describe("when execute is called", () => {
     it("should throw an exception if post is null", async () => {
-      const { sut, mockRepository } = makeSut();
+      const { sut, prismaSpyRepository } = makeSut();
 
-      mockRepository.findOne.mockResolvedValueOnce(null);
+      prismaSpyRepository.post.findUnique.mockResolvedValueOnce(null);
 
       expect(async () => {
-        await sut.execute("1");
+        await sut.execute(1);
       }).rejects.toThrow(new BadRequestError("Post não encontrado!"));
     });
 
-    it("should throw an exception if fails to delete post", async () => {
-      const { sut, mockRepository } = makeSut();
-
-      mockRepository.findOne.mockResolvedValueOnce({
-        id: "1",
-        author: "any@mail.com.br",
-        content: "titulo de post",
-        userId: "1",
-        likes: ["0"],
-        comments: ["0"],
-      } as IPost);
-
-      mockRepository.destroy.mockResolvedValueOnce(0);
-
-      expect(async () => {
-        await sut.execute("1");
-      }).rejects.toThrow(new InternalError("Falha ao deletar Post!"));
-    });
-
     it("should return number of deleted lines when succeed to delete post", async () => {
-      const { sut, mockRepository } = makeSut();
+      const { sut, prismaSpyRepository } = makeSut();
 
-      mockRepository.findOne.mockResolvedValueOnce({
-        id: "1",
+      prismaSpyRepository.post.findUnique.mockResolvedValueOnce({
+        id: 1,
         author: "any@mail.com.br",
         content: "titulo de post",
-        userId: "1",
-        likes: ["0"],
-        comments: ["0"],
-      } as IPost);
+        userId: 1,
+      });
 
-      mockRepository.destroy.mockResolvedValueOnce(5);
+      prismaSpyRepository.post.delete.mockResolvedValueOnce({
+        id: 1,
+        author: "any@mail.com.br",
+        content: "titulo de post",
+        userId: 1,
+      });
 
-      const deletedLines = await sut.execute("1");
+      const deletedLines = await sut.execute(1);
 
-      expect(deletedLines).toBeGreaterThan(0);
+      expect(deletedLines).toHaveProperty("message");
 
-      expect(deletedLines).toEqual(5);
+      expect(deletedLines).toEqual({ message: "Post deletado!" });
     });
   });
 });

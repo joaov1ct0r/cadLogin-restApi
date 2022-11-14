@@ -1,5 +1,4 @@
 import BadRequestError from "../errors/BadRequestError";
-import InternalError from "../errors/InternalError";
 import IAdminDeletePostService from "../interfaces/IAdminDeletePostService";
 import { PrismaClient, Post } from "@prisma/client";
 
@@ -23,13 +22,9 @@ export default class AdminDeletePostService implements IAdminDeletePostService {
       throw new BadRequestError("Post não encontrado!");
     }
 
-    const deletedPost: Post = await this.repository.post.delete({
+    await this.repository.post.delete({
       where: { id: postId },
     });
-
-    if (!deletedPost) {
-      throw new InternalError("Falha ao deletar Post!");
-    }
 
     return { message: "Post deletado!" };
   }
