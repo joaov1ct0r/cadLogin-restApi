@@ -1,53 +1,48 @@
-import IUser from "../interfaces/IUser";
-
 import BadRequestError from "../errors/BadRequestError";
-
 import InternalError from "../errors/InternalError";
-
 import IAdminDeleteUserService from "../interfaces/IAdminDeleteUserService";
-
-import { ModelStatic } from "sequelize/types";
-
-import IPost from "../interfaces/IPost";
+import { PrismaClient, User } from "@prisma/client";
 
 export default class AdminDeleteUserService implements IAdminDeleteUserService {
-  private readonly repository: ModelStatic<IUser>;
+  private readonly repository: PrismaClient;
 
-  private readonly postRepository: ModelStatic<IPost>;
-
-  constructor(
-    repository: ModelStatic<IUser>,
-    postRepository: ModelStatic<IPost>
-  ) {
+  constructor(repository: PrismaClient) {
     this.repository = repository;
-
-    this.postRepository = postRepository;
   }
 
-  public async execute(userEmail: string): Promise<number> {
-    const isUserRegistered: IUser | null = await this.repository.findOne({
-      where: { email: userEmail },
-    });
+  public async execute(userEmail: string): Promise<Object> {
+    const isUserRegistered: User | null = await this.repository.user.findUnique(
+      {
+        where: { email: userEmail },
+      }
+    );
 
     if (isUserRegistered === null) {
       throw new BadRequestError("Usuario não encontrado!");
     }
 
-    const deletedUser: number = await this.repository.destroy({
+    const deletedUser = await this.repository.user.delete({
       where: {
         email: userEmail,
       },
     });
 
-    if (deletedUser === 0) {
+    if (!deletedUser) {
       throw new InternalError("Falha ao deletar usuario!");
     }
 
-    // eslint-disable-next-line no-unused-vars
-    const deletedPost: number = await this.postRepository.destroy({
+    await this.repository.post.deleteMany({
       where: { userId: isUserRegistered.id },
     });
 
-    return Number(deletedUser);
+    await this.repository.likes.deleteMany({
+      where: { userId: isUserRegistered.id },
+    });
+
+    await this.repository.comment.deleteMany({
+      where: { userId: isUserRegistered.id },
+    });
+
+    return { message: "User deletado!" };
   }
 }

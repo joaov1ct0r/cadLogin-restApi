@@ -3,10 +3,7 @@ import resolver from "../utils/Resolver";
 import auth from "../middlewares/auth";
 import admin from "../middlewares/admin";
 import AdminEditUserController from "../controllers/AdminEditUserController";
-
 import AdminDeleteUserController from "../controllers/AdminDeleteUserController";
-
-import IAdminDeleteUserController from "../interfaces/IAdminDeleteUserController";
 
 import AdminDeletePostController from "../controllers/AdminDeletePostController";
 
@@ -17,7 +14,7 @@ const adminRouter: express.Router = express.Router();
 const adminEditUserController: AdminEditUserController =
   new AdminEditUserController();
 
-const adminDeleteUserController: IAdminDeleteUserController =
+const adminDeleteUserController: AdminDeleteUserController =
   new AdminDeleteUserController();
 
 const adminDeletePostController: IAdminDeletePostController =

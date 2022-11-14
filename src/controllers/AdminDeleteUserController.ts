@@ -1,16 +1,8 @@
 import { Request, Response } from "express";
-
 import { validateHandleAdminDeleteUser } from "../validations/validateAdminData";
-
 import AdminDeleteUserService from "../services/AdminDeleteUserService";
-
-import IAdminDeleteUserService from "../interfaces/IAdminDeleteUserService";
-
 import IAdminDeleteUserController from "../interfaces/IAdminDeleteUserController";
-
-import User from "../database/models/userModel";
-
-import Post from "../database/models/postModel";
+import prismaClient from "../database/prismaClient";
 
 export default class AdminDeleteUserController
   implements IAdminDeleteUserController
@@ -24,16 +16,16 @@ export default class AdminDeleteUserController
 
     const userEmail: string = req.body.userEmail;
 
-    const adminDeleteUserService: IAdminDeleteUserService =
-      new AdminDeleteUserService(User, Post);
+    const adminDeleteUserService: AdminDeleteUserService =
+      new AdminDeleteUserService(prismaClient);
 
     try {
       // eslint-disable-next-line no-unused-vars
-      const deletedUser: number = await adminDeleteUserService.execute(
+      const deletedUser: Object = await adminDeleteUserService.execute(
         userEmail
       );
 
-      return res.status(204).json({ message: "User deletado", status: 204 });
+      return res.status(204).send();
     } catch (err: any) {
       return res
         .status(err.statusCode)
