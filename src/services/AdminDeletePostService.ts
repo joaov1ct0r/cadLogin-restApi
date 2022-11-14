@@ -1,39 +1,36 @@
-import IPost from "../interfaces/IPost";
-
 import BadRequestError from "../errors/BadRequestError";
-
 import InternalError from "../errors/InternalError";
-
 import IAdminDeletePostService from "../interfaces/IAdminDeletePostService";
-
-import { ModelStatic } from "sequelize";
+import { PrismaClient, Post } from "@prisma/client";
 
 export default class AdminDeletePostService implements IAdminDeletePostService {
-  private readonly repository: ModelStatic<IPost>;
+  private readonly repository: PrismaClient;
 
-  constructor(repository: ModelStatic<IPost>) {
+  constructor(repository: PrismaClient) {
     this.repository = repository;
   }
 
-  public async execute(postId: string): Promise<number> {
-    const isPostRegistered: IPost | null = await this.repository.findOne({
-      where: {
-        id: postId,
-      },
-    });
+  public async execute(postId: number): Promise<Object> {
+    const isPostRegistered: Post | null = await this.repository.post.findUnique(
+      {
+        where: {
+          id: postId,
+        },
+      }
+    );
 
     if (isPostRegistered === null) {
       throw new BadRequestError("Post não encontrado!");
     }
 
-    const deletedPost: number = await this.repository.destroy({
+    const deletedPost: Post = await this.repository.post.delete({
       where: { id: postId },
     });
 
-    if (deletedPost === 0) {
+    if (!deletedPost) {
       throw new InternalError("Falha ao deletar Post!");
     }
 
-    return Number(deletedPost);
+    return { message: "Post deletado!" };
   }
 }

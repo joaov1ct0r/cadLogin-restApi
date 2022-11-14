@@ -1,14 +1,8 @@
 import { Request, Response } from "express";
-
 import { validateHandleAdminDeletePost } from "../validations/validateAdminData";
-
 import AdminDeletePostService from "../services/AdminDeletePostService";
-
-import IAdminDeletePostService from "../interfaces/IAdminDeletePostService";
-
 import IAdminDeletePostController from "../interfaces/IAdminDeletePostController";
-
-import Post from "../database/models/postModel";
+import prismaClient from "../database/prismaClient";
 
 export default class AdminDeletePostController
   implements IAdminDeletePostController
@@ -22,16 +16,20 @@ export default class AdminDeletePostController
 
     const postId: string = req.body.postId;
 
-    const adminDeletePostService: IAdminDeletePostService =
-      new AdminDeletePostService(Post);
+    const adminDeletePostService: AdminDeletePostService =
+      new AdminDeletePostService(prismaClient);
 
     try {
       // eslint-disable-next-line no-unused-vars
-      const deletedPost: number = await adminDeletePostService.execute(postId);
+      const deletedPost: Object = await adminDeletePostService.execute(
+        Number(postId)
+      );
 
-      return res.status(204).json({ message: "Post deletado", status: 204 });
+      return res.status(204).send();
     } catch (err: any) {
-      return res.status(err.statusCode).json({ error: err.message });
+      return res
+        .status(err.statusCode)
+        .json({ error: err.message, status: err.statusCode });
     }
   }
 }

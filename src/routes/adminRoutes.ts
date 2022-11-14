@@ -4,10 +4,7 @@ import auth from "../middlewares/auth";
 import admin from "../middlewares/admin";
 import AdminEditUserController from "../controllers/AdminEditUserController";
 import AdminDeleteUserController from "../controllers/AdminDeleteUserController";
-
 import AdminDeletePostController from "../controllers/AdminDeletePostController";
-
-import IAdminDeletePostController from "../interfaces/IAdminDeletePostController";
 
 const adminRouter: express.Router = express.Router();
 
@@ -17,7 +14,7 @@ const adminEditUserController: AdminEditUserController =
 const adminDeleteUserController: AdminDeleteUserController =
   new AdminDeleteUserController();
 
-const adminDeletePostController: IAdminDeletePostController =
+const adminDeletePostController: AdminDeletePostController =
   new AdminDeletePostController();
 
 adminRouter.put(
