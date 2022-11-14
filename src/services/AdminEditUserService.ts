@@ -1,5 +1,4 @@
 import bcrypt from "bcryptjs";
-import InternalError from "../errors/InternalError";
 import BadRequestError from "../errors/BadRequestError";
 import IAdminEditUserService from "../interfaces/IAdminEditUserService";
 import { PrismaClient, User } from "@prisma/client";
@@ -28,7 +27,7 @@ export default class AdminEditUserService implements IAdminEditUserService {
       throw new BadRequestError("Usuario não encontrado!");
     }
 
-    const updatedUser: User = await this.repository.user.update({
+    await this.repository.user.update({
       data: {
         email: userNewEmail,
         password: bcrypt.hashSync(userNewPassword),
@@ -37,10 +36,6 @@ export default class AdminEditUserService implements IAdminEditUserService {
       },
       where: { email: userEmail },
     });
-
-    if (!updatedUser) {
-      throw new InternalError("Falha ao atualizar usuario!");
-    }
 
     return { message: "User editado!" };
   }
