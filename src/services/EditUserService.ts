@@ -1,5 +1,4 @@
 import IEditUserRequest from "../interfaces/IEditUserRequest";
-import InternalError from "../errors/InternalError";
 import bcrypt from "bcryptjs";
 import IEditUserService from "../interfaces/IEditUserService";
 import { PrismaClient, User } from "@prisma/client";
@@ -27,10 +26,6 @@ export default class EditUserService implements IEditUserService {
       },
       where: { id: userId },
     });
-
-    if (!editedUser) {
-      throw new InternalError("Falha ao atualizar usuario!");
-    }
 
     return editedUser;
   }
