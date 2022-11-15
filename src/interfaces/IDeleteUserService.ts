@@ -1,5 +1,3 @@
-import { User } from "@prisma/client";
-
 export default interface IDeleteUserService {
-  execute(id: number | undefined): Promise<User>;
+  execute(id: number | undefined): Promise<Object>;
 }

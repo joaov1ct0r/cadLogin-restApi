@@ -1,6 +1,5 @@
-import InternalError from "../errors/InternalError";
 import IDeleteUserService from "../interfaces/IDeleteUserService";
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 export default class DeleteUserService implements IDeleteUserService {
   private readonly repository: PrismaClient;
@@ -9,14 +8,10 @@ export default class DeleteUserService implements IDeleteUserService {
     this.repository = repository;
   }
 
-  public async execute(id: number | undefined): Promise<User> {
-    const deletedUser: User = await this.repository.user.delete({
+  public async execute(id: number | undefined): Promise<Object> {
+    await this.repository.user.delete({
       where: { id },
     });
-
-    if (!deletedUser) {
-      throw new InternalError("Falha ao deletar usuario!");
-    }
 
     await this.repository.post.deleteMany({
       where: { userId: id },
@@ -34,6 +29,6 @@ export default class DeleteUserService implements IDeleteUserService {
       },
     });
 
-    return deletedUser;
+    return { message: "Deletado" };
   }
 }
