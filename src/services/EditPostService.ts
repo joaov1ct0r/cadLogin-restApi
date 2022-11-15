@@ -1,5 +1,4 @@
 import BadRequestError from "../errors/BadRequestError";
-import InternalError from "../errors/InternalError";
 import IEditPostService from "../interfaces/IEditPostService";
 import { PrismaClient, Post } from "@prisma/client";
 
@@ -28,7 +27,7 @@ export default class EditPostService implements IEditPostService {
       throw new BadRequestError("Post não encontrado!");
     }
 
-    const editedPost = await this.repository.post.updateMany({
+    await this.repository.post.updateMany({
       data: {
         content,
       },
@@ -39,10 +38,6 @@ export default class EditPostService implements IEditPostService {
         },
       },
     });
-
-    if (!editedPost) {
-      throw new InternalError("Falha ao atualizar Post!");
-    }
 
     return { message: "Post editado!" };
   }

@@ -1,76 +1,47 @@
-import { mock } from "jest-mock-extended";
-
-import IPost from "../../../src/interfaces/IPost";
-
+import { mockDeep } from "jest-mock-extended";
 import EditPostService from "../../../src/services/EditPostService";
-
-import IEditPostService from "../../../src/interfaces/IEditPostService";
-
-import { ModelStatic } from "sequelize";
-
 import BadRequestError from "../../../src/errors/BadRequestError";
-import InternalError from "../../../src/errors/InternalError";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 const makeSut = () => {
-  const mockRepository = mock<ModelStatic<IPost>>();
+  const prismaSpyRepository = mockDeep<PrismaClient>();
 
-  const sut: IEditPostService = new EditPostService(mockRepository);
+  const sut: EditPostService = new EditPostService(prismaSpyRepository);
 
-  return { mockRepository, sut };
+  return { prismaSpyRepository, sut };
 };
 
 describe("edit post service", () => {
   describe("when execute is called", () => {
     it("should throw exception if post is null", async () => {
-      const { sut, mockRepository } = makeSut();
+      const { sut, prismaSpyRepository } = makeSut();
 
-      mockRepository.findOne.mockResolvedValueOnce(null);
+      prismaSpyRepository.post.findFirst.mockResolvedValueOnce(null);
 
       expect(async () => {
-        await sut.execute("1", "1", "titulo editado para post");
+        await sut.execute(1, 1, "titulo editado para post");
       }).rejects.toThrow(new BadRequestError("Post não encontrado!"));
     });
 
-    it("should return exception if failed to edit post", async () => {
-      const { sut, mockRepository } = makeSut();
+    it("should return an object when succed to edit post", async () => {
+      const { sut, prismaSpyRepository } = makeSut();
 
-      mockRepository.findOne.mockResolvedValueOnce({
-        id: "1",
+      prismaSpyRepository.post.findFirst.mockResolvedValueOnce({
+        id: 1,
         author: "any@mail.com.br",
         content: "titulo de post",
-        userId: "1",
-        likes: ["0"],
-        comments: ["0"],
-      } as IPost);
+        userId: 1,
+      });
 
-      mockRepository.update.mockResolvedValueOnce([0]);
-
-      expect(async () => {
-        await sut.execute("1", "1", "titulo editado de post");
-      }).rejects.toThrow(new InternalError("Falha ao atualizar Post!"));
-    });
-
-    it("should return number of deleted lines", async () => {
-      const { sut, mockRepository } = makeSut();
-
-      mockRepository.findOne.mockResolvedValueOnce({
-        id: "1",
-        author: "any@mail.com.br",
-        content: "titulo de post",
-        userId: "1",
-        likes: ["0"],
-        comments: ["0"],
-      } as IPost);
-
-      mockRepository.update.mockResolvedValueOnce([1] as [affectedCount: 1]);
-
-      const deletedLines = await sut.execute(
-        "1",
-        "1",
-        "titulo editado de post"
+      prismaSpyRepository.post.updateMany.mockResolvedValueOnce(
+        {} as Prisma.BatchPayload
       );
 
-      expect(deletedLines).toEqual(1);
+      const deletedLines = await sut.execute(1, 1, "titulo editado de post");
+
+      expect(deletedLines).toHaveProperty("message");
+
+      expect(deletedLines).toEqual({ message: "Post editado!" });
     });
   });
 });
