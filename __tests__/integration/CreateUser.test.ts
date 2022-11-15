@@ -1,13 +1,16 @@
 import App from "../../src/app";
-
 import request from "supertest";
-
-import User from "../../src/database/models/userModel";
+import prismaClient from "../../src/database/prismaClient";
 
 describe("create user", () => {
-  afterEach(async () => {
-    await User.truncate({ cascade: true });
+  beforeAll(async () => {
+    await prismaClient.$connect();
   });
+
+  afterAll(async () => {
+    await prismaClient.$disconnect();
+  });
+
   it("should return an exception if wrong data is send", async () => {
     const response = await request(new App().server)
       .post("/api/users/register")
@@ -43,7 +46,7 @@ describe("create user", () => {
         bornAt: "01/09/2001",
       });
 
-    expect(response.status).toEqual(400);
+    expect(response.body.status).toEqual(400);
   });
 
   it("should create a new user", async () => {
@@ -57,7 +60,7 @@ describe("create user", () => {
         bornAt: "01/09/2001",
       });
 
-    expect(response.status).toEqual(201);
+    expect(response.body.status).toEqual(201);
 
     expect(response.body.user).toHaveProperty("id");
   });
