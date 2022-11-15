@@ -1,5 +1,4 @@
 import BadRequestError from "../errors/BadRequestError";
-import InternalError from "../errors/InternalError";
 import { PrismaClient, Post, Comment } from "@prisma/client";
 import IDeletePostCommentService from "../interfaces/IDeletePostCommentService";
 
@@ -42,7 +41,7 @@ export default class DeletePostCommentService
       throw new BadRequestError("Comentario não encontrado!");
     }
 
-    const deletedComment = await this.repository.comment.deleteMany({
+    await this.repository.comment.deleteMany({
       where: {
         id: commentId,
         AND: {
@@ -51,10 +50,6 @@ export default class DeletePostCommentService
         },
       },
     });
-
-    if (!deletedComment) {
-      throw new InternalError("Falha ao deletar comentario!");
-    }
 
     return { message: "Comment deletado!" };
   }
