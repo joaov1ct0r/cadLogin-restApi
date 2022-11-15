@@ -38,7 +38,7 @@ export default class DeletePostLikeService implements IDeletePostLikeService {
       throw new BadRequestError("Like não encontrado!");
     }
 
-    const deletedLike = await this.repository.likes.deleteMany({
+    await this.repository.likes.deleteMany({
       where: {
         userId,
         AND: {
@@ -46,10 +46,6 @@ export default class DeletePostLikeService implements IDeletePostLikeService {
         },
       },
     });
-
-    if (!deletedLike) {
-      throw new InternalError("Falha ao deletar Like!");
-    }
 
     return { message: "Deleted" };
   }
