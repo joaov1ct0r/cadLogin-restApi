@@ -1,50 +1,39 @@
-import { mock } from "jest-mock-extended";
-
-import IPost from "../../../src/interfaces/IPost";
-
-import { ModelStatic } from "sequelize";
-
+import { mockDeep } from "jest-mock-extended";
 import ListAllPostsService from "../../../src/services/ListAllPostsService";
-import IListAllPostsService from "../../../src/interfaces/IListAllPostsService";
+import { PrismaClient } from "@prisma/client";
 
 const makeSut = () => {
-  const mockRepository = mock<ModelStatic<IPost>>();
+  const prismaSpyRepository = mockDeep<PrismaClient>();
 
-  const sut: IListAllPostsService = new ListAllPostsService(mockRepository);
+  const sut: ListAllPostsService = new ListAllPostsService(prismaSpyRepository);
 
-  return { sut, mockRepository };
+  return { sut, prismaSpyRepository };
 };
 
 describe("list all posts service", () => {
   describe("when execute is called", () => {
     it("should return all posts", async () => {
-      const { sut, mockRepository } = makeSut();
+      const { sut, prismaSpyRepository } = makeSut();
 
-      mockRepository.findAll.mockResolvedValueOnce([
+      prismaSpyRepository.post.findMany.mockResolvedValueOnce([
         {
-          id: "1",
+          id: 1,
           author: "any@mail.com.br",
           content: "titulo de post",
-          userId: "1",
-          likes: ["0"],
-          comments: ["0"],
-        } as IPost,
+          userId: 1,
+        },
         {
-          id: "1",
+          id: 1,
           author: "any@mail.com.br",
           content: "titulo de post",
-          userId: "1",
-          likes: ["0"],
-          comments: ["0"],
-        } as IPost,
+          userId: 1,
+        },
         {
-          id: "1",
+          id: 1,
           author: "any@mail.com.br",
           content: "titulo de post",
-          userId: "1",
-          likes: ["0"],
-          comments: ["0"],
-        } as IPost,
+          userId: 1,
+        },
       ]);
 
       const posts = await sut.execute();
