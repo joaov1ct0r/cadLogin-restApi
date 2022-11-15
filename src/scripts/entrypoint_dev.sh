@@ -1,9 +1,7 @@
 #!/bin/sh
 
-npm pkg set type='commonjs';
+npm pkg set type='module';
 
-npx sequelize-cli db:create; 
-
-npx sequelize-cli db:migrate;
+npx prisma migrate dev;
 
 npm run dev;

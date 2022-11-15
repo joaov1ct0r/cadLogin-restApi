@@ -2,8 +2,6 @@
 
 npm pkg set type='commonjs';
 
-npx sequelize-cli db:create;
+npx prisma migrate dev;
 
-npx sequelize-cli db:migrate;
-
-npm run start
+npm run start;
