@@ -1,43 +1,37 @@
-import { mock } from "jest-mock-extended";
-
-import { ModelStatic } from "sequelize";
-
-import IUser from "../../../src/interfaces/IUser";
-
-import IListAllUsersService from "../../../src/interfaces/IListAllUsersService";
-
+import { mockDeep } from "jest-mock-extended";
 import ListAllUsersService from "../../../src/services/ListAllUsersService";
+import { PrismaClient } from "@prisma/client";
 
 const makeSut = () => {
-  const mockRepository = mock<ModelStatic<IUser>>();
+  const prismaSpyRepository = mockDeep<PrismaClient>();
 
-  const sut: IListAllUsersService = new ListAllUsersService(mockRepository);
+  const sut: ListAllUsersService = new ListAllUsersService(prismaSpyRepository);
 
-  return { mockRepository, sut };
+  return { prismaSpyRepository, sut };
 };
 
 describe("list all users service", () => {
   describe("when execute is called", () => {
     it("should return all users registered", async () => {
-      const { sut, mockRepository } = makeSut();
+      const { sut, prismaSpyRepository } = makeSut();
 
-      mockRepository.findAll.mockResolvedValueOnce([
+      prismaSpyRepository.user.findMany.mockResolvedValueOnce([
         {
-          id: "1",
+          id: 1,
           email: "any@mail.com.br",
           password: "123123123",
           name: "user name",
           bornAt: "01/09/2001",
-          admin: true,
-        } as IUser,
+          admin: false,
+        },
         {
-          id: "1",
+          id: 2,
           email: "any@mail.com.br",
           password: "123123123",
           name: "user name",
           bornAt: "01/09/2001",
-          admin: true,
-        } as IUser,
+          admin: false,
+        },
       ]);
 
       const users = await sut.execute();
