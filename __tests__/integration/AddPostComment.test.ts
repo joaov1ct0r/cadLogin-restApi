@@ -2,17 +2,21 @@ import { jest } from "@jest/globals";
 
 import App from "../../src/app";
 
-import Post from "../../src/database/models/postModel";
+import prismaClient from "../../src/database/prismaClient";
 
 import request from "supertest";
 
 describe("add post comment", () => {
+  beforeAll(async () => {
+    await prismaClient.$connect();
+  });
+
   beforeEach(async () => {
     jest.setTimeout(70000);
   });
 
-  afterEach(async () => {
-    await Post.truncate({ cascade: true });
+  afterAll(async () => {
+    await prismaClient.$disconnect();
   });
 
   it("should return an exception if not authenticated", async () => {
@@ -72,7 +76,7 @@ describe("add post comment", () => {
     expect(response.status).toEqual(400);
   });
 
-  it("should return an exception if post isnt null", async () => {
+  it("should return an exception if post is null", async () => {
     await request(new App().server)
       .post("/api/users/register")
       .set("Accept", "application/json")
@@ -96,9 +100,10 @@ describe("add post comment", () => {
       .set("Cookie", [login.headers["set-cookie"]])
       .send({
         postId: "290",
+        comment: "comentarios",
       });
 
-    expect(response.status).toEqual(400);
+    expect(response.body.status).toEqual(400);
   });
 
   it("should create a comment in post", async () => {
@@ -135,6 +140,6 @@ describe("add post comment", () => {
         comment: "novo comment",
       });
 
-    expect(response.status).toEqual(201);
+    expect(response.body.status).toEqual(201);
   });
 });
