@@ -1,5 +1,4 @@
 import BadRequestError from "../errors/BadRequestError";
-import InternalError from "../errors/InternalError";
 import IEditPostCommentService from "../interfaces/IEditPostCommentService";
 import { PrismaClient, Comment, Post, User } from "@prisma/client";
 
@@ -47,7 +46,9 @@ export default class EditPostCommentService implements IEditPostCommentService {
       },
     });
 
-    const updatedComment = await this.repository.comment.updateMany({
+    if (user === null) throw new BadRequestError("User não encontrado!");
+
+    await this.repository.comment.updateMany({
       data: {
         comment,
         author: user!.email,
@@ -62,10 +63,6 @@ export default class EditPostCommentService implements IEditPostCommentService {
         },
       },
     });
-
-    if (!updatedComment) {
-      throw new InternalError("Falha ao atualizar comentario!");
-    }
 
     return { message: "Comment atualizado" };
   }

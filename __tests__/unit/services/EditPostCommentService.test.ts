@@ -1,153 +1,108 @@
-import { mock } from "jest-mock-extended";
-
-import IPost from "../../../src/interfaces/IPost";
-
-import IComments from "../../../src/interfaces/IComments";
-
-import IUser from "../../../src/interfaces/IUser";
-
-import IEditPostCommentService from "../../../src/interfaces/IEditPostCommentService";
-
+import { mockDeep } from "jest-mock-extended";
 import EditPostCommentService from "../../../src/services/EditPostCommentService";
-
-import { ModelStatic } from "sequelize";
-
 import BadRequestError from "../../../src/errors/BadRequestError";
-
-import InternalError from "../../../src/errors/InternalError";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 const makeSut = () => {
-  const mockRepository = mock<ModelStatic<IPost>>();
+  const prismaSpyRepository = mockDeep<PrismaClient>();
 
-  const mockUserRepository = mock<ModelStatic<IUser>>();
-
-  const mockCommentsRepository = mock<ModelStatic<IComments>>();
-
-  const sut: IEditPostCommentService = new EditPostCommentService(
-    mockRepository,
-    mockUserRepository,
-    mockCommentsRepository
+  const sut: EditPostCommentService = new EditPostCommentService(
+    prismaSpyRepository
   );
 
-  return { sut, mockRepository, mockCommentsRepository, mockUserRepository };
+  return { sut, prismaSpyRepository };
 };
 
 describe("edit post comment service", () => {
   describe("when execute is called", () => {
     it("should throw an exception if post is null", async () => {
-      const { sut, mockRepository } = makeSut();
+      const { sut, prismaSpyRepository } = makeSut();
 
-      mockRepository.findOne.mockResolvedValueOnce(null);
+      prismaSpyRepository.post.findUnique.mockResolvedValueOnce(null);
 
       expect(async () => {
-        await sut.execute("1", "1", "1", "comment editado de post");
+        await sut.execute(1, 1, 1, "comment editado de post");
       }).rejects.toThrow(new BadRequestError("Post não encontrado!"));
     });
 
     it("should throw an exception if comment is null", async () => {
-      const { sut, mockRepository, mockCommentsRepository } = makeSut();
+      const { sut, prismaSpyRepository } = makeSut();
 
-      mockRepository.findOne.mockResolvedValueOnce({
-        id: "1",
+      prismaSpyRepository.post.findUnique.mockResolvedValueOnce({
+        id: 1,
         author: "any@mail.com.br",
         content: "titulo de post",
-        userId: "1",
-        likes: ["0"],
-        comments: ["0"],
-      } as IPost);
+        userId: 1,
+      });
 
-      mockCommentsRepository.findOne.mockResolvedValueOnce(null);
+      prismaSpyRepository.comment.findFirst.mockResolvedValueOnce(null);
 
       expect(async () => {
-        await sut.execute("1", "1", "1", "titulo editado de post");
+        await sut.execute(1, 1, 1, "titulo editado de post");
       }).rejects.toThrow(new BadRequestError("Comentario não encontrado!"));
     });
 
-    it("should throw exception if fails to edit comment", async () => {
-      const {
-        sut,
-        mockRepository,
-        mockCommentsRepository,
-        mockUserRepository,
-      } = makeSut();
+    it("should throw exception if user is null", async () => {
+      const { sut, prismaSpyRepository } = makeSut();
 
-      mockRepository.findOne.mockResolvedValueOnce({
-        id: "1",
+      prismaSpyRepository.post.findUnique.mockResolvedValueOnce({
+        id: 1,
         author: "any@mail.com.br",
         content: "titulo de post",
-        userId: "1",
-        likes: ["0"],
-        comments: ["0"],
-      } as IPost);
+        userId: 1,
+      });
 
-      mockCommentsRepository.findOne.mockResolvedValueOnce({
-        postId: "1",
-        id: "1",
-        author: "any@mail.com.br",
-        comment: "comment de post",
-      } as IComments);
+      prismaSpyRepository.comment.findFirst.mockResolvedValueOnce({
+        id: 1,
+        author: "user@mail.com",
+        comment: "qualquer comment",
+        userId: 1,
+        postId: 1,
+      });
 
-      mockUserRepository.findOne.mockResolvedValueOnce({
-        id: "1",
-        email: "any@mail.com.br",
-        password: "123123123",
-        name: "user name",
-        bornAt: "01/09/2001",
-        admin: true,
-      } as IUser);
-
-      mockCommentsRepository.update.mockResolvedValueOnce([0]);
+      prismaSpyRepository.user.findUnique.mockResolvedValueOnce(null);
 
       expect(async () => {
-        await sut.execute("1", "1", "1", "comment editado");
-      }).rejects.toThrow(new InternalError("Falha ao atualizar comentario!"));
+        await sut.execute(1, 1, 1, "comment editado");
+      }).rejects.toThrow(new BadRequestError("User não encontrado!"));
     });
 
     it("should return number of edited lines from edited comment", async () => {
-      const {
-        sut,
-        mockRepository,
-        mockCommentsRepository,
-        mockUserRepository,
-      } = makeSut();
+      const { sut, prismaSpyRepository } = makeSut();
 
-      mockRepository.findOne.mockResolvedValueOnce({
-        id: "1",
+      prismaSpyRepository.post.findUnique.mockResolvedValueOnce({
+        id: 1,
         author: "any@mail.com.br",
         content: "titulo de post",
-        userId: "1",
-        likes: ["0"],
-        comments: ["0"],
-      } as IPost);
+        userId: 1,
+      });
 
-      mockCommentsRepository.findOne.mockResolvedValueOnce({
-        postId: "1",
-        id: "1",
-        author: "any@mail.com.br",
-        comment: "comment de post",
-      } as IComments);
+      prismaSpyRepository.comment.findFirst.mockResolvedValueOnce({
+        id: 1,
+        author: "user@mail.com",
+        comment: "qualquer comment",
+        userId: 1,
+        postId: 1,
+      });
 
-      mockUserRepository.findOne.mockResolvedValueOnce({
-        id: "1",
+      prismaSpyRepository.user.findUnique.mockResolvedValueOnce({
+        id: 1,
         email: "any@mail.com.br",
         password: "123123123",
         name: "user name",
         bornAt: "01/09/2001",
-        admin: true,
-      } as IUser);
+        admin: false,
+      });
 
-      mockCommentsRepository.update.mockResolvedValueOnce([4]);
-
-      const editedLines = await sut.execute(
-        "1",
-        "1",
-        "1",
-        "comment editado de post"
+      prismaSpyRepository.comment.updateMany.mockResolvedValueOnce(
+        {} as Prisma.BatchPayload
       );
 
-      expect(editedLines).toBeGreaterThan(0);
+      const editedLines = await sut.execute(1, 1, 1, "qualquer comment");
 
-      expect(editedLines).toEqual(4);
+      expect(editedLines).toHaveProperty("message");
+
+      expect(editedLines).toEqual({ message: "Comment atualizado" });
     });
   });
 });
