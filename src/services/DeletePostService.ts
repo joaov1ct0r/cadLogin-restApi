@@ -1,5 +1,4 @@
 import BadRequestError from "../errors/BadRequestError";
-import InternalError from "../errors/InternalError";
 import IDeletePostService from "../interfaces/IDeletePostService";
 import { Post, PrismaClient } from "@prisma/client";
 
@@ -27,7 +26,7 @@ export default class DeletePostService implements IDeletePostService {
       throw new BadRequestError("Post não encontrado!");
     }
 
-    const deletedPost = await this.repository.post.deleteMany({
+    await this.repository.post.deleteMany({
       where: {
         id: postId,
         AND: {
@@ -35,10 +34,6 @@ export default class DeletePostService implements IDeletePostService {
         },
       },
     });
-
-    if (!deletedPost) {
-      throw new InternalError("Falha ao deletar post!");
-    }
 
     await this.repository.likes.deleteMany({
       where: {
@@ -58,6 +53,6 @@ export default class DeletePostService implements IDeletePostService {
       },
     });
 
-    return deletedPost;
+    return { message: "Post deletado" };
   }
 }
