@@ -1,52 +1,43 @@
-import { mock } from "jest-mock-extended";
-
-import IPost from "../../../src/interfaces/IPost";
-
-import { ModelStatic } from "sequelize";
-
+import { mockDeep } from "jest-mock-extended";
 import BadRequestError from "../../../src/errors/BadRequestError";
-
-import IListPostService from "../../../src/interfaces/IListPostService";
-
 import ListPostService from "../../../src/services/ListPostService";
+import { PrismaClient } from "@prisma/client";
 
 const makeSut = () => {
-  const mockRepository = mock<ModelStatic<IPost>>();
+  const prismaSpyRepository = mockDeep<PrismaClient>();
 
-  const sut: IListPostService = new ListPostService(mockRepository);
+  const sut: ListPostService = new ListPostService(prismaSpyRepository);
 
-  return { mockRepository, sut };
+  return { prismaSpyRepository, sut };
 };
 
 describe("list post service", () => {
   describe("when execute is called", () => {
     it("should throw an exception if post is null", async () => {
-      const { sut, mockRepository } = makeSut();
+      const { sut, prismaSpyRepository } = makeSut();
 
-      mockRepository.findOne.mockResolvedValueOnce(null);
+      prismaSpyRepository.post.findFirst.mockResolvedValueOnce(null);
 
       expect(async () => {
-        await sut.execute("1");
+        await sut.execute(1);
       }).rejects.toThrow(new BadRequestError("Post não encontrado!"));
     });
 
     it("should return a post", async () => {
-      const { sut, mockRepository } = makeSut();
+      const { sut, prismaSpyRepository } = makeSut();
 
-      mockRepository.findOne.mockResolvedValueOnce({
-        id: "1",
+      prismaSpyRepository.post.findFirst.mockResolvedValueOnce({
+        id: 1,
         author: "any@mail.com.br",
         content: "titulo de post",
-        userId: "1",
-        likes: ["0"],
-        comments: ["0"],
-      } as IPost);
+        userId: 1,
+      });
 
-      const post = await sut.execute("1");
+      const post = await sut.execute(1);
 
       expect(post).toHaveProperty("content");
 
-      expect(post.id).toEqual("1");
+      expect(post.id).toEqual(1);
     });
   });
 });
