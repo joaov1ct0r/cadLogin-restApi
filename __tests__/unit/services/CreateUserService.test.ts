@@ -1,27 +1,20 @@
-import { mock } from "jest-mock-extended";
-
-import IUser from "../../../src/interfaces/IUser";
-
-import { ModelStatic } from "sequelize";
-
+import { mockDeep } from "jest-mock-extended";
 import CreateUserService from "../../../src/services/CreateUserService";
-
-import ICreateUserService from "../../../src/interfaces/ICreateUserService";
-
 import BadRequestError from "../../../src/errors/BadRequestError";
+import { PrismaClient } from "@prisma/client";
 
 const makeSut = () => {
-  const mockRepository = mock<ModelStatic<IUser>>();
+  const prismaSpyRepository = mockDeep<PrismaClient>();
 
-  const sut: ICreateUserService = new CreateUserService(mockRepository);
+  const sut: CreateUserService = new CreateUserService(prismaSpyRepository);
 
-  return { sut, mockRepository };
+  return { sut, prismaSpyRepository };
 };
 
 describe("create user service", () => {
   describe("when execute is called", () => {
     it("should throw an error if user already exists", async () => {
-      const { sut, mockRepository } = makeSut();
+      const { sut, prismaSpyRepository } = makeSut();
 
       const userInputData = {
         email: "user@email.com.br",
@@ -30,7 +23,14 @@ describe("create user service", () => {
         bornAt: "01/09/2001",
       };
 
-      mockRepository.findOne.mockResolvedValue({ id: "1" } as IUser);
+      prismaSpyRepository.user.findUnique.mockResolvedValue({
+        id: 1,
+        email: "user@email.com.br",
+        password: "123123123",
+        name: "user name",
+        bornAt: "01/09/2001",
+        admin: false,
+      });
 
       expect(async () => {
         await sut.execute(userInputData);
@@ -38,7 +38,7 @@ describe("create user service", () => {
     });
 
     it("should create a new user", async () => {
-      const { sut, mockRepository } = makeSut();
+      const { sut, prismaSpyRepository } = makeSut();
 
       const userInputData = {
         email: "user@mail.com.br",
@@ -47,15 +47,16 @@ describe("create user service", () => {
         bornAt: "01/09/2001",
       };
 
-      mockRepository.findOne.mockResolvedValue(null);
+      prismaSpyRepository.user.findUnique.mockResolvedValue(null);
 
-      mockRepository.create.mockResolvedValue({
-        id: "1",
+      prismaSpyRepository.user.create.mockResolvedValue({
+        id: 1,
         email: "user@mail.com.br",
         password: "123123123",
         name: "user name",
         bornAt: "01/09/2001",
-      } as IUser);
+        admin: false,
+      });
 
       const user = await sut.execute(userInputData);
 
