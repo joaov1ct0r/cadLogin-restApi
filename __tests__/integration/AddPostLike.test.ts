@@ -1,18 +1,19 @@
 import { jest } from "@jest/globals";
-
 import App from "../../src/app";
-
-import Post from "../../src/database/models/postModel";
-
 import request from "supertest";
+import prismaClient from "../../src/database/prismaClient";
 
 describe("add post like", () => {
+  beforeAll(async () => {
+    await prismaClient.$connect();
+  });
+
   beforeEach(async () => {
     jest.setTimeout(70000);
   });
 
-  afterEach(async () => {
-    await Post.truncate({ cascade: true });
+  afterAll(async () => {
+    await prismaClient.$disconnect();
   });
 
   it("should return an exception if not authenticated", async () => {
@@ -98,7 +99,7 @@ describe("add post like", () => {
         postId: "204",
       });
 
-    expect(response.status).toEqual(400);
+    expect(response.body.status).toEqual(400);
   });
 
   it("should return an exception if like is registered", async () => {
@@ -141,7 +142,7 @@ describe("add post like", () => {
         postId: String(postCreated.body.post.id),
       });
 
-    expect(response.status).toEqual(400);
+    expect(response.body.status).toEqual(400);
   });
 
   it("should like a post", async () => {
@@ -177,6 +178,6 @@ describe("add post like", () => {
         postId: String(postCreated.body.post.id),
       });
 
-    expect(response.status).toEqual(201);
+    expect(response.body.status).toEqual(201);
   });
 });

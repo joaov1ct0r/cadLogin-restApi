@@ -1,9 +1,6 @@
 import { jest } from "@jest/globals";
-
 import App from "../../src/app";
-
 import prismaClient from "../../src/database/prismaClient";
-
 import request from "supertest";
 
 describe("add post comment", () => {
