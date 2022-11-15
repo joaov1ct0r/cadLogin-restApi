@@ -1,13 +1,16 @@
 import App from "../../src/app";
-
 import request from "supertest";
-
-import User from "../../src/database/models/userModel";
+import prismaClient from "../../src/database/prismaClient";
 
 describe("authenticate user", () => {
-  afterEach(async () => {
-    await User.truncate({ cascade: true });
+  beforeAll(async () => {
+    await prismaClient.$connect();
   });
+
+  afterAll(async () => {
+    await prismaClient.$disconnect();
+  });
+
   it("should return an exception if user is not registered", async () => {
     const response = await request(new App().server)
       .post("/api/users/login")
@@ -39,7 +42,7 @@ describe("authenticate user", () => {
         password: "123123123",
       });
 
-    expect(response.status).toEqual(401);
+    expect(response.body.status).toEqual(401);
   });
 
   it("should return an exception if wrong data is send", async () => {
@@ -84,6 +87,6 @@ describe("authenticate user", () => {
 
     expect(response.headers["set-cookie"]).toBeDefined();
 
-    expect(response.status).toEqual(200);
+    expect(response.body.status).toEqual(200);
   });
 });
