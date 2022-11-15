@@ -1,6 +1,5 @@
 import { Likes, Post, PrismaClient } from "@prisma/client";
 import BadRequestError from "../errors/BadRequestError";
-import InternalError from "../errors/InternalError";
 import IDeletePostLikeService from "../interfaces/IDeletePostLikeService";
 
 export default class DeletePostLikeService implements IDeletePostLikeService {
