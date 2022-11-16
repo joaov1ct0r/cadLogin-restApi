@@ -1,18 +1,19 @@
 import { jest } from "@jest/globals";
-
 import App from "../../src/app";
-
 import request from "supertest";
-
-import Post from "../../src/database/models/postModel";
+import prismaClient from "../../src/database/prismaClient";
 
 describe("list all posts", () => {
+  beforeAll(async () => {
+    await prismaClient.$connect();
+  });
+
   beforeEach(async () => {
     jest.setTimeout(70000);
   });
 
-  afterEach(async () => {
-    await Post.truncate({ cascade: true });
+  afterAll(async () => {
+    await prismaClient.$disconnect();
   });
 
   it("should return an exception if not authenticated", async () => {
@@ -59,6 +60,6 @@ describe("list all posts", () => {
       .get("/api/posts/posts")
       .set("Cookie", [login.headers["set-cookie"]]);
 
-    expect(response.status).toEqual(200);
+    expect(response.body.status).toEqual(200);
   });
 });
