@@ -1,18 +1,19 @@
 import { jest } from "@jest/globals";
-
 import App from "../../src/app";
-
 import request from "supertest";
-
-import Comments from "../../src/database/models/commentsModel";
+import prismaClient from "../../src/database/prismaClient";
 
 describe("edit post comment", () => {
+  beforeAll(async () => {
+    await prismaClient.$connect();
+  });
+
   beforeEach(async () => {
     jest.setTimeout(70000);
   });
 
-  afterEach(async () => {
-    await Comments.truncate({ cascade: true });
+  afterAll(async () => {
+    await prismaClient.$disconnect();
   });
 
   it("should return an exception if not authenticated", async () => {
@@ -108,7 +109,7 @@ describe("edit post comment", () => {
         comment: "comment editado",
       });
 
-    expect(response.status).toEqual(400);
+    expect(response.body.status).toEqual(400);
   });
 
   it("should return an exception if comment is null", async () => {
@@ -146,7 +147,7 @@ describe("edit post comment", () => {
         comment: "comment editado",
       });
 
-    expect(response.status).toEqual(400);
+    expect(response.body.status).toEqual(400);
   });
 
   it("should edit a comment in post", async () => {
