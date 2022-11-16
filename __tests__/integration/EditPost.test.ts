@@ -1,15 +1,17 @@
 import { jest } from "@jest/globals";
-
 import App from "../../src/app";
-
 import request from "supertest";
-
-import Post from "../../src/database/models/postModel";
+import prismaClient from "../../src/database/prismaClient";
 
 describe("edit post", () => {
-  afterEach(async () => {
-    await Post.truncate({ cascade: true });
+  beforeAll(async () => {
+    await prismaClient.$connect();
   });
+
+  afterAll(async () => {
+    await prismaClient.$disconnect();
+  });
+
   it("should return an exception if not authenticated", async () => {
     jest.setTimeout(70000);
 
@@ -90,7 +92,7 @@ describe("edit post", () => {
         postId: "184",
       });
 
-    expect(response.status).toEqual(400);
+    expect(response.body.status).toEqual(400);
   });
 
   it("should return an edited post", async () => {
