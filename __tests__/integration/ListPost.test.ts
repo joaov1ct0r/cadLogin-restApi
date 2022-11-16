@@ -1,18 +1,19 @@
 import { jest } from "@jest/globals";
-
 import App from "../../src/app";
-
 import request from "supertest";
-
-import Post from "../../src/database/models/postModel";
+import prismaClient from "../../src/database/prismaClient";
 
 describe("list post", () => {
+  beforeAll(async () => {
+    await prismaClient.$connect();
+  });
+
   beforeEach(async () => {
     jest.setTimeout(70000);
   });
 
-  afterEach(async () => {
-    await Post.truncate({ cascade: true });
+  afterAll(async () => {
+    await prismaClient.$disconnect();
   });
 
   it("should return an exception if not authenticated", async () => {
@@ -95,7 +96,7 @@ describe("list post", () => {
         postId: "290",
       });
 
-    expect(response.status).toEqual(400);
+    expect(response.body.status).toEqual(400);
   });
 
   it("should return an post", async () => {
@@ -131,6 +132,6 @@ describe("list post", () => {
         postId: String(postCreated.body.post.id),
       });
 
-    expect(response.status).toEqual(200);
+    expect(response.body.status).toEqual(200);
   });
 });
