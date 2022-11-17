@@ -1,7 +1,4 @@
-DROP TABLE 'users';
-
-DROP TABLE 'posts';
-
-DROP TABLE 'comments';
-
-DROP TABLE 'likes';
+DROP TABLE "users" CASCADE;
+DROP TABLE "posts" CASCADE;
+DROP TABLE "comments" CASCADE;
+DROP TABLE "likes" CASCADE;

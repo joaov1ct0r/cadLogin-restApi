@@ -13,8 +13,6 @@ describe("list post", () => {
   });
 
   afterAll(async () => {
-    await prismaClient.post.deleteMany();
-
     await prismaClient.$disconnect();
   });
 

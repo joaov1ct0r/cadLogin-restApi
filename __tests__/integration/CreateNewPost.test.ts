@@ -13,8 +13,6 @@ describe("create new post", () => {
   });
 
   afterAll(async () => {
-    await prismaClient.post.deleteMany();
-
     await prismaClient.$disconnect();
   });
 
