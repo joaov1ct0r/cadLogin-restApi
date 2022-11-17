@@ -8,11 +8,12 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_DATABASE}
+      - DATABASE_URL=`postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/${DB_DATABASE_TEST}?schema=public`
     env_file:
       - .env
     volumes:
       - ./pgdata:/var/lib/postgresql/data
-    ports: 
+    ports:
       - ${DB_PORT}:5432
 
   api_prod:
@@ -24,13 +25,14 @@ services:
       dockerfile: Dockerfile
       target: production
     image: api_prod
-    entrypoint: ["/bin/sh", "./src/scripts/entrypoint.sh"]
+    entrypoint: [ "/bin/sh", "./src/scripts/entrypoint.sh" ]
     volumes:
       - ./src/database:/usr/src/app/src/database
     env_file:
       - .env
     environment:
       - NODE_ENV=production
+      - DATABASE_URL=`postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/${DB_DATABASE_TEST}?schema=public`
     restart: always
     depends_on:
       - db
