@@ -8,24 +8,24 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_DATABASE}
+      - DATABASE_URL=`postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/${DB_DATABASE_TEST}?schema=public`
     env_file:
       - .env
     volumes:
       - ./pgdata:/var/lib/postgresql/data
-    ports: 
+    ports:
       - ${DB_PORT}:5432
-      - 9229:9229
 
   api:
     container_name: api_dev
     build:
       args:
-          - NODE_ENV=development
+        - NODE_ENV=development
       context: .
       dockerfile: Dockerfile
       target: development
     image: api_dev
-    entrypoint: ["/bin/sh", "./src/scripts/entrypoint_dev.sh"]
+    entrypoint: [ "/bin/sh", "./src/scripts/entrypoint_dev.sh" ]
     volumes:
       - .:/usr/src/app
       - ./src/database:/usr/src/app/src/database
@@ -33,6 +33,7 @@ services:
       - .env
     environment:
       - NODE_ENV=development
+      - DATABASE_URL=`postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/${DB_DATABASE_TEST}?schema=public`
     restart: always
     depends_on:
       - db
