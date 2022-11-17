@@ -12,9 +12,9 @@
     "test:coverage": "NODE_ENV='test'; npm pkg set type='module'; jest --coverage",
     "test:watch": "NODE_ENV='test'; npm pkg set type='module'; jest --watch",
     "test:verbose": "NODE_ENV='test'; npm pkg set type='module'; jest --verbose",
-    "pretest": "NODE_ENV='test'; npm pkg set type='commonjs'; npx sequelize-cli db:migrate",
+    "pretest": "NODE_ENV='test'; npm pkg set type='module'; prisma migrate dev",
     "test": "npm pkg set type='module'; jest",
-    "posttest": "npx sequelize-cli db:migrate:undo:all && NODE_ENV='development'"
+    "posttest": "NODE_ENV='test'; npm pkg set type='module'; prisma execute --file ./src/scripts/truncate.sql --schema ./prisma/schema.prisma"
   },
   "keywords": [
     "jwt",
