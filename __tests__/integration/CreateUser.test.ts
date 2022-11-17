@@ -8,6 +8,12 @@ describe("create user", () => {
   });
 
   afterAll(async () => {
+    await prismaClient.user.delete({
+      where: {
+        email: "dalkfj0r820@mail.com.br",
+      },
+    });
+
     await prismaClient.$disconnect();
   });
 
@@ -54,7 +60,7 @@ describe("create user", () => {
       .post("/api/users/register")
       .set("Accept", "application/json")
       .send({
-        email: "dlskafjl4r202@mail.com.br",
+        email: "dalkfj0r820@mail.com.br",
         password: "123123123",
         name: "user name name",
         bornAt: "01/09/2001",

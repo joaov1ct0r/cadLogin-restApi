@@ -129,7 +129,7 @@ describe("delete post", () => {
       .delete("/api/posts/delete")
       .set("Cookie", [login.headers["set-cookie"]])
       .send({
-        postId: String(postCreated.body.post.id),
+        postId: String(postCreated.body.post.id!),
       });
 
     expect(response.status).toEqual(204);

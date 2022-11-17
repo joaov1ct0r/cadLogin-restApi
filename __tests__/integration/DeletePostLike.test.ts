@@ -13,6 +13,8 @@ describe("delete post like", () => {
   });
 
   afterAll(async () => {
+    await prismaClient.likes.deleteMany();
+
     await prismaClient.$disconnect();
   });
 
@@ -67,7 +69,7 @@ describe("delete post like", () => {
       .post("/api/posts/like")
       .set("Cookie", [login.headers["set-cookie"]])
       .send({
-        postId: String(postCreated.body.post.id),
+        postId: String(postCreated.body.post.id!),
       });
 
     const response = await request(new App().server)
@@ -139,7 +141,7 @@ describe("delete post like", () => {
       .delete("/api/posts/like/delete")
       .set("Cookie", [login.headers["set-cookie"]])
       .send({
-        postId: String(postCreated.body.post.id),
+        postId: String(postCreated.body.post.id!),
       });
 
     expect(response.body.status).toEqual(400);
@@ -175,14 +177,14 @@ describe("delete post like", () => {
       .post("/api/posts/like")
       .set("Cookie", [login.headers["set-cookie"]])
       .send({
-        postId: String(postCreated.body.post.id),
+        postId: String(postCreated.body.post.id!),
       });
 
     const response = await request(new App().server)
       .delete("/api/posts/like/delete")
       .set("Cookie", [login.headers["set-cookie"]])
       .send({
-        postId: String(postCreated.body.post.id),
+        postId: String(postCreated.body.post.id!),
       });
 
     expect(response.status).toEqual(204);

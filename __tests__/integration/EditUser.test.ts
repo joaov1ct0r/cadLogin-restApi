@@ -13,6 +13,12 @@ describe("edit user", () => {
   });
 
   afterAll(async () => {
+    await prismaClient.user.delete({
+      where: {
+        email: "useredit323ed142@mail.com.br",
+      },
+    });
+
     await prismaClient.$disconnect();
   });
 
@@ -76,7 +82,7 @@ describe("edit user", () => {
       .post("/api/users/register")
       .set("Accept", "application/json")
       .send({
-        email: "fdlakjsfldsa842@mail.com.br",
+        email: "userregistroeeqw124@mail.com.br",
         password: "789789789",
         name: "user name name",
         bornAt: "01/09/2001",
@@ -86,7 +92,7 @@ describe("edit user", () => {
       .post("/api/users/login")
       .set("Accept", "application/json")
       .send({
-        email: "fdlakjsfldsa842@mail.com.br",
+        email: "userregistroeeqw124@mail.com.br",
         password: "789789789",
       });
 
@@ -94,7 +100,7 @@ describe("edit user", () => {
       .put("/api/users/edit")
       .set("Cookie", [login.headers["set-cookie"]])
       .send({
-        email: "dflaskjl42@mail.com.br",
+        email: "useredit323ed142@mail.com.br",
         password: "123123123",
         name: "user new edited name",
         bornAt: "02/09/2001",

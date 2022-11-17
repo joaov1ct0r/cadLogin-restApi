@@ -13,6 +13,8 @@ describe("add post like", () => {
   });
 
   afterAll(async () => {
+    await prismaClient.likes.deleteMany();
+
     await prismaClient.$disconnect();
   });
 

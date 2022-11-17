@@ -13,6 +13,8 @@ describe("list post", () => {
   });
 
   afterAll(async () => {
+    await prismaClient.post.deleteMany();
+
     await prismaClient.$disconnect();
   });
 
@@ -93,7 +95,7 @@ describe("list post", () => {
       .get("/api/posts/post")
       .set("Cookie", [login.headers["set-cookie"]])
       .send({
-        postId: "290",
+        postId: "29534",
       });
 
     expect(response.body.status).toEqual(400);

@@ -13,6 +13,8 @@ describe("add post comment", () => {
   });
 
   afterAll(async () => {
+    await prismaClient.comment.deleteMany();
+
     await prismaClient.$disconnect();
   });
 
