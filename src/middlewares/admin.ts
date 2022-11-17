@@ -1,5 +1,4 @@
 import IReq from "../interfaces/IRequest";
-
 import { Response, NextFunction } from "express";
 
 export default async function (

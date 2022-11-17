@@ -1,9 +1,7 @@
+import "dotenv/config";
 import jwt from "jsonwebtoken";
-
 import IJwt from "../interfaces/IJson";
-
 import IReq from "../interfaces/IRequest";
-
 import { Response, NextFunction } from "express";
 
 export default function (

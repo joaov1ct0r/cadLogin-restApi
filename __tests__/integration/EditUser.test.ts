@@ -76,7 +76,7 @@ describe("edit user", () => {
       .post("/api/users/register")
       .set("Accept", "application/json")
       .send({
-        email: "userediting@mail.com.br",
+        email: "fdlakjsfldsa842@mail.com.br",
         password: "789789789",
         name: "user name name",
         bornAt: "01/09/2001",
@@ -86,7 +86,7 @@ describe("edit user", () => {
       .post("/api/users/login")
       .set("Accept", "application/json")
       .send({
-        email: "userediting@mail.com.br",
+        email: "fdlakjsfldsa842@mail.com.br",
         password: "789789789",
       });
 
@@ -94,7 +94,7 @@ describe("edit user", () => {
       .put("/api/users/edit")
       .set("Cookie", [login.headers["set-cookie"]])
       .send({
-        email: "userneweditedemail@mail.com.br",
+        email: "dflaskjl42@mail.com.br",
         password: "123123123",
         name: "user new edited name",
         bornAt: "02/09/2001",

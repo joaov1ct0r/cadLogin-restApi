@@ -2,7 +2,6 @@ import { Response } from "express";
 import IReq from "../interfaces/IRequest";
 import { validateHandleUserEdit } from "../validations/validateUserData";
 import prismaClient from "../database/prismaClient";
-import IEditUserService from "../interfaces/IEditUserService";
 import EditUserService from "../services/EditUserService";
 import IEditUserController from "../interfaces/IEditUserController";
 import { User } from "@prisma/client";
@@ -23,7 +22,7 @@ export default class EditUserController implements IEditUserController {
 
     const id: string | undefined = req.userId;
 
-    const editUserService: IEditUserService = new EditUserService(prismaClient);
+    const editUserService: EditUserService = new EditUserService(prismaClient);
 
     try {
       // eslint-disable-next-line no-unused-vars
