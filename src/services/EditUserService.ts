@@ -10,13 +10,13 @@ export default class EditUserService implements IEditUserService {
     this.repository = repository;
   }
 
-  public async execute({
-    email,
-    password,
-    name,
-    bornAt,
-    userId,
-  }: IEditUserRequest): Promise<User> {
+  public async execute(
+    email: string,
+    password: string,
+    name: string,
+    bornAt: string,
+    userId?: number
+  ): Promise<User> {
     const editedUser: User = await this.repository.user.update({
       data: {
         email,
