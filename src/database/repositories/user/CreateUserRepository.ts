@@ -1,15 +1,7 @@
 import { PrismaClient, User } from "@prisma/client";
 import prismaClient from "../../prismaClient";
 import bcrypt from "bcryptjs";
-
-interface ICreateUserRepository {
-  execute(
-    email: string,
-    password: string,
-    name: string,
-    bonrAt: string
-  ): Promise<User | null>;
-}
+import ICreateUserRepository from "../../../interfaces/ICreateUserRepository";
 
 export default class CreateUserRepository implements ICreateUserRepository {
   public readonly repository: PrismaClient;
