@@ -5,6 +5,7 @@ import IReq from "../interfaces/IRequest";
 import { Response, NextFunction } from "express";
 import BadRequestError from "../errors/BadRequestError";
 import InternalError from "../errors/InternalError";
+import ForbiddenError from "../errors/ForbiddenError";
 
 export default class Authorization {
   execute(req: IReq, res: Response, next: NextFunction): Response | undefined {
