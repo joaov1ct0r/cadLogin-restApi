@@ -1,15 +1,7 @@
 import { PrismaClient, User } from "@prisma/client";
 import prismaClient from "../../prismaClient";
 import bcrypt from "bcryptjs";
-
-interface IEditUserRepository {
-  execute(
-    email: string,
-    password: string,
-    name: string,
-    bornAt: string
-  ): Promise<User>;
-}
+import IEditUserRepository from "../../../interfaces/IEditUserRepository";
 
 export default class EditUserRepository implements IEditUserRepository {
   private readonly repository: PrismaClient;
