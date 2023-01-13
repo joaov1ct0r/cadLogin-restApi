@@ -3,20 +3,17 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import BadRequestError from "../errors/BadRequestError";
 import UnathorizedError from "../errors/UnauthorizedError";
-import { PrismaClient, User } from "@prisma/client";
+import { User } from "@prisma/client";
+import IGetUserEmailRepository from "../interfaces/IGetUserEmailRepository";
 
 export default class AuthenticateUserService {
-  private readonly repository: PrismaClient;
-  constructor(repository: PrismaClient) {
+  private readonly repository: IGetUserEmailRepository;
+  constructor(repository: IGetUserEmailRepository) {
     this.repository = repository;
   }
 
   public async execute(email: string, password: string) {
-    const isUserRegistered: User | null = await this.repository.user.findUnique(
-      {
-        where: { email },
-      }
-    );
+    const isUserRegistered: User | null = await this.repository.execute(email);
 
     if (isUserRegistered === null) {
       throw new BadRequestError("Usuario não registrado!");
