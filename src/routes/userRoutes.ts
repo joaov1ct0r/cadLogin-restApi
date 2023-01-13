@@ -24,7 +24,10 @@ const listAllUsersController: ListAllUsersController =
 
 const listUserController: ListUserController = new ListUserController();
 
-userRouter.post("/register", resolver(createUserController.handle));
+userRouter.post(
+  "/register",
+  new Resolver().handle(createUserController.handle)
+);
 
 userRouter.post(
   "/login",
