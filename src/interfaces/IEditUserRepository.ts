@@ -5,6 +5,7 @@ export default interface IEditUserRepository {
     email: string,
     password: string,
     name: string,
-    bornAt: string
+    bornAt: string,
+    userId?: number
   ): Promise<User>;
 }

@@ -1,12 +1,10 @@
-import IEditUserRequest from "../interfaces/IEditUserRequest";
-import bcrypt from "bcryptjs";
-import IEditUserService from "../interfaces/IEditUserService";
-import { PrismaClient, User } from "@prisma/client";
+import { User } from "@prisma/client";
+import IEditUserRepository from "../interfaces/IEditUserRepository";
 
-export default class EditUserService implements IEditUserService {
-  private readonly repository: PrismaClient;
+export default class EditUserService {
+  private readonly repository: IEditUserRepository;
 
-  constructor(repository: PrismaClient) {
+  constructor(repository: IEditUserRepository) {
     this.repository = repository;
   }
 
@@ -17,15 +15,13 @@ export default class EditUserService implements IEditUserService {
     bornAt: string,
     userId?: number
   ): Promise<User> {
-    const editedUser: User = await this.repository.user.update({
-      data: {
-        email,
-        password: bcrypt.hashSync(password),
-        name,
-        bornAt,
-      },
-      where: { id: userId },
-    });
+    const editedUser: User = await this.repository.execute(
+      email,
+      password,
+      name,
+      bornAt,
+      userId
+    );
 
     return editedUser;
   }
