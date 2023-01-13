@@ -1,16 +1,19 @@
 import { Response } from "express";
 import IReq from "../interfaces/IRequest";
-import { validateHandleUserEdit } from "../validations/validateUserData";
-import prismaClient from "../database/prismaClient";
+import ValidateUser from "../validations/validateUserData";
 import EditUserService from "../services/EditUserService";
-import IEditUserController from "../interfaces/IEditUserController";
-import { User } from "@prisma/client";
+import BadRequestError from "../errors/BadRequestError";
+import EditUserRepository from "../database/repositories/user/EditUserRepository";
 
-export default class EditUserController implements IEditUserController {
+export default class EditUserController {
   public async handle(req: IReq, res: Response): Promise<Response> {
-    const { error } = validateHandleUserEdit(req.body);
+    const { error } = new ValidateUser().validateHandleUserEdit(req.body);
 
-    if (error) return res.status(400).json({ error });
+    if (error) {
+      const err = new BadRequestError(error.message);
+
+      return res.status(err.statusCode).json({ error, status: err.statusCode });
+    }
 
     const email: string = req.body.email;
 
@@ -22,17 +25,14 @@ export default class EditUserController implements IEditUserController {
 
     const id: string | undefined = req.userId;
 
-    const editUserService: EditUserService = new EditUserService(prismaClient);
+    const editUserRepository: EditUserRepository = new EditUserRepository();
+
+    const editUserService: EditUserService = new EditUserService(
+      editUserRepository
+    );
 
     try {
-      // eslint-disable-next-line no-unused-vars
-      const editedUser: User = await editUserService.execute({
-        email,
-        password,
-        name,
-        bornAt,
-        userId: Number(id),
-      });
+      await editUserService.execute(email, password, name, bornAt, Number(id));
 
       return res.status(204).send();
     } catch (err: any) {
