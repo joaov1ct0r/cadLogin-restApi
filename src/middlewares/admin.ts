@@ -1,20 +1,28 @@
+import InternalError from "../errors/InternalError";
+import UnauthorizedError from "../errors/UnauthorizedError";
 import IReq from "../interfaces/IRequest";
 import { Response, NextFunction } from "express";
 
-export default async function (
-  req: IReq,
-  res: Response,
-  next: NextFunction
-): Promise<Response | undefined> {
-  try {
-    const isUserAdmin: boolean | undefined = req.admin;
+export default class IsAdmin {
+  execute(req: IReq, res: Response, next: NextFunction): Response | undefined {
+    try {
+      const isUserAdmin: boolean | undefined = req.admin;
 
-    if (isUserAdmin === false) {
-      return res.status(401).json({ error: "Não autorizado!" });
+      if (isUserAdmin === false) {
+        const error = new UnauthorizedError("Não autorizado!");
+
+        return res
+          .status(error.statusCode)
+          .json({ error, status: error.statusCode });
+      }
+
+      next();
+    } catch (err: any) {
+      const error = new InternalError("Erro interno!");
+
+      return res
+        .status(error.statusCode)
+        .json({ error: err, status: error.statusCode });
     }
-
-    next();
-  } catch (err: any) {
-    return res.status(500).json({ err });
   }
 }
