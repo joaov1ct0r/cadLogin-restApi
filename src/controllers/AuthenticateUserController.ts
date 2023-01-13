@@ -1,23 +1,27 @@
 import { Request, Response } from "express";
-import { validateHandleUserLogin } from "../validations/validateUserData";
+import ValidateUser from "../validations/validateUserData";
 import AuthenticateUserService from "../services/AuthenticateUserService";
-import IAuthenticateUserController from "../interfaces/IAuthenticateUserController";
-import prismaClient from "../database/prismaClient";
+import GetUserEmailRepository from "../database/repositories/user/GetUserEmailRepository";
+import BadRequestError from "../errors/BadRequestError";
 
-export default class AuthenticateUserController
-  implements IAuthenticateUserController
-{
+export default class AuthenticateUserController {
   public async handle(req: Request, res: Response): Promise<Response> {
-    const { error } = validateHandleUserLogin(req.body);
+    const { error } = new ValidateUser().validateHandleUserLogin(req.body);
 
-    if (error) return res.status(400).json({ error });
+    if (error) {
+      const err = new BadRequestError(error.message);
+      return res.status(err.statusCode).json({ error, status: err.statusCode });
+    }
 
     const email: string = req.body.email;
 
     const password: string = req.body.password;
 
+    const getUserEmailRepository: GetUserEmailRepository =
+      new GetUserEmailRepository();
+
     const authenticateUserService: AuthenticateUserService =
-      new AuthenticateUserService(prismaClient);
+      new AuthenticateUserService(getUserEmailRepository);
 
     try {
       const token: string = await authenticateUserService.execute(
