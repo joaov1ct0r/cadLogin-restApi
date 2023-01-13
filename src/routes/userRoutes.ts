@@ -1,6 +1,6 @@
 import express from "express";
 import Resolver from "../utils/Resolver";
-import auth from "../middlewares/auth";
+import Authorization from "../middlewares/auth";
 import CreateUserController from "../controllers/CreateUserController";
 import AuthenticateUserController from "../controllers/AuthenticateUserController";
 import EditUserController from "../controllers/EditUserController";
@@ -34,7 +34,11 @@ userRouter.post(
   new Resolver().handle(authenticateUserController.handle)
 );
 
-userRouter.put("/edit", auth, resolver(editUserController.handle));
+userRouter.put(
+  "/edit",
+  new Authorization().execute,
+  new Resolver().handle(editUserController.handle)
+);
 
 userRouter.delete("/delete", auth, resolver(deleteUserController.handle));
 
