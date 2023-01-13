@@ -6,6 +6,9 @@ import postRouter from "./routes/postRoutes";
 import adminRouter from "./routes/adminRoutes";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocs from "./swagger.json";
+import BadRequestError from "./errors/BadRequestError";
+import InternalError from "./errors/InternalError";
+import UnauthorizedError from "./errors/UnathorizedError";
 
 export default class App {
   public server: express.Application;
@@ -25,13 +28,18 @@ export default class App {
     this.server.use(cookieParser());
     this.server.use(express.urlencoded({ extended: true }));
     this.server.use(
-      (error: any, req: Request, res: Response, next: NextFunction) => {
+      (
+        error: BadRequestError | InternalError | UnauthorizedError,
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ) => {
         if (error && error.statusCode) {
           return res.status(error.statusCode).json({
             message: error.message,
             status: error.statusCode,
           });
-        } else return res.status(500).json({ error });
+        }
       }
     );
   }
