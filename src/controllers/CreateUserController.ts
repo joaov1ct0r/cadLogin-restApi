@@ -1,16 +1,19 @@
 import { Request, Response } from "express";
 import CreateUserService from "../services/CreateUserService";
-import { validateHandleUserRegister } from "../validations/validateUserData";
-import prismaClient from "../database/prismaClient";
-import ICreateUserController from "../interfaces/ICreateUserController";
+import ValidateUser from "../validations/validateUserData";
 import { User } from "@prisma/client";
+import BadRequestError from "../errors/BadRequestError";
+import GetUserEmailRepository from "../database/repositories/user/GetUserEmailRepository";
+import CreateUserRepository from "../database/repositories/user/CreateUserRepository";
 
-export default class CreateUserController implements ICreateUserController {
+export default class CreateUserController {
   public async handle(req: Request, res: Response): Promise<Response> {
-    const { error } = validateHandleUserRegister(req.body);
+    const { error } = new ValidateUser().validateHandleUserRegister(req.body);
 
     if (error) {
-      return res.status(400).json({ error });
+      const err = new BadRequestError(error.message);
+
+      return res.status(err.statusCode).json({ error, status: err.statusCode });
     }
 
     const email: string = req.body.email;
@@ -21,8 +24,15 @@ export default class CreateUserController implements ICreateUserController {
 
     const bornAt: string = req.body.bornAt;
 
+    const getUserEmailRepository: GetUserEmailRepository =
+      new GetUserEmailRepository();
+
+    const createUserRepository: CreateUserRepository =
+      new CreateUserRepository();
+
     const createUserService: CreateUserService = new CreateUserService(
-      prismaClient
+      getUserEmailRepository,
+      createUserRepository
     );
 
     try {
