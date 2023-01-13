@@ -1,5 +1,5 @@
 import express from "express";
-import resolver from "../utils/Resolver";
+import Resolver from "../utils/Resolver";
 import auth from "../middlewares/auth";
 import CreateUserController from "../controllers/CreateUserController";
 import AuthenticateUserController from "../controllers/AuthenticateUserController";
@@ -26,7 +26,10 @@ const listUserController: ListUserController = new ListUserController();
 
 userRouter.post("/register", resolver(createUserController.handle));
 
-userRouter.post("/login", resolver(authenticateUserController.handle));
+userRouter.post(
+  "/login",
+  new Resolver().handle(authenticateUserController.handle)
+);
 
 userRouter.put("/edit", auth, resolver(editUserController.handle));
 
