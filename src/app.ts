@@ -8,7 +8,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerDocs from "./swagger.json";
 import BadRequestError from "./errors/BadRequestError";
 import InternalError from "./errors/InternalError";
-import UnauthorizedError from "./errors/UnathorizedError";
+import UnauthorizedError from "./errors/UnauthorizedError";
 
 export default class App {
   public server: express.Application;

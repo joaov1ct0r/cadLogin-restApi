@@ -2,7 +2,7 @@ import "dotenv/config";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import BadRequestError from "../errors/BadRequestError";
-import UnathorizedError from "../errors/UnathorizedError";
+import UnathorizedError from "../errors/UnauthorizedError";
 import IAuthenticateUserService from "../interfaces/IAuthenticateUserService";
 import { PrismaClient, User } from "@prisma/client";
 

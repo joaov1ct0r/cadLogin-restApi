@@ -1,4 +1,4 @@
-export default class UnathorizedError extends Error {
+export default class UnauthorizedError extends Error {
   public readonly message: string;
 
   public readonly statusCode: number;
