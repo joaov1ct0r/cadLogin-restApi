@@ -1,9 +1,6 @@
 import { PrismaClient, User } from "@prisma/client";
 import prismaClient from "../../prismaClient";
-
-interface IGetUserEmailRepository {
-  execute(email: string): Promise<User | null>;
-}
+import IGetUserEmailRepository from "../../../interfaces/IGetUserEmailRepository";
 
 export default class GetUserEmailRepository implements IGetUserEmailRepository {
   public readonly repository: PrismaClient;
