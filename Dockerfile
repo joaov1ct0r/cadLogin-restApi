@@ -22,8 +22,6 @@ WORKDIR /usr/src/app
 
 COPY --from=development /usr/src/app/src/scripts ./src/scripts
 
-COPY --from=development /usr/src/app/.sequelizerc ./
-
 COPY --from=development /usr/src/app/package*.json ./
 
 COPY --from=development /usr/src/app/build ./build
