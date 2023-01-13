@@ -5,6 +5,6 @@ export default interface ICreateUserRepository {
     email: string,
     password: string,
     name: string,
-    bonrAt: string
-  ): Promise<User | null>;
+    bornAt: string
+  ): Promise<User>;
 }

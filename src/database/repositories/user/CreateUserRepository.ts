@@ -15,8 +15,8 @@ export default class CreateUserRepository implements ICreateUserRepository {
     password: string,
     name: string,
     bornAt: string
-  ): Promise<User | null> {
-    const user: User | null = await this.repository.user.create({
+  ): Promise<User> {
+    const user: User = await this.repository.user.create({
       data: {
         email,
         password: bcrypt.hashSync(password),

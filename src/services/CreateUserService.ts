@@ -1,14 +1,19 @@
-import bcrypt from "bcryptjs";
 import ICreateUserRequest from "../interfaces/ICreateUserRequest";
 import BadRequestError from "../errors/BadRequestError";
-import ICreateUserService from "../interfaces/ICreateUserService";
-import { PrismaClient, User } from "@prisma/client";
+import { User } from "@prisma/client";
+import IGetUserEmailRepository from "../interfaces/IGetUserEmailRepository";
+import ICreateUserRepository from "../interfaces/ICreateUserRepository";
 
-export default class CreateUserService implements ICreateUserService {
-  private readonly repository: PrismaClient;
+export default class CreateUserService {
+  private readonly getUserRepository: IGetUserEmailRepository;
+  private readonly createUserRepository: ICreateUserRepository;
 
-  constructor(repository: PrismaClient) {
-    this.repository = repository;
+  constructor(
+    getUserRepository: IGetUserEmailRepository,
+    createUserRepository: ICreateUserRepository
+  ) {
+    this.getUserRepository = getUserRepository;
+    this.createUserRepository = createUserRepository;
   }
 
   public async execute({
@@ -17,27 +22,20 @@ export default class CreateUserService implements ICreateUserService {
     name,
     bornAt,
   }: ICreateUserRequest): Promise<User> {
-    const isUserRegistered: User | null = await this.repository.user.findUnique(
-      {
-        where: {
-          email,
-        },
-      }
+    const isUserRegistered: User | null = await this.getUserRepository.execute(
+      email
     );
 
     if (isUserRegistered !== null) {
       throw new BadRequestError("Usuario já cadastrado!");
     }
 
-    const newUser: User = await this.repository.user.create({
-      data: {
-        email,
-        password: bcrypt.hashSync(password),
-        name,
-        bornAt,
-        admin: false,
-      },
-    });
+    const newUser: User = await this.createUserRepository.execute(
+      email,
+      password,
+      name,
+      bornAt
+    );
 
     return newUser;
   }
