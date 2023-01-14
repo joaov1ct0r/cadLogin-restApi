@@ -1,27 +1,33 @@
 import { Response } from "express";
 import IReq from "../interfaces/IRequest";
-import { validateHandleNewPost } from "../validations/validatePostData";
+import ValidatePost from "../validations/validatePostData";
 import CreateNewPostService from "../services/CreateNewPostService";
-import prismaClient from "../database/prismaClient";
 import { Post } from "@prisma/client";
-import ICreateNewPostController from "../interfaces/ICreateNewPostController";
+import BadRequestError from "../errors/BadRequestError";
+import CreateNewPostRepository from "../database/repositories/post/CreateNewPostRepository";
+import GetUserIdRepository from "../database/repositories/user/GetUserIdRepository";
 
-export default class CreateNewPostController
-  implements ICreateNewPostController
-{
+export default class CreateNewPostController {
   public async handle(req: IReq, res: Response): Promise<Response> {
-    const { error } = validateHandleNewPost(req.body);
+    const { error } = new ValidatePost().validateHandleNewPost(req.body);
 
     if (error) {
-      return res.status(400).json({ error });
+      const err = new BadRequestError(error.message);
+      return res.status(err.statusCode).json({ error, status: err.statusCode });
     }
 
     const id: string | undefined = req.userId;
 
     const content: string = req.body.content;
 
+    const createNewPostRepository: CreateNewPostRepository =
+      new CreateNewPostRepository();
+
+    const getUserIdRepository: GetUserIdRepository = new GetUserIdRepository();
+
     const createNewPostService: CreateNewPostService = new CreateNewPostService(
-      prismaClient
+      createNewPostRepository,
+      getUserIdRepository
     );
 
     try {
@@ -34,7 +40,7 @@ export default class CreateNewPostController
     } catch (err: any) {
       return res
         .status(err.statusCode)
-        .json({ error: err.message, status: 201 });
+        .json({ error: err.message, status: err.statusCode });
     }
   }
 }
