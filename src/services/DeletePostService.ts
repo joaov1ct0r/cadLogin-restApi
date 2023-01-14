@@ -1,58 +1,28 @@
 import BadRequestError from "../errors/BadRequestError";
-import IDeletePostService from "../interfaces/IDeletePostService";
-import { Post, PrismaClient } from "@prisma/client";
+import { Post } from "@prisma/client";
+import IGetPostIdRepository from "../interfaces/IGetPostIdRepository";
+import IDeletePostRepository from "../interfaces/IDeletePostRepository";
 
-export default class DeletePostService implements IDeletePostService {
-  private readonly repository: PrismaClient;
+export default class DeletePostService {
+  private readonly getPostIdRepository: IGetPostIdRepository;
+  private readonly deletePostRepository: IDeletePostRepository;
 
-  constructor(repository: PrismaClient) {
-    this.repository = repository;
+  constructor(
+    getPostIdRepository: IGetPostIdRepository,
+    deletePostRepository: IDeletePostRepository
+  ) {
+    this.getPostIdRepository = getPostIdRepository;
+    this.deletePostRepository = deletePostRepository;
   }
 
-  public async execute(
-    id: number | undefined,
-    postId: number
-  ): Promise<Object> {
-    const isPostRegistered: Post | null = await this.repository.post.findFirst({
-      where: {
-        id: postId,
-        AND: {
-          userId: id,
-        },
-      },
-    });
+  public async execute(id: number, postId: number): Promise<void> {
+    const isPostRegistered: Post | null =
+      await this.getPostIdRepository.execute(id, postId);
 
     if (isPostRegistered === null) {
       throw new BadRequestError("Post não encontrado!");
     }
 
-    await this.repository.post.deleteMany({
-      where: {
-        id: postId,
-        AND: {
-          userId: id,
-        },
-      },
-    });
-
-    await this.repository.likes.deleteMany({
-      where: {
-        postId,
-        AND: {
-          userId: id,
-        },
-      },
-    });
-
-    await this.repository.comment.deleteMany({
-      where: {
-        postId,
-        AND: {
-          userId: id,
-        },
-      },
-    });
-
-    return { message: "Post deletado" };
+    await this.deletePostRepository.execute(postId, id);
   }
 }
