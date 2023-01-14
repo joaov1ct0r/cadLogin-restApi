@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import ListAllUsersService from "../services/ListAllUsersService";
-import IListAllUsersController from "../interfaces/IListAllUsersController";
-import prismaClient from "../database/prismaClient";
 import { User } from "@prisma/client";
+import ListUsersRepository from "../database/repositories/user/ListUsersRepository";
 
-export default class ListAllUsersController implements IListAllUsersController {
+export default class ListAllUsersController {
   public async handle(req: Request, res: Response): Promise<Response> {
+    const listUsersRepository: ListUsersRepository = new ListUsersRepository();
     const listAllUsersService: ListAllUsersService = new ListAllUsersService(
-      prismaClient
+      listUsersRepository
     );
 
     try {
