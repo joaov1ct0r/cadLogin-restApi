@@ -1,12 +1,13 @@
 import BadRequestError from "../errors/BadRequestError";
 import IEditPostService from "../interfaces/IEditPostService";
-import { PrismaClient, Post } from "@prisma/client";
+import { Post } from "@prisma/client";
+import IGetPostIdRepository from "../interfaces/IGetPostIdRepository";
 
 export default class EditPostService implements IEditPostService {
-  private readonly repository: PrismaClient;
+  private readonly getPostIdRepository: IGetPostIdRepository;
 
-  constructor(repository: PrismaClient) {
-    this.repository = repository;
+  constructor(getPostIdRepository: IGetPostIdRepository) {
+    this.getPostIdRepository = getPostIdRepository;
   }
 
   public async execute(
@@ -14,14 +15,8 @@ export default class EditPostService implements IEditPostService {
     postId: number,
     content: string
   ): Promise<Object> {
-    const isPostRegistered: Post | null = await this.repository.post.findFirst({
-      where: {
-        id: postId,
-        AND: {
-          userId: id,
-        },
-      },
-    });
+    const isPostRegistered: Post | null =
+      await this.getPostIdRepository.execute(id, postId);
 
     if (isPostRegistered === null) {
       throw new BadRequestError("Post não encontrado!");
