@@ -75,7 +75,11 @@ postRouter.put(
   new Resolver().handle(editPostController.handle)
 );
 
-postRouter.delete("/delete", auth, resolver(deletePostController.handle));
+postRouter.delete(
+  "/delete",
+  new Authorization().execute,
+  new Resolver().handle(deletePostController.handle)
+);
 
 postRouter.get("/post", auth, resolver(listPostController.handle));
 
