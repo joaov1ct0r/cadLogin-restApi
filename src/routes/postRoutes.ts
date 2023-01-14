@@ -69,7 +69,11 @@ postRouter.delete(
   resolver(deletePostCommentController.handle)
 );
 
-postRouter.put("/edit", auth, resolver(editPostController.handle));
+postRouter.put(
+  "/edit",
+  new Authorization().execute,
+  new Resolver().handle(editPostController.handle)
+);
 
 postRouter.delete("/delete", auth, resolver(deletePostController.handle));
 
