@@ -1,9 +1,6 @@
+import IDeleteUserRepository from "../../../interfaces/IDeleteUserRepository";
 import prismaClient from "../../prismaClient";
 import { PrismaClient } from "@prisma/client";
-
-interface IDeleteUserRepository {
-  execute(id: number): Promise<void>;
-}
 
 export default class DeleteUserRepository implements IDeleteUserRepository {
   private readonly repository: PrismaClient;
