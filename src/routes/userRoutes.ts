@@ -46,7 +46,11 @@ userRouter.delete(
   new Resolver().handle(deleteUserController.handle)
 );
 
-userRouter.get("/user", auth, resolver(listUserController.handle));
+userRouter.get(
+  "/user",
+  new Authorization().execute,
+  new Resolver().handle(listUserController.handle)
+);
 
 userRouter.get("/users", auth, resolver(listAllUsersController.handle));
 
