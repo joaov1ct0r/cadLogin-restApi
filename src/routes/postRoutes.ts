@@ -1,6 +1,6 @@
 import express from "express";
-import resolver from "../utils/Resolver";
-import auth from "../middlewares/auth";
+import Resolver from "../utils/Resolver";
+import Authorization from "../middlewares/auth";
 import CreateNewPostController from "../controllers/CreateNewPostController";
 import EditPostController from "../controllers/EditPostController";
 import DeletePostController from "../controllers/DeletePostController";
@@ -41,7 +41,11 @@ const editPostCommentController: EditPostCommentController =
 const deletePostCommentController: DeletePostCommentController =
   new DeletePostCommentController();
 
-postRouter.post("/register", auth, resolver(createNewPostController.handle));
+postRouter.post(
+  "/register",
+  new Authorization().execute,
+  new Resolver().handle(createNewPostController.handle)
+);
 
 postRouter.post("/like", auth, resolver(addPostLikeController.handle));
 
