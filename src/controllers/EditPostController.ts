@@ -1,16 +1,18 @@
 import IReq from "../interfaces/IRequest";
 import { Response } from "express";
-import { validateHandleEditPost } from "../validations/validatePostData";
-import prismaClient from "../database/prismaClient";
+import ValidatePost from "../validations/validatePostData";
 import EditPostService from "../services/EditPostService";
-import IEditPostController from "../interfaces/IEditPostController";
+import BadRequestError from "../errors/BadRequestError";
+import UpdatePostRepository from "../database/repositories/post/UpdatePostRepository";
+import GetPostIdRepository from "../database/repositories/post/GetPostIdRepository";
 
-export default class EditPostController implements IEditPostController {
+export default class EditPostController {
   public async handle(req: IReq, res: Response): Promise<Response> {
-    const { error } = validateHandleEditPost(req.body);
+    const { error } = new ValidatePost().validateHandleEditPost(req.body);
 
     if (error) {
-      return res.status(400).json({ error });
+      const err = new BadRequestError(error.message);
+      return res.status(err.statusCode).json({ error, status: err.statusCode });
     }
 
     const postId: string = req.body.postId;
@@ -19,14 +21,17 @@ export default class EditPostController implements IEditPostController {
 
     const id: string | undefined = req.userId;
 
-    const editPostService: EditPostService = new EditPostService(prismaClient);
+    const updatePostRepository: UpdatePostRepository =
+      new UpdatePostRepository();
+
+    const getPostIdRepository: GetPostIdRepository = new GetPostIdRepository();
+
+    const editPostService: EditPostService = new EditPostService(
+      getPostIdRepository,
+      updatePostRepository
+    );
     try {
-      // eslint-disable-next-line no-unused-vars
-      const isPostEdited: Object = await editPostService.execute(
-        Number(id),
-        Number(postId),
-        content
-      );
+      await editPostService.execute(Number(id), Number(postId), content);
 
       return res.status(204).send();
     } catch (err: any) {
