@@ -10,6 +10,10 @@ import ListUserController from "../controllers/ListUserController";
 
 const userRouter: express.Router = express.Router();
 
+const authorization: Authorization = new Authorization();
+
+const resolver: Resolver = new Resolver();
+
 const createUserController: CreateUserController = new CreateUserController();
 
 const authenticateUserController: AuthenticateUserController =
@@ -24,38 +28,32 @@ const listAllUsersController: ListAllUsersController =
 
 const listUserController: ListUserController = new ListUserController();
 
-userRouter.post(
-  "/register",
-  new Resolver().handle(createUserController.handle)
-);
+userRouter.post("/register", resolver.handle(createUserController.handle));
 
-userRouter.post(
-  "/login",
-  new Resolver().handle(authenticateUserController.handle)
-);
+userRouter.post("/login", resolver.handle(authenticateUserController.handle));
 
 userRouter.put(
   "/edit",
-  new Authorization().execute,
-  new Resolver().handle(editUserController.handle)
+  authorization.execute,
+  resolver.handle(editUserController.handle)
 );
 
 userRouter.delete(
   "/delete",
-  new Authorization().execute,
-  new Resolver().handle(deleteUserController.handle)
+  authorization.execute,
+  resolver.handle(deleteUserController.handle)
 );
 
 userRouter.get(
   "/user",
-  new Authorization().execute,
-  new Resolver().handle(listUserController.handle)
+  authorization.execute,
+  resolver.handle(listUserController.handle)
 );
 
 userRouter.get(
   "/users",
-  new Authorization().execute,
-  new Resolver().handle(listAllUsersController.handle)
+  authorization.execute,
+  resolver.handle(listAllUsersController.handle)
 );
 
 export default userRouter;
