@@ -13,5 +13,21 @@ export default class DeleteUserRepository implements IDeleteUserRepository {
     await this.repository.user.delete({
       where: { id },
     });
+
+    await this.repository.post.deleteMany({
+      where: { userId: id },
+    });
+
+    await this.repository.likes.deleteMany({
+      where: {
+        userId: id,
+      },
+    });
+
+    await this.repository.comment.deleteMany({
+      where: {
+        userId: id,
+      },
+    });
   }
 }
