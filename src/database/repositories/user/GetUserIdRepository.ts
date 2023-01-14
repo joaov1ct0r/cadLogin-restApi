@@ -1,9 +1,6 @@
+import IGetUserIdRepository from "../../../interfaces/IGetUserIdRepository";
 import prismaClient from "../../prismaClient";
 import { PrismaClient, User } from "@prisma/client";
-
-interface IGetUserIdRepository {
-  execute(id: number): Promise<User | null>;
-}
 
 export default class GetUserIdRepository implements IGetUserIdRepository {
   private readonly repository: PrismaClient;
