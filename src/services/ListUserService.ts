@@ -1,18 +1,16 @@
 import BadRequestError from "../errors/BadRequestError";
-import IListUserService from "../interfaces/IListUserService";
-import { PrismaClient, User } from "@prisma/client";
+import { User } from "@prisma/client";
+import IGetUserEmailRepository from "../interfaces/IGetUserEmailRepository";
 
-export default class ListUserService implements IListUserService {
-  private readonly repository: PrismaClient;
+export default class ListUserService {
+  private readonly repository: IGetUserEmailRepository;
 
-  constructor(repository: PrismaClient) {
+  constructor(repository: IGetUserEmailRepository) {
     this.repository = repository;
   }
 
   public async execute(email: string): Promise<User> {
-    const user: User | null = await this.repository.user.findUnique({
-      where: { email },
-    });
+    const user: User | null = await this.repository.execute(email);
 
     if (user === null) {
       throw new BadRequestError("Usuario não encontrado!");
