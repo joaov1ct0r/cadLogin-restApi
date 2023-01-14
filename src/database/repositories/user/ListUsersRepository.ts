@@ -1,11 +1,8 @@
 import { PrismaClient, User } from "@prisma/client";
 import prismaClient from "../../prismaClient";
+import IListUsersRepository from "../../../interfaces/IListUsersRepository";
 
-interface ILIstUsersRepository {
-  execute(): Promise<User[]>;
-}
-
-export default class ListUsersRepository implements ILIstUsersRepository {
+export default class ListUsersRepository implements IListUsersRepository {
   private readonly repository: PrismaClient;
 
   constructor() {
