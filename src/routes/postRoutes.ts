@@ -41,10 +41,14 @@ const editPostCommentController: EditPostCommentController =
 const deletePostCommentController: DeletePostCommentController =
   new DeletePostCommentController();
 
+const authorization: Authorization = new Authorization();
+
+const resolver: Resolver = new Resolver();
+
 postRouter.post(
   "/register",
-  new Authorization().execute,
-  new Resolver().handle(createNewPostController.handle)
+  authorization.execute,
+  resolver.handle(createNewPostController.handle)
 );
 
 postRouter.post("/like", auth, resolver(addPostLikeController.handle));
@@ -71,14 +75,14 @@ postRouter.delete(
 
 postRouter.put(
   "/edit",
-  new Authorization().execute,
-  new Resolver().handle(editPostController.handle)
+  authorization.execute,
+  resolver.handle(editPostController.handle)
 );
 
 postRouter.delete(
   "/delete",
-  new Authorization().execute,
-  new Resolver().handle(deletePostController.handle)
+  authorization.execute,
+  resolver.handle(deletePostController.handle)
 );
 
 postRouter.get("/post", auth, resolver(listPostController.handle));
