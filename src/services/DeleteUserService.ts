@@ -1,33 +1,14 @@
-import IDeleteUserService from "../interfaces/IDeleteUserService";
-import { PrismaClient } from "@prisma/client";
+import IDeleteUserRepository from "../interfaces/IDeleteUserRepository";
 
-export default class DeleteUserService implements IDeleteUserService {
-  private readonly repository: PrismaClient;
+export default class DeleteUserService {
+  private readonly repository: IDeleteUserRepository;
 
-  constructor(repository: PrismaClient) {
+  constructor(repository: IDeleteUserRepository) {
     this.repository = repository;
   }
 
-  public async execute(id: number | undefined): Promise<Object> {
-    await this.repository.user.delete({
-      where: { id },
-    });
-
-    await this.repository.post.deleteMany({
-      where: { userId: id },
-    });
-
-    await this.repository.likes.deleteMany({
-      where: {
-        userId: id,
-      },
-    });
-
-    await this.repository.comment.deleteMany({
-      where: {
-        userId: id,
-      },
-    });
+  public async execute(id: number): Promise<Object> {
+    await this.repository.execute(id);
 
     return { message: "Deletado" };
   }
