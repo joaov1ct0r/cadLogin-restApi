@@ -52,6 +52,10 @@ userRouter.get(
   new Resolver().handle(listUserController.handle)
 );
 
-userRouter.get("/users", auth, resolver(listAllUsersController.handle));
+userRouter.get(
+  "/users",
+  new Authorization().execute,
+  new Resolver().handle(listAllUsersController.handle)
+);
 
 export default userRouter;
