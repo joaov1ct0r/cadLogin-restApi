@@ -1,9 +1,8 @@
 import BadRequestError from "../errors/BadRequestError";
-import IEditPostService from "../interfaces/IEditPostService";
 import { Post } from "@prisma/client";
 import IGetPostIdRepository from "../interfaces/IGetPostIdRepository";
 
-export default class EditPostService implements IEditPostService {
+export default class EditPostService {
   private readonly getPostIdRepository: IGetPostIdRepository;
 
   constructor(getPostIdRepository: IGetPostIdRepository) {
@@ -11,7 +10,7 @@ export default class EditPostService implements IEditPostService {
   }
 
   public async execute(
-    id: number | undefined,
+    id: number,
     postId: number,
     content: string
   ): Promise<Object> {
