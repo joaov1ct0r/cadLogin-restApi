@@ -1,21 +1,28 @@
 import { Request, Response } from "express";
-import { validateHandleOneUser } from "../validations/validateUserData";
+import ValidateUser from "../validations/validateUserData";
 import ListUserService from "../services/ListUserService";
 import { User } from "@prisma/client";
-import prismaClient from "../database/prismaClient";
-import IListUserController from "../interfaces/IListUserController";
+import BadRequestError from "../errors/BadRequestError";
+import GetUserEmailRepository from "../database/repositories/user/GetUserEmailRepository";
 
-export default class ListUserController implements IListUserController {
+export default class ListUserController {
   public async handle(req: Request, res: Response): Promise<Response> {
-    const { error } = validateHandleOneUser(req.body);
+    const { error } = new ValidateUser().validateHandleOneUser(req.body);
 
     if (error) {
-      return res.status(400).json({ error });
+      const err = new BadRequestError(error.message);
+
+      return res.status(err.statusCode).json({ error, status: err.statusCode });
     }
 
     const email: string = req.body.email;
 
-    const listUserService: ListUserService = new ListUserService(prismaClient);
+    const getUserEmailRepository: GetUserEmailRepository =
+      new GetUserEmailRepository();
+
+    const listUserService: ListUserService = new ListUserService(
+      getUserEmailRepository
+    );
 
     try {
       const user: User = await listUserService.execute(email);
