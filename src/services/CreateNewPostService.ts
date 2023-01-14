@@ -1,5 +1,7 @@
 import { Post, User } from "@prisma/client";
 import BadRequestError from "../errors/BadRequestError";
+import IGetUserIdRepository from "../interfaces/IGetUserIdRepository";
+import ICreateNewPostRepository from "../interfaces/ICreateNewPostRepository";
 
 export default class CreateNewPostService {
   private readonly createNewPostRepository: ICreateNewPostRepository;
