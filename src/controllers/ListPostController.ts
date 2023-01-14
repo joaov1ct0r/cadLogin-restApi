@@ -1,21 +1,27 @@
 import { Request, Response } from "express";
-import { validateHandleOnePost } from "../validations/validatePostData";
+import ValidatePost from "../validations/validatePostData";
 import ListPostService from "../services/ListPostService";
-import IListPostController from "../interfaces/IListPostController";
-import prismaClient from "../database/prismaClient";
 import { Post } from "@prisma/client";
+import BadRequestError from "../errors/BadRequestError";
+import ListPostRepository from "../database/repositories/post/ListPostRepository";
 
-export default class ListPostController implements IListPostController {
+export default class ListPostController {
   public async handle(req: Request, res: Response): Promise<Response> {
-    const { error } = validateHandleOnePost(req.body);
+    const { error } = new ValidatePost().validateHandleOnePost(req.body);
 
     if (error) {
-      return res.status(400).json({ error });
+      const err = new BadRequestError(error.message);
+
+      return res.status(err.statusCode).json({ error, status: err.statusCode });
     }
 
     const postId: string = req.body.postId;
 
-    const listPostService: ListPostService = new ListPostService(prismaClient);
+    const listPostRepository: ListPostRepository = new ListPostRepository();
+
+    const listPostService: ListPostService = new ListPostService(
+      listPostRepository
+    );
 
     try {
       const post: Post = await listPostService.execute(Number(postId));
