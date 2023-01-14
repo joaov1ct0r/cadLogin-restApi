@@ -40,7 +40,11 @@ userRouter.put(
   new Resolver().handle(editUserController.handle)
 );
 
-userRouter.delete("/delete", auth, resolver(deleteUserController.handle));
+userRouter.delete(
+  "/delete",
+  new Authorization().execute,
+  new Resolver().handle(deleteUserController.handle)
+);
 
 userRouter.get("/user", auth, resolver(listUserController.handle));
 
