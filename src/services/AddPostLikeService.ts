@@ -1,28 +1,30 @@
 import BadRequestError from "../errors/BadRequestError";
-import IAddPostLikeService from "../interfaces/IAddPostLikeService";
-import { PrismaClient, Likes, Post, User } from "@prisma/client";
+import { Likes, Post, User } from "@prisma/client";
+import IGetPostIdRepository from "../interfaces/IGetPostIdRepository";
+import IGetUserIdRepository from "../interfaces/IGetUserIdRepository";
 
-export default class AddPostLikeService implements IAddPostLikeService {
-  private readonly repository: PrismaClient;
+export default class AddPostLikeService {
+  private readonly getPostIdRepository: IGetPostIdRepository;
+  private readonly getUserIdRepository: IGetUserIdRepository;
 
-  constructor(repository: PrismaClient) {
+  constructor(
+    getPostIdRepository: IGetPostIdRepository,
+    getUserIdRepository: IGetUserIdRepository
+  ) {
+    this.getPostIdRepository = getPostIdRepository;
+    this.getUserIdRepository = getUserIdRepository;
     this.repository = repository;
   }
 
   public async execute(postId: number, id: number | undefined): Promise<Likes> {
-    const isPostRegistered: Post | null = await this.repository.post.findUnique(
-      {
-        where: { id: postId },
-      }
-    );
+    const isPostRegistered: Post | null =
+      await this.getPostIdRepository.execute(postId);
 
     if (isPostRegistered === null) {
       throw new BadRequestError("Post não encontrado!");
     }
 
-    const user: User | null = await this.repository.user.findUnique({
-      where: { id },
-    });
+    const user: User | null = await this.getUserIdRepository.execute(id);
 
     if (user === null) throw new BadRequestError("User não encontrado!");
 
