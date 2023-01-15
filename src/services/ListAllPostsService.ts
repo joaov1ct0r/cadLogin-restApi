@@ -1,21 +1,15 @@
-import { Post, PrismaClient } from "@prisma/client";
-import IListAllPostsService from "../interfaces/IListAllPostsService";
+import { Post } from "@prisma/client";
+import IListAllPostsRepository from "../interfaces/IListAllPostsRepository";
 
-export default class ListAllPostsService implements IListAllPostsService {
-  private readonly repository: PrismaClient;
+export default class ListAllPostsService {
+  private readonly repository: IListAllPostsRepository;
 
-  constructor(repository: PrismaClient) {
+  constructor(repository: IListAllPostsRepository) {
     this.repository = repository;
   }
 
   public async execute(): Promise<Post[]> {
-    const posts: Post[] = await this.repository.post.findMany({
-      include: {
-        Likes: true,
-        Comment: true,
-        user: true,
-      },
-    });
+    const posts: Post[] = await this.repository.execute();
 
     return posts;
   }
