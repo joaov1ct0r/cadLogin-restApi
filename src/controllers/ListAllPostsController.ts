@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import ListAllPostsService from "../services/ListAllPostsService";
-import IListAllPostsController from "../interfaces/IListAllPostsController";
 import { Post } from "@prisma/client";
-import prismaClient from "../database/prismaClient";
+import ListAllPostsRepository from "../database/repositories/post/ListAllPostsRepository";
 
-export default class ListAllPostsController implements IListAllPostsController {
+export default class ListAllPostsController {
   public async handle(req: Request, res: Response): Promise<Response> {
+    const listAllPostsRepository: ListAllPostsRepository =
+      new ListAllPostsRepository();
     const listAllPostsService: ListAllPostsService = new ListAllPostsService(
-      prismaClient
+      listAllPostsRepository
     );
     try {
       const posts: Post[] = await listAllPostsService.execute();
