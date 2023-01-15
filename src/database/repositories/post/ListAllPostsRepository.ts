@@ -1,9 +1,6 @@
 import { Post, PrismaClient } from "@prisma/client";
 import prismaClient from "../../prismaClient";
-
-interface IListAllPostsRepository {
-  execute(): Promise<Post[]>;
-}
+import IListAllPostsRepository from "../../../interfaces/IListAllPostsRepository";
 
 export default class ListAllPostsRepository implements IListAllPostsRepository {
   private readonly repository: PrismaClient;
