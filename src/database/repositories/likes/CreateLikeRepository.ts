@@ -1,9 +1,6 @@
 import { Likes, PrismaClient } from "@prisma/client";
 import prismaClient from "../../prismaClient";
-
-interface ICreateLikeRepository {
-  execute(postId: number, author: string, id: number): Promise<Likes>;
-}
+import ICreateLikeRepository from "../../../interfaces/ICreateLikeRepository";
 
 export default class CreateLikeRepository implements ICreateLikeRepository {
   private readonly repository: PrismaClient;
