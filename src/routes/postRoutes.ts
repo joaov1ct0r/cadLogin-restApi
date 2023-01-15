@@ -51,7 +51,11 @@ postRouter.post(
   resolver.handle(createNewPostController.handle)
 );
 
-postRouter.post("/like", auth, resolver(addPostLikeController.handle));
+postRouter.post(
+  "/like",
+  authorization.execute,
+  resolver.handle(addPostLikeController.handle)
+);
 
 postRouter.delete(
   "/like/delete",
