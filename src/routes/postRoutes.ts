@@ -91,6 +91,10 @@ postRouter.get(
   resolver.handle(listPostController.handle)
 );
 
-postRouter.get("/posts", auth, resolver(listAllPostsController.handle));
+postRouter.get(
+  "/posts",
+  authorization.execute,
+  resolver.handle(listAllPostsController.handle)
+);
 
 export default postRouter;
