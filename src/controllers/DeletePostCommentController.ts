@@ -1,18 +1,21 @@
 import IReq from "../interfaces/IRequest";
 import { Response } from "express";
-import { validateHandleDeletePostComment } from "../validations/validatePostData";
+import ValidatePost from "../validations/validatePostData";
 import DeletePostCommentService from "../services/DeletePostCommentService";
-import IDeletePostCommentController from "../interfaces/IDeletePostCommentController";
-import prismaClient from "../database/prismaClient";
+import BadRequestError from "../errors/BadRequestError";
+import GetPostIdRepository from "../database/repositories/post/GetPostIdRepository";
+import GetCommentRepository from "../database/repositories/comment/GetCommentRepository";
+import DeleteCommentRepository from "../database/repositories/comment/DeleteCommentRepository";
 
-export default class DeletePostCommentController
-  implements IDeletePostCommentController
-{
+export default class DeletePostCommentController {
   public async handle(req: IReq, res: Response): Promise<Response> {
-    const { error } = validateHandleDeletePostComment(req.body);
+    const { error } = new ValidatePost().validateHandleDeletePostComment(
+      req.body
+    );
 
     if (error) {
-      return res.status(400).json({ error });
+      const err = new BadRequestError(error.message);
+      return res.status(err.statusCode).json({ error, status: err.statusCode });
     }
 
     const postId: string = req.body.postId;
@@ -21,12 +24,23 @@ export default class DeletePostCommentController
 
     const userId: string | undefined = req.userId;
 
+    const getPostIdRepository: GetPostIdRepository = new GetPostIdRepository();
+
+    const getCommentRepository: GetCommentRepository =
+      new GetCommentRepository();
+
+    const deleteCommentRepository: DeleteCommentRepository =
+      new DeleteCommentRepository();
+
     const deletePostCommentService: DeletePostCommentService =
-      new DeletePostCommentService(prismaClient);
+      new DeletePostCommentService(
+        getPostIdRepository,
+        getCommentRepository,
+        deleteCommentRepository
+      );
 
     try {
-      // eslint-disable-next-line no-unused-vars
-      const deletedComment: Object = await deletePostCommentService.execute(
+      await deletePostCommentService.execute(
         Number(userId),
         Number(postId),
         Number(commentId)
