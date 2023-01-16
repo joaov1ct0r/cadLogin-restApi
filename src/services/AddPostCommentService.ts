@@ -1,12 +1,18 @@
 import BadRequestError from "../errors/BadRequestError";
-import IAddPostCommentService from "../interfaces/IAddPostCommentService";
 import { PrismaClient, Comment, Post, User } from "@prisma/client";
+import IGetPostIdRepository from "../interfaces/IGetPostIdRepository";
+import IGetUserIdRepository from "../interfaces/IGetUserIdRepository";
 
-export default class AddPostCommentService implements IAddPostCommentService {
-  private readonly repository: PrismaClient;
+export default class AddPostCommentService {
+  private readonly getPostIdRepository: IGetPostIdRepository;
+  private readonly getUserIdRepository: IGetUserIdRepository;
 
-  constructor(repository: PrismaClient) {
-    this.repository = repository;
+  constructor(
+    getPostIdRepository: IGetPostIdRepository,
+    getUserIdRepository: IGetUserIdRepository
+  ) {
+    this.getPostIdRepository = getPostIdRepository;
+    this.getUserIdRepository = getUserIdRepository;
   }
 
   public async execute(
@@ -14,18 +20,13 @@ export default class AddPostCommentService implements IAddPostCommentService {
     postId: number,
     comment: string
   ): Promise<Comment> {
-    const isPostRegistered: Post | null = await this.repository.post.findUnique(
-      {
-        where: { id: postId },
-      }
-    );
+    const isPostRegistered: Post | null =
+      await this.getPostIdRepository.execute(undefined, postId);
 
     if (isPostRegistered === null)
       throw new BadRequestError("Post não encontrado!");
 
-    const user: User | null = await this.repository.user.findUnique({
-      where: { id },
-    });
+    const user: User | null = await this.getUserIdRepository.execute(id);
 
     if (user === null) throw new BadRequestError("User não encontrado!");
 
