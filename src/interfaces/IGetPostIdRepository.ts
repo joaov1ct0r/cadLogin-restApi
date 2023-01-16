@@ -1,5 +1,5 @@
 import { Post } from "@prisma/client";
 
 export default interface IGetPostIdRepository {
-  execute(id: number, postId: number): Promise<Post | null>;
+  execute(id: number | undefined, postId: number): Promise<Post | null>;
 }
