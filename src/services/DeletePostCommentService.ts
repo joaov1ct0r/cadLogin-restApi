@@ -1,41 +1,34 @@
 import BadRequestError from "../errors/BadRequestError";
-import { PrismaClient, Post, Comment } from "@prisma/client";
-import IDeletePostCommentService from "../interfaces/IDeletePostCommentService";
+import { Post, Comment } from "@prisma/client";
+import IGetPostIdRepository from "../interfaces/IGetPostIdRepository";
+import IGetCommentRepository from "../interfaces/IGetCommentRepository";
 
-export default class DeletePostCommentService
-  implements IDeletePostCommentService
-{
-  private readonly repository: PrismaClient;
+export default class DeletePostCommentService {
+  private readonly getPostIdRepository: IGetPostIdRepository;
+  private readonly getCommentIdRepository: IGetCommentRepository;
 
-  constructor(repository: PrismaClient) {
-    this.repository = repository;
+  constructor(
+    getPostIdRepository: IGetPostIdRepository,
+    getCommentIdRepository: IGetCommentRepository
+  ) {
+    this.getPostIdRepository = getPostIdRepository;
+    this.getCommentIdRepository = getCommentIdRepository;
   }
 
   public async execute(
-    userId: number | undefined,
+    userId: number,
     postId: number,
     commentId: number
-  ): Promise<Object> {
-    const isPostRegistered: Post | null = await this.repository.post.findUnique(
-      {
-        where: { id: postId },
-      }
-    );
+  ): Promise<void> {
+    const isPostRegistered: Post | null =
+      await this.getPostIdRepository.execute(undefined, postId);
 
     if (isPostRegistered === null) {
       throw new BadRequestError("Post não encontrado!");
     }
 
     const isCommentRegistered: Comment | null =
-      await this.repository.comment.findFirst({
-        where: {
-          id: commentId,
-          AND: {
-            postId,
-            userId,
-          },
-        },
-      });
+      await this.getCommentIdRepository.execute(commentId, postId, userId);
 
     if (isCommentRegistered === null) {
       throw new BadRequestError("Comentario não encontrado!");
@@ -50,7 +43,5 @@ export default class DeletePostCommentService
         },
       },
     });
-
-    return { message: "Comment deletado!" };
   }
 }
