@@ -1,18 +1,22 @@
 import IReq from "../interfaces/IRequest";
 import { Response } from "express";
-import { validateHandleEditPostComment } from "../validations/validatePostData";
+import ValidatePost from "../validations/validatePostData";
 import EditPostCommentService from "../services/EditPostCommentService";
-import IEditPostCommentController from "../interfaces/IEditPostCommentController";
-import prismaClient from "../database/prismaClient";
+import BadRequestError from "../errors/BadRequestError";
+import GetPostIdRepository from "../database/repositories/post/GetPostIdRepository";
+import GetCommentRepository from "../database/repositories/comment/GetCommentRepository";
+import GetUserIdRepository from "../database/repositories/user/GetUserIdRepository";
+import UpdateCommentRepository from "../database/repositories/comment/UpdateCommentRepository";
 
-export default class EditPostCommentController
-  implements IEditPostCommentController
-{
+export default class EditPostCommentController {
   public async handle(req: IReq, res: Response): Promise<Response> {
-    const { error } = validateHandleEditPostComment(req.body);
+    const { error } = new ValidatePost().validateHandleEditPostComment(
+      req.body
+    );
 
     if (error) {
-      return res.status(400).json({ error });
+      const err = new BadRequestError(error.message);
+      return res.status(err.statusCode).json({ error, status: err.statusCode });
     }
 
     const postId: string = req.body.postId;
@@ -23,12 +27,26 @@ export default class EditPostCommentController
 
     const userId: string | undefined = req.userId;
 
+    const getPostIdRepository: GetPostIdRepository = new GetPostIdRepository();
+
+    const getCommentRepository: GetCommentRepository =
+      new GetCommentRepository();
+
+    const getUserIdRepository: GetUserIdRepository = new GetUserIdRepository();
+
+    const updateCommentRepository: UpdateCommentRepository =
+      new UpdateCommentRepository();
+
     const editPostCommentService: EditPostCommentService =
-      new EditPostCommentService(prismaClient);
+      new EditPostCommentService(
+        getPostIdRepository,
+        getCommentRepository,
+        getUserIdRepository,
+        updateCommentRepository
+      );
 
     try {
-      // eslint-disable-next-line no-unused-vars
-      const editedComment: Object = await editPostCommentService.execute(
+      await editPostCommentService.execute(
         Number(userId),
         Number(postId),
         Number(commentId),
