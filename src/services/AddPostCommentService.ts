@@ -1,18 +1,22 @@
 import BadRequestError from "../errors/BadRequestError";
-import { PrismaClient, Comment, Post, User } from "@prisma/client";
+import { Comment, Post, User } from "@prisma/client";
 import IGetPostIdRepository from "../interfaces/IGetPostIdRepository";
 import IGetUserIdRepository from "../interfaces/IGetUserIdRepository";
+import ICreateCommentRepository from "../interfaces/ICreateCommentRepository";
 
 export default class AddPostCommentService {
   private readonly getPostIdRepository: IGetPostIdRepository;
   private readonly getUserIdRepository: IGetUserIdRepository;
+  private readonly createCommentRepository: ICreateCommentRepository;
 
   constructor(
     getPostIdRepository: IGetPostIdRepository,
-    getUserIdRepository: IGetUserIdRepository
+    getUserIdRepository: IGetUserIdRepository,
+    createCommentRepository: ICreateCommentRepository
   ) {
     this.getPostIdRepository = getPostIdRepository;
     this.getUserIdRepository = getUserIdRepository;
+    this.createCommentRepository = createCommentRepository;
   }
 
   public async execute(
@@ -30,14 +34,12 @@ export default class AddPostCommentService {
 
     if (user === null) throw new BadRequestError("User não encontrado!");
 
-    const createdComment: Comment = await this.repository.comment.create({
-      data: {
-        author: user.email,
-        userId: user.id,
-        comment,
-        postId,
-      },
-    });
+    const createdComment: Comment = await this.createCommentRepository.execute(
+      user.email,
+      user.id,
+      comment,
+      isPostRegistered.id
+    );
 
     return createdComment;
   }
