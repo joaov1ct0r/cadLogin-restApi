@@ -2,17 +2,21 @@ import BadRequestError from "../errors/BadRequestError";
 import { Post, Comment } from "@prisma/client";
 import IGetPostIdRepository from "../interfaces/IGetPostIdRepository";
 import IGetCommentRepository from "../interfaces/IGetCommentRepository";
+import IDeleteCommentRepository from "../interfaces/IDeleteCommentRepository";
 
 export default class DeletePostCommentService {
   private readonly getPostIdRepository: IGetPostIdRepository;
   private readonly getCommentIdRepository: IGetCommentRepository;
+  private readonly deleteCommentRepository: IDeleteCommentRepository;
 
   constructor(
     getPostIdRepository: IGetPostIdRepository,
-    getCommentIdRepository: IGetCommentRepository
+    getCommentIdRepository: IGetCommentRepository,
+    deleteCommentRepository: IDeleteCommentRepository
   ) {
     this.getPostIdRepository = getPostIdRepository;
     this.getCommentIdRepository = getCommentIdRepository;
+    this.deleteCommentRepository = deleteCommentRepository;
   }
 
   public async execute(
@@ -34,14 +38,6 @@ export default class DeletePostCommentService {
       throw new BadRequestError("Comentario não encontrado!");
     }
 
-    await this.repository.comment.deleteMany({
-      where: {
-        id: commentId,
-        AND: {
-          postId,
-          userId,
-        },
-      },
-    });
+    await this.deleteCommentRepository.execute(commentId, postId, userId);
   }
 }
