@@ -25,7 +25,7 @@ export default class AddPostLikeService {
 
   public async execute(postId: number, id: number): Promise<Likes> {
     const isPostRegistered: Post | null =
-      await this.getPostIdRepository.execute(id, postId);
+      await this.getPostIdRepository.execute(undefined, postId);
 
     if (isPostRegistered === null) {
       throw new BadRequestError("Post não encontrado!");
