@@ -2,16 +2,26 @@ import BadRequestError from "../errors/BadRequestError";
 import IEditPostCommentService from "../interfaces/IEditPostCommentService";
 import { Comment, Post, User } from "@prisma/client";
 import IGetPostIdRepository from "../interfaces/IGetPostIdRepository";
+import IGetCommentRepository from "../interfaces/IGetCommentRepository";
+import IGetUserIdRepository from "../interfaces/IGetUserIdRepository";
 
 export default class EditPostCommentService implements IEditPostCommentService {
   private readonly getPostIdRepository: IGetPostIdRepository;
+  private readonly getCommentRepository: IGetCommentRepository;
+  private readonly getUserIdRepository: IGetUserIdRepository;
 
-  constructor(getPostIdRepository: IGetPostIdRepository) {
+  constructor(
+    getPostIdRepository: IGetPostIdRepository,
+    getCommentRepository: IGetCommentRepository,
+    getUserIdRepository: IGetUserIdRepository
+  ) {
     this.getPostIdRepository = getPostIdRepository;
+    this.getCommentRepository = getCommentRepository;
+    this.getUserIdRepository = getUserIdRepository;
   }
 
   public async execute(
-    userId: number | undefined,
+    userId: number,
     postId: number,
     commentId: number,
     comment: string
@@ -24,25 +34,13 @@ export default class EditPostCommentService implements IEditPostCommentService {
     }
 
     const isCommentRegistered: Comment | null =
-      await this.repository.comment.findFirst({
-        where: {
-          id: commentId,
-          AND: {
-            postId,
-            userId,
-          },
-        },
-      });
+      await this.getCommentRepository.execute(commentId, postId, userId);
 
     if (isCommentRegistered === null) {
       throw new BadRequestError("Comentario não encontrado!");
     }
 
-    const user: User | null = await this.repository.user.findUnique({
-      where: {
-        id: userId,
-      },
-    });
+    const user: User | null = await this.getUserIdRepository.execute(userId);
 
     if (user === null) throw new BadRequestError("User não encontrado!");
 
