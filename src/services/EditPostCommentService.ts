@@ -1,12 +1,13 @@
 import BadRequestError from "../errors/BadRequestError";
 import IEditPostCommentService from "../interfaces/IEditPostCommentService";
-import { PrismaClient, Comment, Post, User } from "@prisma/client";
+import { Comment, Post, User } from "@prisma/client";
+import IGetPostIdRepository from "../interfaces/IGetPostIdRepository";
 
 export default class EditPostCommentService implements IEditPostCommentService {
-  private readonly repository: PrismaClient;
+  private readonly getPostIdRepository: IGetPostIdRepository;
 
-  constructor(repository: PrismaClient) {
-    this.repository = repository;
+  constructor(getPostIdRepository: IGetPostIdRepository) {
+    this.getPostIdRepository = getPostIdRepository;
   }
 
   public async execute(
@@ -14,12 +15,9 @@ export default class EditPostCommentService implements IEditPostCommentService {
     postId: number,
     commentId: number,
     comment: string
-  ): Promise<Object> {
-    const isPostRegistered: Post | null = await this.repository.post.findUnique(
-      {
-        where: { id: postId },
-      }
-    );
+  ): Promise<void> {
+    const isPostRegistered: Post | null =
+      await this.getPostIdRepository.execute(undefined, postId);
 
     if (isPostRegistered === null) {
       throw new BadRequestError("Post não encontrado!");
@@ -63,7 +61,5 @@ export default class EditPostCommentService implements IEditPostCommentService {
         },
       },
     });
-
-    return { message: "Comment atualizado" };
   }
 }
