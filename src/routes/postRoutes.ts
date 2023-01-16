@@ -77,8 +77,8 @@ postRouter.put(
 
 postRouter.delete(
   "/comment/delete",
-  auth,
-  resolver(deletePostCommentController.handle)
+  authorization.execute,
+  resolver.handle(deletePostCommentController.handle)
 );
 
 postRouter.put(
