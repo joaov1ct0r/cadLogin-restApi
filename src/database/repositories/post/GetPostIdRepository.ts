@@ -9,16 +9,26 @@ export default class GetPostIdRepository implements IGetPostIdRepository {
     this.repository = prismaClient;
   }
 
-  async execute(id: number, postId: number): Promise<Post | null> {
-    const post: Post | null = await this.repository.post.findFirst({
-      where: {
-        id: postId,
-        AND: {
-          userId: id,
+  async execute(id: number | undefined, postId: number): Promise<Post | null> {
+    if (id === undefined) {
+      const post: Post | null = await this.repository.post.findFirst({
+        where: {
+          id: postId,
         },
-      },
-    });
+      });
 
-    return post;
+      return post;
+    } else {
+      const post: Post | null = await this.repository.post.findFirst({
+        where: {
+          id: postId,
+          AND: {
+            userId: id,
+          },
+        },
+      });
+
+      return post;
+    }
   }
 }
