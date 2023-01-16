@@ -63,7 +63,11 @@ postRouter.delete(
   resolver.handle(deletePostLikeController.handle)
 );
 
-postRouter.post("/comment", auth, resolver(addPostCommentController.handle));
+postRouter.post(
+  "/comment",
+  authorization.execute,
+  resolver.handle(addPostCommentController.handle)
+);
 
 postRouter.put(
   "/comment/edit",
