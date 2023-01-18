@@ -1,13 +1,18 @@
-import bcrypt from "bcryptjs";
 import BadRequestError from "../errors/BadRequestError";
-import IAdminEditUserService from "../interfaces/IAdminEditUserService";
-import { PrismaClient, User } from "@prisma/client";
+import { User } from "@prisma/client";
+import IGetUserEmailRepository from "../interfaces/IGetUserEmailRepository";
+import IAdminEditUserRepository from "../interfaces/IAdminEditUserRepository";
 
-export default class AdminEditUserService implements IAdminEditUserService {
-  private readonly repository: PrismaClient;
+export default class AdminEditUserService {
+  private readonly getUserEmailRepository: IGetUserEmailRepository;
+  private readonly editUserRepository: IAdminEditUserRepository;
 
-  constructor(repository: PrismaClient) {
-    this.repository = repository;
+  constructor(
+    getUserEmailRepository: IGetUserEmailRepository,
+    editUserRepository: IAdminEditUserRepository
+  ) {
+    this.getUserEmailRepository = getUserEmailRepository;
+    this.editUserRepository = editUserRepository;
   }
 
   public async execute(
@@ -16,27 +21,20 @@ export default class AdminEditUserService implements IAdminEditUserService {
     userNewPassword: string,
     userNewName: string,
     userNewBornAt: string
-  ): Promise<Object> {
-    const isUserRegistered: User | null = await this.repository.user.findUnique(
-      {
-        where: { email: userEmail },
-      }
-    );
+  ): Promise<void> {
+    const isUserRegistered: User | null =
+      await this.getUserEmailRepository.execute(userEmail);
 
     if (isUserRegistered === null) {
       throw new BadRequestError("Usuario não encontrado!");
     }
 
-    await this.repository.user.update({
-      data: {
-        email: userNewEmail,
-        password: bcrypt.hashSync(userNewPassword),
-        name: userNewName,
-        bornAt: userNewBornAt,
-      },
-      where: { email: userEmail },
-    });
-
-    return { message: "User editado!" };
+    await this.editUserRepository.execute(
+      isUserRegistered.email,
+      userNewEmail,
+      userNewPassword,
+      userNewName,
+      userNewBornAt
+    );
   }
 }
