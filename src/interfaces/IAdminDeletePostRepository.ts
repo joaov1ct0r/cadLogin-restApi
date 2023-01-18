@@ -1,3 +1,3 @@
-export default interface IDeletePostRepository {
+export default interface IAdminDeletePostRepository {
   execute(postId: number): Promise<void>;
 }

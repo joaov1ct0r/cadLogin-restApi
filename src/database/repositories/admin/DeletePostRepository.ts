@@ -1,8 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import prismaClient from "../../prismaClient";
-import IDeletePostRepository from "../../../interfaces/IAdminDeletePostRepository";
+import IAdminDeletePostRepository from "../../../interfaces/IAdminDeletePostRepository";
 
-export default class DeletePostRepository implements IDeletePostRepository {
+export default class DeletePostRepository
+  implements IAdminDeletePostRepository
+{
   private readonly repository: PrismaClient;
 
   constructor() {
