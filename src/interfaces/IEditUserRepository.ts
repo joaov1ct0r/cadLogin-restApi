@@ -1,5 +1,3 @@
-import { User } from "@prisma/client";
-
 export default interface IEditUserRepository {
   execute(
     email: string,
@@ -7,5 +5,5 @@ export default interface IEditUserRepository {
     name: string,
     bornAt: string,
     userId?: number
-  ): Promise<User>;
+  ): Promise<void>;
 }
