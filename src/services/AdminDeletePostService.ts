@@ -1,22 +1,17 @@
 import BadRequestError from "../errors/BadRequestError";
-import IAdminDeletePostService from "../interfaces/IAdminDeletePostService";
-import { PrismaClient, Post } from "@prisma/client";
+import { Post } from "@prisma/client";
+import IGetPostIdRepository from "../interfaces/IGetPostIdRepository";
 
-export default class AdminDeletePostService implements IAdminDeletePostService {
-  private readonly repository: PrismaClient;
+export default class AdminDeletePostService {
+  private readonly getPostIdRepository: IGetPostIdRepository;
 
-  constructor(repository: PrismaClient) {
-    this.repository = repository;
+  constructor(getPostIdRepository: IGetPostIdRepository) {
+    this.getPostIdRepository = getPostIdRepository;
   }
 
-  public async execute(postId: number): Promise<Object> {
-    const isPostRegistered: Post | null = await this.repository.post.findUnique(
-      {
-        where: {
-          id: postId,
-        },
-      }
-    );
+  public async execute(postId: number): Promise<void> {
+    const isPostRegistered: Post | null =
+      await this.getPostIdRepository.execute(undefined, postId);
 
     if (isPostRegistered === null) {
       throw new BadRequestError("Post não encontrado!");
@@ -25,7 +20,5 @@ export default class AdminDeletePostService implements IAdminDeletePostService {
     await this.repository.post.delete({
       where: { id: postId },
     });
-
-    return { message: "Post deletado!" };
   }
 }
