@@ -1,9 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import prismaClient from "../../prismaClient";
 import bcrypt from "bcryptjs";
-import IEditUserRepository from "../../../interfaces/IEditUserRepository";
+import IAdminEditUserRepository from "../../../interfaces/IAdminEditUserRepository";
 
-export default class EditUserRepository implements IEditUserRepository {
+export default class EditUserRepository implements IAdminEditUserRepository {
   private readonly repository: PrismaClient;
 
   constructor() {
@@ -12,6 +12,7 @@ export default class EditUserRepository implements IEditUserRepository {
 
   async execute(
     email: string,
+    userNewEmail: string,
     password: string,
     name: string,
     bornAt: string,
@@ -19,7 +20,7 @@ export default class EditUserRepository implements IEditUserRepository {
   ): Promise<void> {
     await this.repository.user.update({
       data: {
-        email,
+        email: userNewEmail,
         password: bcrypt.hashSync(password),
         name,
         bornAt,
