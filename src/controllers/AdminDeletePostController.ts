@@ -1,29 +1,36 @@
 import { Request, Response } from "express";
-import { validateHandleAdminDeletePost } from "../validations/validateAdminData";
+import ValidateAdmin from "../validations/validateAdminData";
 import AdminDeletePostService from "../services/AdminDeletePostService";
-import IAdminDeletePostController from "../interfaces/IAdminDeletePostController";
-import prismaClient from "../database/prismaClient";
+import BadRequestError from "../errors/BadRequestError";
+import GetPostIdRepository from "../database/repositories/post/GetPostIdRepository";
+import DeletePostRepository from "../database/repositories/admin/DeletePostRepository";
 
-export default class AdminDeletePostController
-  implements IAdminDeletePostController
-{
+export default class AdminDeletePostController {
   public async handle(req: Request, res: Response): Promise<Response> {
-    const { error } = validateHandleAdminDeletePost(req.body);
+    const { error } = new ValidateAdmin().validateHandleAdminDeletePost(
+      req.body
+    );
 
     if (error) {
-      return res.status(400).json({ error });
+      const err = new BadRequestError(error.message);
+      return res.status(err.statusCode).json({ error, status: err.statusCode });
     }
 
     const postId: string = req.body.postId;
 
+    const getPostIdRepository: GetPostIdRepository = new GetPostIdRepository();
+
+    const adminDeletePostRepository: DeletePostRepository =
+      new DeletePostRepository();
+
     const adminDeletePostService: AdminDeletePostService =
-      new AdminDeletePostService(prismaClient);
+      new AdminDeletePostService(
+        getPostIdRepository,
+        adminDeletePostRepository
+      );
 
     try {
-      // eslint-disable-next-line no-unused-vars
-      const deletedPost: Object = await adminDeletePostService.execute(
-        Number(postId)
-      );
+      await adminDeletePostService.execute(Number(postId));
 
       return res.status(204).send();
     } catch (err: any) {
