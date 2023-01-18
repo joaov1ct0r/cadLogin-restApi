@@ -1,29 +1,37 @@
 import { Request, Response } from "express";
-import { validateHandleAdminDeleteUser } from "../validations/validateAdminData";
+import ValidateAdmin from "../validations/validateAdminData";
 import AdminDeleteUserService from "../services/AdminDeleteUserService";
-import IAdminDeleteUserController from "../interfaces/IAdminDeleteUserController";
-import prismaClient from "../database/prismaClient";
+import BadRequestError from "../errors/BadRequestError";
+import GetUserEmailRepository from "../database/repositories/user/GetUserEmailRepository";
+import AdminDeleteUserRepository from "../database/repositories/admin/DeleteUserRepository";
 
-export default class AdminDeleteUserController
-  implements IAdminDeleteUserController
-{
+export default class AdminDeleteUserController {
   public async handle(req: Request, res: Response): Promise<Response> {
-    const { error } = validateHandleAdminDeleteUser(req.body);
+    const { error } = new ValidateAdmin().validateHandleAdminDeleteUser(
+      req.body
+    );
 
     if (error) {
-      return res.status(400).json({ error });
+      const err = new BadRequestError(error.message);
+      return res.status(err.statusCode).json({ error, status: err.statusCode });
     }
 
     const userEmail: string = req.body.userEmail;
 
+    const getUserEmailRepository: GetUserEmailRepository =
+      new GetUserEmailRepository();
+
+    const adminDeleteUserRepository: AdminDeleteUserRepository =
+      new AdminDeleteUserRepository();
+
     const adminDeleteUserService: AdminDeleteUserService =
-      new AdminDeleteUserService(prismaClient);
+      new AdminDeleteUserService(
+        getUserEmailRepository,
+        adminDeleteUserRepository
+      );
 
     try {
-      // eslint-disable-next-line no-unused-vars
-      const deletedUser: Object = await adminDeleteUserService.execute(
-        userEmail
-      );
+      await adminDeleteUserService.execute(userEmail);
 
       return res.status(204).send();
     } catch (err: any) {

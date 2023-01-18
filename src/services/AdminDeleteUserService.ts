@@ -1,15 +1,15 @@
 import BadRequestError from "../errors/BadRequestError";
 import { User } from "@prisma/client";
 import IGetUserEmailRepository from "../interfaces/IGetUserEmailRepository";
-import DeleteUserRepository from "../database/repositories/user/DeleteUserRepository";
+import AdminDeleteUserRepository from "../database/repositories/admin/DeleteUserRepository";
 
 export default class AdminDeleteUserService {
   private readonly getUserEmailRepository: IGetUserEmailRepository;
-  private readonly deleteUserRepository: DeleteUserRepository;
+  private readonly deleteUserRepository: AdminDeleteUserRepository;
 
   constructor(
     getUserEmailRepository: IGetUserEmailRepository,
-    deleteUserRepository: DeleteUserRepository
+    deleteUserRepository: AdminDeleteUserRepository
   ) {
     this.getUserEmailRepository = getUserEmailRepository;
     this.deleteUserRepository = deleteUserRepository;
