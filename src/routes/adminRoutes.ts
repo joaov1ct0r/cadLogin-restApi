@@ -1,7 +1,7 @@
 import express from "express";
-import resolver from "../utils/Resolver";
-import auth from "../middlewares/auth";
-import admin from "../middlewares/admin";
+import Resolver from "../utils/Resolver";
+import Authorization from "../middlewares/auth";
+import IsAdmin from "../middlewares/admin";
 import AdminEditUserController from "../controllers/AdminEditUserController";
 import AdminDeleteUserController from "../controllers/AdminDeleteUserController";
 import AdminDeletePostController from "../controllers/AdminDeletePostController";
@@ -17,11 +17,17 @@ const adminDeleteUserController: AdminDeleteUserController =
 const adminDeletePostController: AdminDeletePostController =
   new AdminDeletePostController();
 
+const resolver: Resolver = new Resolver();
+
+const authorization: Authorization = new Authorization();
+
+const isAdmin: IsAdmin = new IsAdmin();
+
 adminRouter.put(
   "/user/edit",
-  auth,
-  admin,
-  resolver(adminEditUserController.handle)
+  authorization.execute,
+  isAdmin.execute,
+  resolver.handle(adminEditUserController.handle)
 );
 
 adminRouter.delete(
