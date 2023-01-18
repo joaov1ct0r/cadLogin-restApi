@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
-import { validateHandleAdminEditUser } from "../validations/validateAdminData";
+import ValidateAdmin from "../validations/validateAdminData";
 import AdminEditUserService from "../services/AdminEditUserService";
-import IAdminEditUserController from "../interfaces/IAdminEditUserController";
-import prismaClient from "../database/prismaClient";
+import BadRequestError from "../errors/BadRequestError";
+import GetUserEmailRepository from "../database/repositories/user/GetUserEmailRepository";
+import EditUserRepository from "../database/repositories/admin/EditUserRepository";
 
-export default class AdminEditUserController
-  implements IAdminEditUserController
-{
+export default class AdminEditUserController {
   public async handle(req: Request, res: Response): Promise<Response> {
-    const { error } = validateHandleAdminEditUser(req.body);
+    const { error } = new ValidateAdmin().validateHandleAdminEditUser(req.body);
 
     if (error) {
-      return res.status(400).json({ error });
+      const err = new BadRequestError(error.message);
+      return res.status(err.statusCode).json({ error, status: err.statusCode });
     }
 
     const userEmail: string = req.body.userEmail;
@@ -24,13 +24,18 @@ export default class AdminEditUserController
 
     const userNewBornAt: string = req.body.userNewBornAt;
 
+    const getUserEmailRepository: GetUserEmailRepository =
+      new GetUserEmailRepository();
+
+    const editUserRepository: EditUserRepository = new EditUserRepository();
+
     const adminEditUserService: AdminEditUserService = new AdminEditUserService(
-      prismaClient
+      getUserEmailRepository,
+      editUserRepository
     );
 
     try {
-      // eslint-disable-next-line no-unused-vars
-      const updatedUser: Object = await adminEditUserService.execute(
+      await adminEditUserService.execute(
         userEmail,
         userNewEmail,
         userNewPassword,
