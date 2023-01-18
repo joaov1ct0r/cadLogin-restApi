@@ -39,9 +39,9 @@ adminRouter.delete(
 
 adminRouter.delete(
   "/post/delete",
-  auth,
-  admin,
-  resolver(adminDeletePostController.handle)
+  authorization.execute,
+  isAdmin.execute,
+  resolver.handle(adminDeletePostController.handle)
 );
 
 export default adminRouter;
