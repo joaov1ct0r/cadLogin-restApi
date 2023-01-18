@@ -1,20 +1,17 @@
 import BadRequestError from "../errors/BadRequestError";
-import IAdminDeleteUserService from "../interfaces/IAdminDeleteUserService";
-import { PrismaClient, User } from "@prisma/client";
+import { User } from "@prisma/client";
+import IGetUserEmailRepository from "../interfaces/IGetUserEmailRepository";
 
-export default class AdminDeleteUserService implements IAdminDeleteUserService {
-  private readonly repository: PrismaClient;
+export default class AdminDeleteUserService {
+  private readonly getUserEmailRepository: IGetUserEmailRepository;
 
-  constructor(repository: PrismaClient) {
-    this.repository = repository;
+  constructor(getUserEmailRepository: IGetUserEmailRepository) {
+    this.getUserEmailRepository = getUserEmailRepository;
   }
 
   public async execute(userEmail: string): Promise<Object> {
-    const isUserRegistered: User | null = await this.repository.user.findUnique(
-      {
-        where: { email: userEmail },
-      }
-    );
+    const isUserRegistered: User | null =
+      await this.getUserEmailRepository.execute(userEmail);
 
     if (isUserRegistered === null) {
       throw new BadRequestError("Usuario não encontrado!");
