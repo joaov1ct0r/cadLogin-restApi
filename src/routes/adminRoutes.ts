@@ -32,9 +32,9 @@ adminRouter.put(
 
 adminRouter.delete(
   "/user/delete",
-  auth,
-  admin,
-  resolver(adminDeleteUserController.handle)
+  authorization.execute,
+  isAdmin.execute,
+  resolver.handle(adminDeleteUserController.handle)
 );
 
 adminRouter.delete(
