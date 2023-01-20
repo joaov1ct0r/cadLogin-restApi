@@ -1,21 +1,21 @@
-import { mockDeep } from "jest-mock-extended";
+import { mock } from "jest-mock-extended";
 import ListAllUsersService from "../../../src/services/ListAllUsersService";
-import { PrismaClient } from "@prisma/client";
+import IListUsersRepository from "../../../src/interfaces/IListUsersRepository";
 
 const makeSut = () => {
-  const prismaSpyRepository = mockDeep<PrismaClient>();
+  const listUsersRepository = mock<IListUsersRepository>();
 
-  const sut: ListAllUsersService = new ListAllUsersService(prismaSpyRepository);
+  const sut: ListAllUsersService = new ListAllUsersService(listUsersRepository);
 
-  return { prismaSpyRepository, sut };
+  return { listUsersRepository, sut };
 };
 
 describe("list all users service", () => {
   describe("when execute is called", () => {
     it("should return all users registered", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+      const { sut, listUsersRepository } = makeSut();
 
-      prismaSpyRepository.user.findMany.mockResolvedValueOnce([
+      listUsersRepository.execute.mockResolvedValueOnce([
         {
           id: 1,
           email: "any@mail.com.br",
