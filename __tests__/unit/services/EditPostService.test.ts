@@ -1,22 +1,28 @@
-import { mockDeep } from "jest-mock-extended";
+import { mock } from "jest-mock-extended";
 import EditPostService from "../../../src/services/EditPostService";
 import BadRequestError from "../../../src/errors/BadRequestError";
-import { Prisma, PrismaClient } from "@prisma/client";
+import IGetPostIdRepository from "../../../src/interfaces/IGetPostIdRepository";
+import IUpdatePostRepository from "../../../src/interfaces/IUpdatePostRepository";
 
 const makeSut = () => {
-  const prismaSpyRepository = mockDeep<PrismaClient>();
+  const getPostIdRepository = mock<IGetPostIdRepository>();
 
-  const sut: EditPostService = new EditPostService(prismaSpyRepository);
+  const updatePostRepository = mock<IUpdatePostRepository>();
 
-  return { prismaSpyRepository, sut };
+  const sut: EditPostService = new EditPostService(
+    getPostIdRepository,
+    updatePostRepository
+  );
+
+  return { getPostIdRepository, updatePostRepository, sut };
 };
 
 describe("edit post service", () => {
   describe("when execute is called", () => {
     it("should throw exception if post is null", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+      const { sut, getPostIdRepository } = makeSut();
 
-      prismaSpyRepository.post.findFirst.mockResolvedValueOnce(null);
+      getPostIdRepository.execute.mockResolvedValueOnce(null);
 
       expect(async () => {
         await sut.execute(1, 1, "titulo editado para post");
@@ -24,24 +30,22 @@ describe("edit post service", () => {
     });
 
     it("should return an object when succed to edit post", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+      const { sut, getPostIdRepository, updatePostRepository } = makeSut();
 
-      prismaSpyRepository.post.findFirst.mockResolvedValueOnce({
+      getPostIdRepository.execute.mockResolvedValueOnce({
         id: 1,
         author: "any@mail.com.br",
         content: "titulo de post",
         userId: 1,
       });
 
-      prismaSpyRepository.post.updateMany.mockResolvedValueOnce(
-        {} as Prisma.BatchPayload
-      );
+      updatePostRepository.execute.mockResolvedValueOnce();
 
-      const deletedLines = await sut.execute(1, 1, "titulo editado de post");
+      await sut.execute(1, 1, "titulo editado de post");
 
-      expect(deletedLines).toHaveProperty("message");
+      expect(getPostIdRepository.execute).toHaveBeenCalledTimes(1);
 
-      expect(deletedLines).toEqual({ message: "Post editado!" });
+      expect(updatePostRepository.execute).toHaveBeenCalledTimes(1);
     });
   });
 });
