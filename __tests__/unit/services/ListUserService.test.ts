@@ -1,22 +1,22 @@
-import { mockDeep } from "jest-mock-extended";
+import { mock } from "jest-mock-extended";
 import ListUserService from "../../../src/services/ListUserService";
 import BadRequestError from "../../../src/errors/BadRequestError";
-import { PrismaClient } from "@prisma/client";
+import IGetUserEmailRepository from "../../../src/interfaces/IGetUserEmailRepository";
 
 const makeSut = () => {
-  const prismaSpyRepository = mockDeep<PrismaClient>();
+  const getUserEmailRepository = mock<IGetUserEmailRepository>();
 
-  const sut: ListUserService = new ListUserService(prismaSpyRepository);
+  const sut: ListUserService = new ListUserService(getUserEmailRepository);
 
-  return { prismaSpyRepository, sut };
+  return { getUserEmailRepository, sut };
 };
 
 describe("list user service", () => {
   describe("when execute is called", () => {
     it("should return an exception if user is null", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+      const { sut, getUserEmailRepository } = makeSut();
 
-      prismaSpyRepository.user.findUnique.mockResolvedValueOnce(null);
+      getUserEmailRepository.execute.mockResolvedValueOnce(null);
 
       expect(async () => {
         await sut.execute("any@mail.com.br");
@@ -24,9 +24,9 @@ describe("list user service", () => {
     });
 
     it("should return a user if execute is succeed", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+      const { sut, getUserEmailRepository } = makeSut();
 
-      prismaSpyRepository.user.findUnique.mockResolvedValueOnce({
+      getUserEmailRepository.execute.mockResolvedValueOnce({
         id: 1,
         email: "any@mail.com.br",
         name: "user name",
