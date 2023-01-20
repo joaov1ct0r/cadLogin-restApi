@@ -1,15 +1,22 @@
-import { mockDeep } from "jest-mock-extended";
+import { mock } from "jest-mock-extended";
 import DeletePostService from "../../../src/services/DeletePostService";
 import BadRequestError from "../../../src/errors/BadRequestError";
-import { Prisma, PrismaClient } from "@prisma/client";
+import IGetPostIdRepository from "../../../src/interfaces/IGetPostIdRepository";
+import IDeletePostRepository from "../../../src/interfaces/IDeletePostRepository";
 
 const makeSut = () => {
-  const prismaSpyRepository = mockDeep<PrismaClient>();
+  const getPostIdRepository = mock<IGetPostIdRepository>();
 
-  const sut: DeletePostService = new DeletePostService(prismaSpyRepository);
+  const deletePostRepository = mock<IDeletePostRepository>();
+
+  const sut: DeletePostService = new DeletePostService(
+    getPostIdRepository,
+    deletePostRepository
+  );
 
   return {
-    prismaSpyRepository,
+    getPostIdRepository,
+    deletePostRepository,
     sut,
   };
 };
@@ -17,34 +24,32 @@ const makeSut = () => {
 describe("delete post service", () => {
   describe("when execute is called", () => {
     it("should return an exception if post is null", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+      const { sut, getPostIdRepository } = makeSut();
 
-      prismaSpyRepository.post.findFirst.mockResolvedValueOnce(null);
+      getPostIdRepository.execute.mockResolvedValueOnce(null);
 
       expect(async () => {
         await sut.execute(1, 1);
       }).rejects.toThrow(new BadRequestError("Post não encontrado!"));
     });
 
-    it("should return number of deleted lines", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+    it("should delete post", async () => {
+      const { sut, getPostIdRepository, deletePostRepository } = makeSut();
 
-      prismaSpyRepository.post.findFirst.mockResolvedValueOnce({
+      getPostIdRepository.execute.mockResolvedValueOnce({
         id: 1,
         author: "any@mail.com.br",
         content: "titulo de post",
         userId: 1,
       });
 
-      prismaSpyRepository.post.deleteMany.mockResolvedValueOnce(
-        {} as Prisma.BatchPayload
-      );
+      deletePostRepository.execute.mockResolvedValueOnce();
 
-      const deletedLines = await sut.execute(1, 1);
+      await sut.execute(1, 1);
 
-      expect(deletedLines).toHaveProperty("message");
+      expect(getPostIdRepository.execute).toHaveBeenCalledTimes(1);
 
-      expect(deletedLines).toEqual({ message: "Post deletado" });
+      expect(deletePostRepository.execute).toHaveBeenCalledTimes(1);
     });
   });
 });
