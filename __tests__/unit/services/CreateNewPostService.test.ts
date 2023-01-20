@@ -1,24 +1,28 @@
-import { mockDeep } from "jest-mock-extended";
+import { mock } from "jest-mock-extended";
 import CreateNewPostService from "../../../src/services/CreateNewPostService";
 import BadRequestError from "../../../src/errors/BadRequestError";
-import { PrismaClient } from "@prisma/client";
+import ICreateNewPostRepository from "../../../src/interfaces/ICreateNewPostRepository";
+import IGetUserIdRepository from "../../../src/interfaces/IGetUserIdRepository";
 
 const makeSut = () => {
-  const prismaSpyRepository = mockDeep<PrismaClient>();
+  const createNewPostRepository = mock<ICreateNewPostRepository>();
+
+  const getUserIdRepository = mock<IGetUserIdRepository>();
 
   const sut: CreateNewPostService = new CreateNewPostService(
-    prismaSpyRepository
+    createNewPostRepository,
+    getUserIdRepository
   );
 
-  return { sut, prismaSpyRepository };
+  return { sut, createNewPostRepository, getUserIdRepository };
 };
 
 describe("create new post service", () => {
   describe("when execute is called", () => {
     it("should throw an exception if user is null", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+      const { sut, getUserIdRepository } = makeSut();
 
-      prismaSpyRepository.user.findUnique.mockResolvedValueOnce(null);
+      getUserIdRepository.execute.mockResolvedValueOnce(null);
 
       expect(async () => {
         await sut.execute(1, "titulo para novo post");
@@ -26,9 +30,9 @@ describe("create new post service", () => {
     });
 
     it("should return a new post if succeed", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+      const { sut, getUserIdRepository, createNewPostRepository } = makeSut();
 
-      prismaSpyRepository.user.findUnique.mockResolvedValueOnce({
+      getUserIdRepository.execute.mockResolvedValueOnce({
         id: 1,
         email: "any@mail.com.br",
         password: "123123123",
@@ -37,7 +41,7 @@ describe("create new post service", () => {
         admin: true,
       });
 
-      prismaSpyRepository.post.create.mockResolvedValueOnce({
+      createNewPostRepository.execute.mockResolvedValueOnce({
         id: 1,
         author: "any@mail.com.br",
         content: "novo titulo de post",
