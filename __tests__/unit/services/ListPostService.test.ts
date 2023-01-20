@@ -1,22 +1,22 @@
-import { mockDeep } from "jest-mock-extended";
+import { mock } from "jest-mock-extended";
 import BadRequestError from "../../../src/errors/BadRequestError";
 import ListPostService from "../../../src/services/ListPostService";
-import { PrismaClient } from "@prisma/client";
+import IListPostRepository from "../../../src/interfaces/IListPostRepository";
 
 const makeSut = () => {
-  const prismaSpyRepository = mockDeep<PrismaClient>();
+  const listPostRepository = mock<IListPostRepository>();
 
-  const sut: ListPostService = new ListPostService(prismaSpyRepository);
+  const sut: ListPostService = new ListPostService(listPostRepository);
 
-  return { prismaSpyRepository, sut };
+  return { listPostRepository, sut };
 };
 
 describe("list post service", () => {
   describe("when execute is called", () => {
     it("should throw an exception if post is null", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+      const { sut, listPostRepository } = makeSut();
 
-      prismaSpyRepository.post.findFirst.mockResolvedValueOnce(null);
+      listPostRepository.execute.mockResolvedValueOnce(null);
 
       expect(async () => {
         await sut.execute(1);
@@ -24,9 +24,9 @@ describe("list post service", () => {
     });
 
     it("should return a post", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+      const { sut, listPostRepository } = makeSut();
 
-      prismaSpyRepository.post.findFirst.mockResolvedValueOnce({
+      listPostRepository.execute.mockResolvedValueOnce({
         id: 1,
         author: "any@mail.com.br",
         content: "titulo de post",
