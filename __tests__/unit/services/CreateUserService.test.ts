@@ -1,20 +1,26 @@
-import { mockDeep } from "jest-mock-extended";
+import { mock } from "jest-mock-extended";
 import CreateUserService from "../../../src/services/CreateUserService";
 import BadRequestError from "../../../src/errors/BadRequestError";
-import { PrismaClient } from "@prisma/client";
+import IGetUserEmailRepository from "../../../src/interfaces/IGetUserEmailRepository";
+import ICreateUserRepository from "../../../src/interfaces/ICreateUserRepository";
 
 const makeSut = () => {
-  const prismaSpyRepository = mockDeep<PrismaClient>();
+  const getUserRepository = mock<IGetUserEmailRepository>();
 
-  const sut: CreateUserService = new CreateUserService(prismaSpyRepository);
+  const createUserRepository = mock<ICreateUserRepository>();
 
-  return { sut, prismaSpyRepository };
+  const sut: CreateUserService = new CreateUserService(
+    getUserRepository,
+    createUserRepository
+  );
+
+  return { sut, getUserRepository, createUserRepository };
 };
 
 describe("create user service", () => {
   describe("when execute is called", () => {
     it("should throw an error if user already exists", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+      const { sut, getUserRepository } = makeSut();
 
       const userInputData = {
         email: "user@email.com.br",
@@ -23,7 +29,7 @@ describe("create user service", () => {
         bornAt: "01/09/2001",
       };
 
-      prismaSpyRepository.user.findUnique.mockResolvedValue({
+      getUserRepository.execute.mockResolvedValue({
         id: 1,
         email: "user@email.com.br",
         password: "123123123",
@@ -38,7 +44,7 @@ describe("create user service", () => {
     });
 
     it("should create a new user", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+      const { sut, getUserRepository, createUserRepository } = makeSut();
 
       const userInputData = {
         email: "user@mail.com.br",
@@ -47,9 +53,9 @@ describe("create user service", () => {
         bornAt: "01/09/2001",
       };
 
-      prismaSpyRepository.user.findUnique.mockResolvedValue(null);
+      getUserRepository.execute.mockResolvedValue(null);
 
-      prismaSpyRepository.user.create.mockResolvedValue({
+      createUserRepository.execute.mockResolvedValue({
         id: 1,
         email: "user@mail.com.br",
         password: "123123123",
