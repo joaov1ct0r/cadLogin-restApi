@@ -1,34 +1,34 @@
 import "dotenv/config";
-import { mockDeep } from "jest-mock-extended";
+import { mock } from "jest-mock-extended";
 import AuthenticateUserService from "../../../src/services/AuthenticateUserService";
 import BadRequestError from "../../../src/errors/BadRequestError";
 import jwt from "jsonwebtoken";
 import IJwt from "../../../src/interfaces/IJson";
-import { PrismaClient } from "@prisma/client";
-import UnathorizedError from "../../../src/errors/UnathorizedError";
+import UnathorizedError from "../../../src/errors/UnauthorizedError";
 import bcrypt from "bcryptjs";
+import IGetUserEmailRepository from "../../../src/interfaces/IGetUserEmailRepository";
 
 const makeSut = () => {
-  const prismaSpyRepository = mockDeep<PrismaClient>();
+  const getUserEmailRepository = mock<IGetUserEmailRepository>();
 
   const sut: AuthenticateUserService = new AuthenticateUserService(
-    prismaSpyRepository
+    getUserEmailRepository
   );
 
-  return { sut, prismaSpyRepository };
+  return { sut, getUserEmailRepository };
 };
 
 describe("authenticate user service", () => {
   describe("when execute is called", () => {
     it("should return exception if user isnt registered", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+      const { sut, getUserEmailRepository } = makeSut();
 
       const userData = {
         email: "useremail@mail.com",
         password: "123123123",
       };
 
-      prismaSpyRepository.user.findUnique.mockResolvedValueOnce(null);
+      getUserEmailRepository.execute.mockResolvedValueOnce(null);
 
       expect(async () => {
         await sut.execute(userData.email, userData.password);
@@ -36,14 +36,14 @@ describe("authenticate user service", () => {
     });
 
     it("should return exception if password isnt matching", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+      const { sut, getUserEmailRepository } = makeSut();
 
       const userData = {
         email: "useremail@mail.com",
         password: "123123123",
       };
 
-      prismaSpyRepository.user.findUnique.mockResolvedValueOnce({
+      getUserEmailRepository.execute.mockResolvedValueOnce({
         id: 1,
         email: "useremail@mail.com",
         password: "789789789",
@@ -58,9 +58,9 @@ describe("authenticate user service", () => {
     });
 
     it("should return a token if user is registered", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+      const { sut, getUserEmailRepository } = makeSut();
 
-      prismaSpyRepository.user.findUnique.mockResolvedValueOnce({
+      getUserEmailRepository.execute.mockResolvedValueOnce({
         id: 1,
         email: "useremail@mail.com",
         password: bcrypt.hashSync("123123123"),
