@@ -1,27 +1,37 @@
-import { mockDeep } from "jest-mock-extended";
+import { mock } from "jest-mock-extended";
 import AddPostCommentService from "../../../src/services/AddPostCommentService";
 import BadRequestError from "../../../src/errors/BadRequestError";
-import { PrismaClient } from "@prisma/client";
+import IGetPostIdRepository from "../../../src/interfaces/IGetPostIdRepository";
+import IGetUserIdRepository from "../../../src/interfaces/IGetUserIdRepository";
+import ICreateCommentRepository from "../../../src/interfaces/ICreateCommentRepository";
 
 const makeSut = () => {
-  const prismaSpyRepository = mockDeep<PrismaClient>();
+  const getPostIdRepository = mock<IGetPostIdRepository>();
+
+  const getUserIdRepository = mock<IGetUserIdRepository>();
+
+  const createCommentRepository = mock<ICreateCommentRepository>();
 
   const sut: AddPostCommentService = new AddPostCommentService(
-    prismaSpyRepository
+    getPostIdRepository,
+    getUserIdRepository,
+    createCommentRepository
   );
 
   return {
     sut,
-    prismaSpyRepository,
+    getPostIdRepository,
+    getUserIdRepository,
+    createCommentRepository,
   };
 };
 
 describe("add post comment service", () => {
   describe("when execute is called", () => {
     it("should throw an exception if post is null", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+      const { sut, getPostIdRepository } = makeSut();
 
-      prismaSpyRepository.post.findUnique.mockResolvedValueOnce(null);
+      getPostIdRepository.execute.mockResolvedValueOnce(null);
 
       expect(async () => {
         await sut.execute(1, 1, "comment de post");
@@ -29,16 +39,16 @@ describe("add post comment service", () => {
     });
 
     it("should throw an exception if user is null", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+      const { sut, getPostIdRepository, getUserIdRepository } = makeSut();
 
-      prismaSpyRepository.post.findUnique.mockResolvedValueOnce({
+      getPostIdRepository.execute.mockResolvedValueOnce({
         id: 1,
         author: "any@mail.com.br",
         content: "um titulo",
         userId: 1,
       });
 
-      prismaSpyRepository.user.findUnique.mockResolvedValueOnce(null);
+      getUserIdRepository.execute.mockResolvedValueOnce(null);
 
       expect(async () => {
         await sut.execute(1, 1, "comment de post");
@@ -46,16 +56,21 @@ describe("add post comment service", () => {
     });
 
     it("should return created comment when succeed", async () => {
-      const { sut, prismaSpyRepository } = makeSut();
+      const {
+        sut,
+        getPostIdRepository,
+        getUserIdRepository,
+        createCommentRepository,
+      } = makeSut();
 
-      prismaSpyRepository.post.findUnique.mockResolvedValueOnce({
+      getPostIdRepository.execute.mockResolvedValueOnce({
         id: 1,
         author: "any@mail.com.br",
         content: "titulo de post",
         userId: 1,
       });
 
-      prismaSpyRepository.user.findUnique.mockResolvedValueOnce({
+      getUserIdRepository.execute.mockResolvedValueOnce({
         id: 1,
         email: "any@mail.com.br",
         password: "123123123",
@@ -64,7 +79,7 @@ describe("add post comment service", () => {
         admin: false,
       });
 
-      prismaSpyRepository.comment.create.mockResolvedValueOnce({
+      createCommentRepository.execute.mockResolvedValueOnce({
         postId: 1,
         id: 1,
         userId: 1,
