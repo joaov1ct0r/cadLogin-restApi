@@ -4,11 +4,9 @@
 
 <h2>Sobre</h2>
 
-<h3>
 <p>REST API de Social Media com rotas para cadastro e login de usuários e criações e interações com posts feita com JavaScript utilizando o runtime NodeJS com o framework Express e TypeScript, protegendo rotas com JWT, autenticando dados de entrada com a biblioteca Joi, criando models, migrations e armazenando os dados no banco de dados PostgreSQL com o ORM Sequelize.</p>
 <p>Testes unitários e de integração feitos com framework de testes Jest e SuperTest.</p>
 <p>Ambientes de produção e desenvolvimento criados em containers Docker utilizando Dockerfile para multi-stage building e Docker Compose para orquestração de containers.</p>
-</h3>
 
 <h2>Requisitos</h2>
 
