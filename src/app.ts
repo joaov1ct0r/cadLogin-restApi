@@ -11,7 +11,7 @@ import InternalError from "./errors/InternalError";
 import UnauthorizedError from "./errors/UnauthorizedError";
 
 export default class App {
-  public server: express.Application;
+  public readonly server: express.Application;
 
   constructor() {
     this.server = express();
