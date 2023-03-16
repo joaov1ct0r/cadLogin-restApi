@@ -2,6 +2,7 @@ import Joi from "@hapi/joi";
 
 export default class ValidateUser {
   private schema: Joi.ObjectSchema<Object> | undefined;
+  
   public validateHandleUserRegister(data: object): Joi.ValidationResult {
     this.schema = Joi.object({
       email: Joi.string().required().min(10).max(100),
