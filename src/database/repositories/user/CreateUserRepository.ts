@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import ICreateUserRepository from "../../../interfaces/ICreateUserRepository";
 
 export default class CreateUserRepository implements ICreateUserRepository {
-  public readonly repository: PrismaClient;
+  private readonly repository: PrismaClient;
 
   constructor() {
     this.repository = prismaClient;
