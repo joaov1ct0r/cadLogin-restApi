@@ -3,7 +3,7 @@ import prismaClient from "../../prismaClient";
 import IGetUserEmailRepository from "../../../interfaces/IGetUserEmailRepository";
 
 export default class GetUserEmailRepository implements IGetUserEmailRepository {
-  public readonly repository: PrismaClient;
+  private readonly repository: PrismaClient;
 
   constructor() {
     this.repository = prismaClient;
