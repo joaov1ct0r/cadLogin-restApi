@@ -2,7 +2,7 @@ import Joi from "@hapi/joi";
 
 export default class ValidatePost {
   private schema: Joi.ObjectSchema<Object> | undefined;
-  
+
   validateHandleNewPost(data: object): Joi.ValidationResult {
     this.schema = Joi.object({
       content: Joi.string().required().min(1).max(250),
