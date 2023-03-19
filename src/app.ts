@@ -16,10 +16,7 @@ export default class App {
   constructor() {
     this.server = express();
     this.middlewares();
-    this.userRoutes();
-    this.postRoutes();
-    this.adminRoutes();
-    this.docsRoutes();
+    this.routes();
   }
 
   private middlewares() {
@@ -44,19 +41,10 @@ export default class App {
     );
   }
 
-  private userRoutes() {
+  private routes() {
     this.server.use("/api/users", userRouter);
-  }
-
-  private postRoutes() {
     this.server.use("/api/posts", postRouter);
-  }
-
-  private adminRoutes() {
     this.server.use("/api/admin", adminRouter);
-  }
-
-  private docsRoutes() {
     this.server.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
   }
 }
