@@ -8,6 +8,7 @@ import IGetUserEmailRepository from "../interfaces/IGetUserEmailRepository";
 
 export default class AuthenticateUserService {
   private readonly repository: IGetUserEmailRepository;
+
   constructor(repository: IGetUserEmailRepository) {
     this.repository = repository;
   }
