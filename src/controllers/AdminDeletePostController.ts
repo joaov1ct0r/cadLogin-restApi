@@ -6,8 +6,23 @@ import GetPostIdRepository from "../database/repositories/post/GetPostIdReposito
 import DeletePostRepository from "../database/repositories/admin/DeletePostRepository";
 
 export default class AdminDeletePostController {
+  private readonly validateAdmin: ValidateAdmin;
+  private readonly getPostIdRepository: GetPostIdRepository;
+  private readonly deletePostRepository: DeletePostRepository;
+  private readonly adminDeletePostService: AdminDeletePostService;
+
+  constructor() {
+    this.validateAdmin = new ValidateAdmin();
+    this.getPostIdRepository = new GetPostIdRepository();
+    this.deletePostRepository = new DeletePostRepository();
+    this.adminDeletePostService = new AdminDeletePostService(
+      this.getPostIdRepository,
+      this.deletePostRepository
+    );
+  }
+
   public async handle(req: Request, res: Response): Promise<Response> {
-    const { error } = new ValidateAdmin().validateHandleAdminDeletePost(
+    const { error } = this.validateAdmin.validateHandleAdminDeletePost(
       req.body
     );
 
@@ -18,19 +33,8 @@ export default class AdminDeletePostController {
 
     const postId: string = req.body.postId;
 
-    const getPostIdRepository: GetPostIdRepository = new GetPostIdRepository();
-
-    const adminDeletePostRepository: DeletePostRepository =
-      new DeletePostRepository();
-
-    const adminDeletePostService: AdminDeletePostService =
-      new AdminDeletePostService(
-        getPostIdRepository,
-        adminDeletePostRepository
-      );
-
     try {
-      await adminDeletePostService.execute(Number(postId));
+      await this.adminDeletePostService.execute(Number(postId));
 
       return res.status(204).send();
     } catch (err: any) {
