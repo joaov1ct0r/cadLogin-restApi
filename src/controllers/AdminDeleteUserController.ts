@@ -6,8 +6,23 @@ import GetUserEmailRepository from "../database/repositories/user/GetUserEmailRe
 import AdminDeleteUserRepository from "../database/repositories/admin/DeleteUserRepository";
 
 export default class AdminDeleteUserController {
+  private readonly validateAdmin: ValidateAdmin;
+  private readonly getUserEmailRepository: GetUserEmailRepository;
+  private readonly adminDeleteUserRepository: AdminDeleteUserRepository;
+  private readonly adminDeleteUserService: AdminDeleteUserService;
+
+  constructor() {
+    this.validateAdmin = new ValidateAdmin();
+    this.getUserEmailRepository = new GetUserEmailRepository();
+    this.adminDeleteUserRepository = new AdminDeleteUserRepository();
+    this.adminDeleteUserService = new AdminDeleteUserService(
+      this.getUserEmailRepository,
+      this.adminDeleteUserRepository
+    );
+  }
+
   public async handle(req: Request, res: Response): Promise<Response> {
-    const { error } = new ValidateAdmin().validateHandleAdminDeleteUser(
+    const { error } = this.validateAdmin.validateHandleAdminDeleteUser(
       req.body
     );
 
@@ -18,20 +33,8 @@ export default class AdminDeleteUserController {
 
     const userEmail: string = req.body.userEmail;
 
-    const getUserEmailRepository: GetUserEmailRepository =
-      new GetUserEmailRepository();
-
-    const adminDeleteUserRepository: AdminDeleteUserRepository =
-      new AdminDeleteUserRepository();
-
-    const adminDeleteUserService: AdminDeleteUserService =
-      new AdminDeleteUserService(
-        getUserEmailRepository,
-        adminDeleteUserRepository
-      );
-
     try {
-      await adminDeleteUserService.execute(userEmail);
+      await this.adminDeleteUserService.execute(userEmail);
 
       return res.status(204).send();
     } catch (err: any) {
