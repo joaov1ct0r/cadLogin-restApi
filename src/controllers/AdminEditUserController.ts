@@ -6,6 +6,21 @@ import GetUserEmailRepository from "../database/repositories/user/GetUserEmailRe
 import EditUserRepository from "../database/repositories/admin/EditUserRepository";
 
 export default class AdminEditUserController {
+  private readonly validateAdmin: ValidateAdmin;
+  private readonly getUserEmailRepository: GetUserEmailRepository;
+  private readonly editUserRepository: EditUserRepository;
+  private readonly adminEditUserService: AdminEditUserService;
+
+  constructor() {
+    this.validateAdmin = new ValidateAdmin();
+    this.getUserEmailRepository = new GetUserEmailRepository();
+    this.editUserRepository = new EditUserRepository();
+    this.adminEditUserService = new AdminEditUserService(
+      this.getUserEmailRepository,
+      this.editUserRepository
+    );
+  }
+
   public async handle(req: Request, res: Response): Promise<Response> {
     const { error } = new ValidateAdmin().validateHandleAdminEditUser(req.body);
 
@@ -24,18 +39,8 @@ export default class AdminEditUserController {
 
     const userNewBornAt: string = req.body.userNewBornAt;
 
-    const getUserEmailRepository: GetUserEmailRepository =
-      new GetUserEmailRepository();
-
-    const editUserRepository: EditUserRepository = new EditUserRepository();
-
-    const adminEditUserService: AdminEditUserService = new AdminEditUserService(
-      getUserEmailRepository,
-      editUserRepository
-    );
-
     try {
-      await adminEditUserService.execute(
+      await this.adminEditUserService.execute(
         userEmail,
         userNewEmail,
         userNewPassword,
