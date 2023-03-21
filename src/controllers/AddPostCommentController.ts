@@ -9,8 +9,26 @@ import GetUserIdRepository from "../database/repositories/user/GetUserIdReposito
 import CreateCommentRepository from "../database/repositories/comment/CreateCommentRepository";
 
 export default class AddPostCommentController {
+  private readonly validatePost: ValidatePost;
+  private readonly getPostIdRepository: GetPostIdRepository;
+  private readonly getUserIdRepository: GetUserIdRepository;
+  private readonly createCommentRepository: CreateCommentRepository;
+  private readonly addPostCommentService: AddPostCommentService;
+
+  constructor() {
+    this.validatePost = new ValidatePost();
+    this.getPostIdRepository = new GetPostIdRepository();
+    this.getUserIdRepository = new GetUserIdRepository();
+    this.createCommentRepository = new CreateCommentRepository();
+    this.addPostCommentService = new AddPostCommentService(
+      this.getPostIdRepository,
+      this.getUserIdRepository,
+      this.createCommentRepository
+    );
+  }
+
   public async handle(req: IReq, res: Response): Promise<Response> {
-    const { error } = new ValidatePost().validateHandleAddPostComment(req.body);
+    const { error } = this.validatePost.validateHandleAddPostComment(req.body);
 
     if (error) {
       const err = new BadRequestError(error.message);
@@ -23,22 +41,8 @@ export default class AddPostCommentController {
 
     const id: string | undefined = req.userId;
 
-    const getPostIdRepository: GetPostIdRepository = new GetPostIdRepository();
-
-    const getUserIdRepository: GetUserIdRepository = new GetUserIdRepository();
-
-    const createCommentRepository: CreateCommentRepository =
-      new CreateCommentRepository();
-
-    const addPostCommentService: AddPostCommentService =
-      new AddPostCommentService(
-        getPostIdRepository,
-        getUserIdRepository,
-        createCommentRepository
-      );
-
     try {
-      const newComment: Comment = await addPostCommentService.execute(
+      const newComment: Comment = await this.addPostCommentService.execute(
         Number(id),
         Number(postId),
         comment
