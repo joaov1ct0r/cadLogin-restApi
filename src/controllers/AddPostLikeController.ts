@@ -10,8 +10,29 @@ import GetLikeIdRepository from "../database/repositories/likes/GetLikeIdReposit
 import CreateLikeRepository from "../database/repositories/likes/CreateLikeRepository";
 
 export default class AddPostLikeController {
+  private readonly validatePost: ValidatePost;
+  private readonly getPostIdRepository: GetPostIdRepository;
+  private readonly getUserIdRepository: GetUserIdRepository;
+  private readonly getLikeIdRepository: GetLikeIdRepository;
+  private readonly createLikeRepository: CreateLikeRepository;
+  private readonly addPostLikeService: AddPostLikeService;
+
+  constructor() {
+    this.validatePost = new ValidatePost();
+    this.getPostIdRepository = new GetPostIdRepository();
+    this.getUserIdRepository = new GetUserIdRepository();
+    this.getLikeIdRepository = new GetLikeIdRepository();
+    this.createLikeRepository = new CreateLikeRepository();
+    this.addPostLikeService = new AddPostLikeService(
+      this.getPostIdRepository,
+      this.getUserIdRepository,
+      this.getLikeIdRepository,
+      this.createLikeRepository
+    );
+  }
+
   public async handle(req: IReq, res: Response): Promise<Response> {
-    const { error } = new ValidatePost().validateHandleAddPostLike(req.body);
+    const { error } = this.validatePost.validateHandleAddPostLike(req.body);
 
     if (error) {
       const err = new BadRequestError(error.message);
@@ -22,24 +43,8 @@ export default class AddPostLikeController {
 
     const postId: string = req.body.postId;
 
-    const getPostIdRepository: GetPostIdRepository = new GetPostIdRepository();
-
-    const getUserIdRepository: GetUserIdRepository = new GetUserIdRepository();
-
-    const getLikeIdRepository: GetLikeIdRepository = new GetLikeIdRepository();
-
-    const createLikeRepository: CreateLikeRepository =
-      new CreateLikeRepository();
-
-    const addPostLikeService: AddPostLikeService = new AddPostLikeService(
-      getPostIdRepository,
-      getUserIdRepository,
-      getLikeIdRepository,
-      createLikeRepository
-    );
-
     try {
-      const like: Likes = await addPostLikeService.execute(
+      const like: Likes = await this.addPostLikeService.execute(
         Number(postId),
         Number(id)
       );
