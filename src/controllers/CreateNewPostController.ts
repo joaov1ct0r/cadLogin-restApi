@@ -8,8 +8,23 @@ import CreateNewPostRepository from "../database/repositories/post/CreateNewPost
 import GetUserIdRepository from "../database/repositories/user/GetUserIdRepository";
 
 export default class CreateNewPostController {
+  private readonly validatePost: ValidatePost;
+  private readonly createNewPostRepository: CreateNewPostRepository;
+  private readonly getUserIdRepository: GetUserIdRepository;
+  private readonly createNewPostService: CreateNewPostService;
+
+  constructor() {
+    this.validatePost = new ValidatePost();
+    this.createNewPostRepository = new CreateNewPostRepository();
+    this.getUserIdRepository = new GetUserIdRepository();
+    this.createNewPostService = new CreateNewPostService(
+      this.createNewPostRepository,
+      this.getUserIdRepository
+    );
+  }
+
   public async handle(req: IReq, res: Response): Promise<Response> {
-    const { error } = new ValidatePost().validateHandleNewPost(req.body);
+    const { error } = this.validatePost.validateHandleNewPost(req.body);
 
     if (error) {
       const err = new BadRequestError(error.message);
@@ -20,18 +35,8 @@ export default class CreateNewPostController {
 
     const content: string = req.body.content;
 
-    const createNewPostRepository: CreateNewPostRepository =
-      new CreateNewPostRepository();
-
-    const getUserIdRepository: GetUserIdRepository = new GetUserIdRepository();
-
-    const createNewPostService: CreateNewPostService = new CreateNewPostService(
-      createNewPostRepository,
-      getUserIdRepository
-    );
-
     try {
-      const post: Post = await createNewPostService.execute(
+      const post: Post = await this.createNewPostService.execute(
         Number(id),
         content
       );
