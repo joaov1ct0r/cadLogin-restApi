@@ -8,8 +8,26 @@ import GetCommentRepository from "../database/repositories/comment/GetCommentRep
 import DeleteCommentRepository from "../database/repositories/comment/DeleteCommentRepository";
 
 export default class DeletePostCommentController {
+  private readonly validatePost: ValidatePost;
+  private readonly getPostIdRepository: GetPostIdRepository;
+  private readonly getCommentRepository: GetCommentRepository;
+  private readonly deleteCommentRepository: DeleteCommentRepository;
+  private readonly deletePostCommentService: DeletePostCommentService;
+
+  constructor() {
+    this.validatePost = new ValidatePost();
+    this.getPostIdRepository = new GetPostIdRepository();
+    this.getCommentRepository = new GetCommentRepository();
+    this.deleteCommentRepository = new DeleteCommentRepository();
+    this.deletePostCommentService = new DeletePostCommentService(
+      this.getPostIdRepository,
+      this.getCommentRepository,
+      this.deleteCommentRepository
+    );
+  }
+
   public async handle(req: IReq, res: Response): Promise<Response> {
-    const { error } = new ValidatePost().validateHandleDeletePostComment(
+    const { error } = this.validatePost.validateHandleDeletePostComment(
       req.body
     );
 
@@ -24,23 +42,8 @@ export default class DeletePostCommentController {
 
     const userId: string | undefined = req.userId;
 
-    const getPostIdRepository: GetPostIdRepository = new GetPostIdRepository();
-
-    const getCommentRepository: GetCommentRepository =
-      new GetCommentRepository();
-
-    const deleteCommentRepository: DeleteCommentRepository =
-      new DeleteCommentRepository();
-
-    const deletePostCommentService: DeletePostCommentService =
-      new DeletePostCommentService(
-        getPostIdRepository,
-        getCommentRepository,
-        deleteCommentRepository
-      );
-
     try {
-      await deletePostCommentService.execute(
+      await this.deletePostCommentService.execute(
         Number(userId),
         Number(postId),
         Number(commentId)
