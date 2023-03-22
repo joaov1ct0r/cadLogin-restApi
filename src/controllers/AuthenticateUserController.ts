@@ -5,8 +5,20 @@ import GetUserEmailRepository from "../database/repositories/user/GetUserEmailRe
 import BadRequestError from "../errors/BadRequestError";
 
 export default class AuthenticateUserController {
+  private readonly validateUser: ValidateUser;
+  private readonly getUserEmailRepository: GetUserEmailRepository;
+  private readonly authenticateUserService: AuthenticateUserService;
+
+  constructor() {
+    this.validateUser = new ValidateUser();
+    this.getUserEmailRepository = new GetUserEmailRepository();
+    this.authenticateUserService = new AuthenticateUserService(
+      this.getUserEmailRepository
+    );
+  }
+
   public async handle(req: Request, res: Response): Promise<Response> {
-    const { error } = new ValidateUser().validateHandleUserLogin(req.body);
+    const { error } = this.validateUser.validateHandleUserLogin(req.body);
 
     if (error) {
       const err = new BadRequestError(error.message);
@@ -17,14 +29,8 @@ export default class AuthenticateUserController {
 
     const password: string = req.body.password;
 
-    const getUserEmailRepository: GetUserEmailRepository =
-      new GetUserEmailRepository();
-
-    const authenticateUserService: AuthenticateUserService =
-      new AuthenticateUserService(getUserEmailRepository);
-
     try {
-      const token: string = await authenticateUserService.execute(
+      const token: string = await this.authenticateUserService.execute(
         email,
         password
       );
