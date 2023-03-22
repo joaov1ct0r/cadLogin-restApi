@@ -7,8 +7,23 @@ import GetUserEmailRepository from "../database/repositories/user/GetUserEmailRe
 import CreateUserRepository from "../database/repositories/user/CreateUserRepository";
 
 export default class CreateUserController {
+  private readonly validateUser: ValidateUser;
+  private readonly getUserEmailRepository: GetUserEmailRepository;
+  private readonly createUserRepository: CreateUserRepository;
+  private readonly createUserService: CreateUserService;
+
+  constructor() {
+    this.validateUser = new ValidateUser();
+    this.getUserEmailRepository = new GetUserEmailRepository();
+    this.createUserRepository = new CreateUserRepository();
+    this.createUserService = new CreateUserService(
+      this.getUserEmailRepository,
+      this.createUserRepository
+    );
+  }
+
   public async handle(req: Request, res: Response): Promise<Response> {
-    const { error } = new ValidateUser().validateHandleUserRegister(req.body);
+    const { error } = this.validateUser.validateHandleUserRegister(req.body);
 
     if (error) {
       const err = new BadRequestError(error.message);
@@ -24,19 +39,8 @@ export default class CreateUserController {
 
     const bornAt: string = req.body.bornAt;
 
-    const getUserEmailRepository: GetUserEmailRepository =
-      new GetUserEmailRepository();
-
-    const createUserRepository: CreateUserRepository =
-      new CreateUserRepository();
-
-    const createUserService: CreateUserService = new CreateUserService(
-      getUserEmailRepository,
-      createUserRepository
-    );
-
     try {
-      const user: User = await createUserService.execute({
+      const user: User = await this.createUserService.execute({
         email,
         password,
         name,
