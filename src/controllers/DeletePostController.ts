@@ -7,8 +7,23 @@ import GetPostIdRepository from "../database/repositories/post/GetPostIdReposito
 import DeletePostRepository from "../database/repositories/post/DeletePostRepository";
 
 export default class DeletePostController {
+  private readonly validatePost: ValidatePost;
+  private readonly getPostIdRepository: GetPostIdRepository;
+  private readonly deletePostRepository: DeletePostRepository;
+  private readonly deletePostService: DeletePostService;
+
+  constructor() {
+    this.validatePost = new ValidatePost();
+    this.getPostIdRepository = new GetPostIdRepository();
+    this.deletePostRepository = new DeletePostRepository();
+    this.deletePostService = new DeletePostService(
+      this.getPostIdRepository,
+      this.deletePostRepository
+    );
+  }
+
   public async handle(req: IReq, res: Response): Promise<Response> {
-    const { error } = new ValidatePost().validateHandleDeletePost(req.body);
+    const { error } = this.validatePost.validateHandleDeletePost(req.body);
 
     if (error) {
       const err = new BadRequestError(error.message);
@@ -20,18 +35,8 @@ export default class DeletePostController {
 
     const postId: string = req.body.postId;
 
-    const getPostIdRepository: GetPostIdRepository = new GetPostIdRepository();
-
-    const deletePostRepository: DeletePostRepository =
-      new DeletePostRepository();
-
-    const deletePostService: DeletePostService = new DeletePostService(
-      getPostIdRepository,
-      deletePostRepository
-    );
-
     try {
-      await deletePostService.execute(Number(id), Number(postId));
+      await this.deletePostService.execute(Number(id), Number(postId));
 
       return res.status(204).send();
     } catch (err: any) {
