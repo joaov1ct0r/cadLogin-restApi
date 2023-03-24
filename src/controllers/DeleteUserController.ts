@@ -4,18 +4,19 @@ import DeleteUserService from "../services/DeleteUserService";
 import DeleteUserRepository from "../database/repositories/user/DeleteUserRepository";
 
 export default class DeleteUserController {
+  private readonly deleteUserRepository: DeleteUserRepository;
+  private readonly deleteUserService: DeleteUserService;
+
+  constructor() {
+    this.deleteUserRepository = new DeleteUserRepository();
+    this.deleteUserService = new DeleteUserService(this.deleteUserRepository);
+  }
+
   public async handle(req: IReq, res: Response): Promise<Response> {
     const id: string | undefined = req.userId;
 
-    const deleteUserRepository: DeleteUserRepository =
-      new DeleteUserRepository();
-
-    const deleteUserService: DeleteUserService = new DeleteUserService(
-      deleteUserRepository
-    );
-
     try {
-      await deleteUserService.execute(Number(id));
+      await this.deleteUserService.execute(Number(id));
 
       return res.status(204).send();
     } catch (err: any) {
