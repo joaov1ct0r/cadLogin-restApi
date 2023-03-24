@@ -7,8 +7,23 @@ import UpdatePostRepository from "../database/repositories/post/UpdatePostReposi
 import GetPostIdRepository from "../database/repositories/post/GetPostIdRepository";
 
 export default class EditPostController {
+  private readonly validatePost: ValidatePost;
+  private readonly updatePostRepository: UpdatePostRepository;
+  private readonly getPostIdRepository: GetPostIdRepository;
+  private readonly editPostService: EditPostService;
+
+  constructor() {
+    this.validatePost = new ValidatePost();
+    this.updatePostRepository = new UpdatePostRepository();
+    this.getPostIdRepository = new GetPostIdRepository();
+    this.editPostService = new EditPostService(
+      this.getPostIdRepository,
+      this.updatePostRepository
+    );
+  }
+
   public async handle(req: IReq, res: Response): Promise<Response> {
-    const { error } = new ValidatePost().validateHandleEditPost(req.body);
+    const { error } = this.validatePost.validateHandleEditPost(req.body);
 
     if (error) {
       const err = new BadRequestError(error.message);
@@ -21,17 +36,8 @@ export default class EditPostController {
 
     const id: string | undefined = req.userId;
 
-    const updatePostRepository: UpdatePostRepository =
-      new UpdatePostRepository();
-
-    const getPostIdRepository: GetPostIdRepository = new GetPostIdRepository();
-
-    const editPostService: EditPostService = new EditPostService(
-      getPostIdRepository,
-      updatePostRepository
-    );
     try {
-      await editPostService.execute(Number(id), Number(postId), content);
+      await this.editPostService.execute(Number(id), Number(postId), content);
 
       return res.status(204).send();
     } catch (err: any) {
