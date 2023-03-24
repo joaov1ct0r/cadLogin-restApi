@@ -8,8 +8,26 @@ import GetLikeIdRepository from "../database/repositories/likes/GetLikeIdReposit
 import DeleteLikeRepository from "../database/repositories/likes/DeleteLikeRepository";
 
 export default class DeletePostLikeController {
+  private readonly validatePost: ValidatePost;
+  private readonly getPostIdRepository: GetPostIdRepository;
+  private readonly getLikeIdRepository: GetLikeIdRepository;
+  private readonly deleteLikeRepository: DeleteLikeRepository;
+  private readonly deletePostLikeService: DeletePostLikeService;
+
+  constructor() {
+    this.validatePost = new ValidatePost();
+    this.getPostIdRepository = new GetPostIdRepository();
+    this.getLikeIdRepository = new GetLikeIdRepository();
+    this.deleteLikeRepository = new DeleteLikeRepository();
+    this.deletePostLikeService = new DeletePostLikeService(
+      this.getPostIdRepository,
+      this.getLikeIdRepository,
+      this.deleteLikeRepository
+    );
+  }
+
   public async handle(req: IReq, res: Response): Promise<Response> {
-    const { error } = new ValidatePost().validateHandleDeletePostLike(req.body);
+    const { error } = this.validatePost.validateHandleDeletePostLike(req.body);
 
     if (error) {
       const err = new BadRequestError(error.message);
@@ -20,22 +38,8 @@ export default class DeletePostLikeController {
 
     const postId: string = req.body.postId;
 
-    const getPostIdRepository: GetPostIdRepository = new GetPostIdRepository();
-
-    const getLikeIdRepository: GetLikeIdRepository = new GetLikeIdRepository();
-
-    const deleteLikeRepository: DeleteLikeRepository =
-      new DeleteLikeRepository();
-
-    const deletePostLikeService: DeletePostLikeService =
-      new DeletePostLikeService(
-        getPostIdRepository,
-        getLikeIdRepository,
-        deleteLikeRepository
-      );
-
     try {
-      await deletePostLikeService.execute(Number(userId), Number(postId));
+      await this.deletePostLikeService.execute(Number(userId), Number(postId));
 
       return res.status(204).send();
     } catch (err: any) {
