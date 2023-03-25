@@ -28,11 +28,8 @@ describe("list post", () => {
       });
 
     const response = await request(new App().server)
-      .get("/api/posts/post")
-      .set("Accept", "application/json")
-      .send({
-        postId: "290",
-      });
+      .get("/api/posts/post/290")
+      .set("Accept", "application/json");
 
     expect(response.status).toEqual(500);
   });
@@ -90,11 +87,8 @@ describe("list post", () => {
       });
 
     const response = await request(new App().server)
-      .get("/api/posts/post")
-      .set("Cookie", [login.headers["set-cookie"]])
-      .send({
-        postId: "29534",
-      });
+      .get("/api/posts/post/29534")
+      .set("Cookie", [login.headers["set-cookie"]]);
 
     expect(response.body.status).toEqual(400);
   });
@@ -126,11 +120,8 @@ describe("list post", () => {
       });
 
     const response = await request(new App().server)
-      .get("/api/posts/post")
-      .set("Cookie", [login.headers["set-cookie"]])
-      .send({
-        postId: String(postCreated.body.post.id),
-      });
+      .get(`/api/posts/post/${String(postCreated.body.post.id)}`)
+      .set("Cookie", [login.headers["set-cookie"]]);
 
     expect(response.body.status).toEqual(200);
   });
