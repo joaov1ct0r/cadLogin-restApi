@@ -94,7 +94,7 @@ postRouter.delete(
 );
 
 postRouter.get(
-  "/post",
+  "/post/:postId",
   authorization.execute,
   resolver.handle(listPostController.handle)
 );
