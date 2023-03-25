@@ -45,7 +45,7 @@ userRouter.delete(
 );
 
 userRouter.get(
-  "/user",
+  "/user/:email",
   authorization.execute,
   resolver.handle(listUserController.handle)
 );
