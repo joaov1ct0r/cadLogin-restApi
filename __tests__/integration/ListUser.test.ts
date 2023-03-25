@@ -27,11 +27,9 @@ describe("list user", () => {
         bornAt: "01/09/2001",
       });
 
-    const response = await request(new App().server)
-      .get("/api/users/user")
-      .send({
-        email: "userlisting@mail.com.br",
-      });
+    const response = await request(new App().server).get(
+      "/api/users/user/userlisting@mail.com.br"
+    );
 
     expect(response.status).toEqual(500);
   });
@@ -56,11 +54,8 @@ describe("list user", () => {
       });
 
     const response = await request(new App().server)
-      .get("/api/users/user")
-      .set("Cookie", [login.headers["set-cookie"]])
-      .send({
-        email: "a@mail.br",
-      });
+      .get("/api/users/user/a@mail.br")
+      .set("Cookie", [login.headers["set-cookie"]]);
 
     expect(response.status).toEqual(400);
   });
@@ -85,11 +80,8 @@ describe("list user", () => {
       });
 
     const response = await request(new App().server)
-      .get("/api/users/user")
-      .set("Cookie", [login.headers["set-cookie"]])
-      .send({
-        email: "abcdefghijklmnopqrstuvwxyz@mail.com.br",
-      });
+      .get("/api/users/user/abcdefghijklmnopqrstuvwxyz@mail.com.br")
+      .set("Cookie", [login.headers["set-cookie"]]);
 
     expect(response.body.status).toEqual(400);
   });
@@ -124,11 +116,8 @@ describe("list user", () => {
       });
 
     const response = await request(new App().server)
-      .get("/api/users/user")
-      .set("Cookie", [login.headers["set-cookie"]])
-      .send({
-        email: "searcheduser@mail.com.br",
-      });
+      .get("/api/users/user/searcheduser@mail.com.br")
+      .set("Cookie", [login.headers["set-cookie"]]);
 
     expect(response.body.status).toEqual(200);
 
