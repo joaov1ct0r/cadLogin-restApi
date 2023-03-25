@@ -6,8 +6,18 @@ import BadRequestError from "../errors/BadRequestError";
 import ListPostRepository from "../database/repositories/post/ListPostRepository";
 
 export default class ListPostController {
+  private readonly validatePost: ValidatePost;
+  private readonly listPostRepository: ListPostRepository;
+  private readonly listPostService: ListPostService;
+
+  constructor() {
+    this.validatePost = new ValidatePost();
+    this.listPostRepository = new ListPostRepository();
+    this.listPostService = new ListPostService(this.listPostRepository);
+  }
+
   public async handle(req: Request, res: Response): Promise<Response> {
-    const { error } = new ValidatePost().validateHandleOnePost(req.body);
+    const { error } = this.validatePost.validateHandleOnePost(req.params);
 
     if (error) {
       const err = new BadRequestError(error.message);
@@ -15,16 +25,10 @@ export default class ListPostController {
       return res.status(err.statusCode).json({ error, status: err.statusCode });
     }
 
-    const postId: string = req.body.postId;
-
-    const listPostRepository: ListPostRepository = new ListPostRepository();
-
-    const listPostService: ListPostService = new ListPostService(
-      listPostRepository
-    );
+    const postId: string = req.params.postId;
 
     try {
-      const post: Post = await listPostService.execute(Number(postId));
+      const post: Post = await this.listPostService.execute(Number(postId));
 
       return res.status(200).json({ post, status: 200 });
     } catch (err: any) {
