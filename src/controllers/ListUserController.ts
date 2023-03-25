@@ -6,8 +6,18 @@ import BadRequestError from "../errors/BadRequestError";
 import GetUserEmailRepository from "../database/repositories/user/GetUserEmailRepository";
 
 export default class ListUserController {
+  private readonly validateUser: ValidateUser;
+  private readonly getUserEmailRepository: GetUserEmailRepository;
+  private readonly listUserService: ListUserService;
+
+  constructor() {
+    this.validateUser = new ValidateUser();
+    this.getUserEmailRepository = new GetUserEmailRepository();
+    this.listUserService = new ListUserService(this.getUserEmailRepository);
+  }
+
   public async handle(req: Request, res: Response): Promise<Response> {
-    const { error } = new ValidateUser().validateHandleOneUser(req.body);
+    const { error } = this.validateUser.validateHandleOneUser(req.params);
 
     if (error) {
       const err = new BadRequestError(error.message);
@@ -17,15 +27,8 @@ export default class ListUserController {
 
     const email: string = req.body.email;
 
-    const getUserEmailRepository: GetUserEmailRepository =
-      new GetUserEmailRepository();
-
-    const listUserService: ListUserService = new ListUserService(
-      getUserEmailRepository
-    );
-
     try {
-      const user: User = await listUserService.execute(email);
+      const user: User = await this.listUserService.execute(email);
 
       return res.status(200).json({ user, status: 200 });
     } catch (err: any) {
