@@ -24,7 +24,7 @@
 <h3>GIT</h3>
 <hr>
 
-<p>FAÇA O DOWNLOAD DOS ARQUIVOS OU USE SSH:<br><code>git pull git@github.com:joaov1ct0r/social-media-jwt-rest-api.git</code></p>
+<p>FAÇA O DOWNLOAD DOS ARQUIVOS OU USE SSH:<br><code>git pull git@github.com:joaov1ct0r/nodejs-prisma-restAPI-blog.git</code></p>
 
 <h3>VARIAVEIS DE AMBIENTE</h3>
 <hr>
