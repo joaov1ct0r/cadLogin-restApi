@@ -2,7 +2,7 @@
   "name": "social-media-jwt-rest-api",
   "author": "github.com/joaov1ct0r",
   "version": "1.0.0",
-  "description": "REST API de Social Media com cadastro e login de usuários e criações e interações com posts feita com JavaScript utilizando o runtime NodeJS com o framework Express com TypeScript, protegendo rotas utilizando JWT (Json Web Token), autenticando os dados de entrada com @hapi/joi e criando models, migrations e armazenando os dados no banco de dados PostgreSQL utilizando Sequelize. testes unitarios e de integração feitos com Jest e SuperTest, ambientes criados em containers Docker utilizando Dockerfile e Docker Compose.",
+  "description": "REST API de Blog com cadastro e login de usuários e criações e interações com posts feita com JavaScript utilizando o runtime NodeJS com o framework Express com TypeScript, protegendo rotas utilizando JWT (Json Web Token), autenticando os dados de entrada com @hapi/joi e criando models, migrations e armazenando os dados no banco de dados PostgreSQL utilizando Sequelize. testes unitarios e de integração feitos com Jest e SuperTest, ambientes criados em containers Docker utilizando Dockerfile e Docker Compose.",
   "main": "./build/index.js",
   "type": "module",
   "scripts": {
