@@ -1,6 +1,6 @@
 # nodejs-prisma-restAPI-blog
 
-<h1>EM DESENVOLVIMENTO!</h1>
+<h1>EM DESENVOLVIMENTO</h1>
 
 <h2>Sobre</h2>
 
